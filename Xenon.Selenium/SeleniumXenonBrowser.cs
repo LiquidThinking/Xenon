@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 
@@ -23,12 +20,9 @@ namespace Xenon.Selenium
 
 		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector ) => _driver.FindElementsByCssSelector( cssSelector ).Select( ConvertToXenonElement );
 
-		public void GoToUrl( string url )
-		{
-			_driver.Navigate().GoToUrl( url );
-		}
+		public void GoToUrl( string url ) => _driver.Navigate().GoToUrl( url );
 
-		public XenonAssertion RunAssertion( Func<XenonAssertion, XenonAssertion> assertion )
+		public XenonAssertion RunAssertion( AssertionFunc assertion )
 		{
 			XenonAssertion result;
 			try
@@ -43,9 +37,6 @@ namespace Xenon.Selenium
 			return result;
 		}
 
-		private IXenonElement ConvertToXenonElement( IWebElement webElement )
-		{
-			return new SeleniumXenonElement( webElement );
-		}
+		private IXenonElement ConvertToXenonElement( IWebElement webElement ) => new SeleniumXenonElement( webElement );
 	}
 }

@@ -10,5 +10,9 @@ namespace Xenon.Selenium
 		{
 			_webElement = webElement;
 		}
+
+		public void Click() => _webElement.Click();
+
+		public void EnterText( string value ) => _webElement.SendKeys( value );
 	}
 }

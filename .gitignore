@@ -183,3 +183,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 Xenon.sln.ide/
 /packages
+*.ncrunchsolution

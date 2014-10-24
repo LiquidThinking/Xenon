@@ -16,6 +16,7 @@ namespace Xenon
 		}
 
 		public bool Passing { get; private set; } = true;
+
 		public ReadOnlyCollection<string> FailureMessages => _failureMessages.AsReadOnly();
 
 		public XenonAssertion UrlContains( string content )
@@ -36,6 +37,11 @@ namespace Xenon
 		public XenonAssertion DoesNotContainElement( string cssSelector )
 		{
 			return Assert( !_xenonBrowser.FindElementsByCssSelector( cssSelector ).Any(), "Page conatains element with selector: " + cssSelector );
+		}
+
+		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc )
+		{
+			return Assert( customFunc( _xenonBrowser ), "Custom assertion failed" );
 		}
 
 		private XenonAssertion Assert( bool contains, string message )
