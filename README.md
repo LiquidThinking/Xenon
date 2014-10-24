@@ -1,5 +1,13 @@
 Xenon
 =====
+
+Packages
+-------------
+- [Xenon](https://www.nuget.org/packages/Xenon)
+- [Xenon.Selenium](https://www.nuget.org/packages/Xenon.Selenium)
+
+Documentation
+-------------
 Xenon is a test framework which lets you to write stable acceptance tests in a fluent api manner.
 
     // if you are using nunit then 
