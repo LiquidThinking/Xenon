@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using Xenon.Tests.ExtensionMethods;
 
-namespace Xenon.Tests
+namespace Xenon.Tests.ClickTests
 {
-	[TestFixture]
-	public class XenonTestClickTests : BaseXenonTest
+	public abstract class BaseClickTests<T> : BaseXenonTest where T : BaseXenonTest<T>
 	{
+		protected abstract BaseXenonTest<T> CreateInstance( Mock<IXenonBrowser> browser );
 
 		[Test]
 		public void Click_WhenClicked_CallsBrowserClick()
@@ -17,7 +18,7 @@ namespace Xenon.Tests
 			var browser = SetupBrowser();
 			browser.SetupFindElementsByCssSelector( cssSelector, element );
 
-			var xenonTest = new XenonTest( browser.Object );
+			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( cssSelector );
 
 			element.Verify( x => x.Click() );
@@ -32,7 +33,7 @@ namespace Xenon.Tests
 			var browser = SetupBrowser();
 			browser.SetupFindElementsByCssSelector( cssSelector, element, 5 );
 
-			var xenonTest = new XenonTest( browser.Object );
+			var xenonTest = CreateInstance( browser);
 			xenonTest.Click( cssSelector );
 
 			element.Verify( x => x.Click() );
@@ -60,7 +61,7 @@ namespace Xenon.Tests
 					calledToEarly = true;
 			} );
 
-			var xenonTest = new XenonTest( browser.Object );
+			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( cssSelector, x => x.PageContains( content ) );
 
 			Assert.IsFalse( calledToEarly );
@@ -78,15 +79,15 @@ namespace Xenon.Tests
 
 			var browser = SetupBrowser();
 			browser.SetupGet( x => x.PageSource )
-				   .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
+			       .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
 
 			browser.Setup( x => x.FindElementsByCssSelector( cssSelector ) )
-				   .Returns( new List<IXenonElement>
-				   {
-					   element.Object
-				   } );
+			       .Returns( new List<IXenonElement>
+			       {
+				       element.Object
+			       } );
 
-			var xenonTest = new XenonTest( browser.Object );
+			var xenonTest = CreateInstance( browser);
 			xenonTest.Click( cssSelector, EmptyAssertion, x => x.PageContains( content ) );
 
 

@@ -1,13 +1,16 @@
-﻿using Moq;
+using Moq;
 using NUnit.Framework;
+using Xenon.Tests.ExtensionMethods;
 
-namespace Xenon.Tests
+namespace Xenon.Tests.EnterTextTests
 {
-	[TestFixture]
-	public class XenonTestEnterTextTests : BaseXenonTest
+	public abstract class BaseEnterTextTests<T> : BaseXenonTest where T : BaseXenonTest<T>
 	{
 		private const string CssSelector = "input";
 		private const string ContentText = "the test content";
+
+		protected abstract BaseXenonTest<T> CreateInstance( Mock<IXenonBrowser> browser );
+
 
 		[Test]
 		public void EnterText_WhenCalled_EnterText()
@@ -16,7 +19,7 @@ namespace Xenon.Tests
 			var element = new Mock<IXenonElement>();
 			browser.SetupFindElementsByCssSelector( CssSelector, element );
 
-			var xenonTest = new XenonTest( browser.Object );
+			var xenonTest = CreateInstance( browser );
 			xenonTest.EnterText( CssSelector, ContentText );
 
 			element.Verify( x => x.EnterText( ContentText ) );
@@ -29,7 +32,7 @@ namespace Xenon.Tests
 			var element = new Mock<IXenonElement>();
 
 			browser.SetupFindElementsByCssSelector( CssSelector, element, 5 );
-			var xenonTest = new XenonTest( browser.Object );
+			var xenonTest = CreateInstance( browser );
 			xenonTest.EnterText( CssSelector, ContentText );
 
 			element.Verify( x => x.EnterText( ContentText ) );
@@ -42,7 +45,7 @@ namespace Xenon.Tests
 
 			var browser = SetupBrowser();
 			var element = new Mock<IXenonElement>();
-			var xenonTest = new XenonTest( browser.Object );
+			var xenonTest = CreateInstance( browser );
 
 
 			browser.SetupFindElementsByCssSelector( CssSelector, element );
@@ -70,7 +73,7 @@ namespace Xenon.Tests
 		{
 			var browser = SetupBrowser();
 			var element = new Mock<IXenonElement>();
-			var xenonTest = new XenonTest( browser.Object );
+			var xenonTest = CreateInstance( browser );
 
 
 			browser.SetupFindElementsByCssSelector( CssSelector, element );
@@ -81,8 +84,8 @@ namespace Xenon.Tests
 			var timesCalled = 0;
 
 			browser
-				  .SetupGet( x => x.PageSource )
-				  .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : pageContent );
+				.SetupGet( x => x.PageSource )
+				.Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : pageContent );
 
 
 			xenonTest.EnterText( CssSelector, ContentText, customPostWait: a => a.PageContains( pageContent ) );

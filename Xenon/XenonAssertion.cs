@@ -17,7 +17,10 @@ namespace Xenon
 
 		public bool Passing { get; private set; } = true;
 
-		public ReadOnlyCollection<string> FailureMessages => _failureMessages.AsReadOnly();
+		public ReadOnlyCollection<string> FailureMessages
+		{
+			get { return _failureMessages.AsReadOnly(); }
+		}
 
 		public XenonAssertion UrlContains( string content )
 		{

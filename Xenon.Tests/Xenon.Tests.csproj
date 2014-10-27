@@ -11,6 +11,7 @@
     <AssemblyName>Xenon.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,13 +46,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssertTests\BaseAssertTests.cs" />
     <Compile Include="BaseXenonTest.cs" />
+    <Compile Include="ClickTests\BaseClickTests.cs" />
+    <Compile Include="ClickTests\XenonScreenClickTests.cs" />
+    <Compile Include="DummyXenonScreen.cs" />
+    <Compile Include="EnterTextTests\BaseEnterTextTests.cs" />
+    <Compile Include="EnterTextTests\XenonScreenEnterTextTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XenonBrowserExtensionMethods.cs" />
-    <Compile Include="XenonTestAssertTests.cs" />
-    <Compile Include="XenonTestEnterTextTests.cs" />
-    <Compile Include="XenonTestGoToUrlTests.cs" />
-    <Compile Include="XenonTestClickTests.cs" />
+    <Compile Include="ExtensionMethods\XenonBrowserExtensionMethods.cs" />
+    <Compile Include="GoToUrlTests\XenonScreenGoToUrlTests.cs" />
+    <Compile Include="AssertTests\XenonScreenAssertTests.cs" />
+    <Compile Include="AssertTests\XenonTestAssertTests.cs" />
+    <Compile Include="EnterTextTests\XenonTestEnterTextTests.cs" />
+    <Compile Include="GoToUrlTests\BaseGoToUrlTests.cs" />
+    <Compile Include="ClickTests\XenonTestClickTests.cs" />
+    <Compile Include="GoToUrlTests\XenonTestGoToUrlTests.cs" />
+    <Compile Include="XenonScreenTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -62,6 +73,7 @@
       <Name>Xenon</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

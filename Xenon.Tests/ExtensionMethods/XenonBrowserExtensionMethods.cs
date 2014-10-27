@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Moq;
 
-namespace Xenon.Tests
+namespace Xenon.Tests.ExtensionMethods
 {
 	public static class XenonBrowserExtensionMethods
 	{

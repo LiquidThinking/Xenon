@@ -42,10 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertionFunc.cs" />
+    <Compile Include="BaseXenonTest.cs" />
     <Compile Include="XenonAssertion.cs" />
     <Compile Include="IXenonBrowser.cs" />
     <Compile Include="IXenonElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XenonScreen.cs" />
     <Compile Include="XenonTest.cs" />
     <Compile Include="XenonTestOptions.cs" />
   </ItemGroup>

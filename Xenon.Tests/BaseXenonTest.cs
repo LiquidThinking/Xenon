@@ -4,7 +4,10 @@ namespace Xenon.Tests
 {
 	public abstract class BaseXenonTest
 	{
-		protected static XenonAssertion EmptyAssertion( XenonAssertion xenonAssertion ) => xenonAssertion;
+		protected static XenonAssertion EmptyAssertion( XenonAssertion xenonAssertion )
+		{
+			return xenonAssertion;
+		}
 
 		protected static Mock<IXenonBrowser> SetupBrowser()
 		{

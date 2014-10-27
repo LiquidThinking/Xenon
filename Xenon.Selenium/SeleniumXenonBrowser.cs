@@ -14,15 +14,33 @@ namespace Xenon.Selenium
 			_driver = driver;
 		}
 
-		public string Url => _driver.Url;
+		public string Url
+		{
+			get
+			{
+				return _driver.Url;
+			}
+		}
 
-		public string PageSource => _driver.PageSource;
+		public string PageSource
+		{
+			get { return _driver.PageSource; }
+		}
 
-		private IXenonElement ConvertToXenonElement( IWebElement webElement ) => new SeleniumXenonElement( webElement );
+		private IXenonElement ConvertToXenonElement( IWebElement webElement )
+		{
+			return new SeleniumXenonElement( webElement );
+		}
 
-		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector ) => _driver.FindElementsByCssSelector( cssSelector ).Select( ConvertToXenonElement );
+		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector )
+		{
+			return _driver.FindElementsByCssSelector( cssSelector ).Select( ConvertToXenonElement );
+		}
 
-		public void GoToUrl( string url ) => _driver.Navigate().GoToUrl( url );
+		public void GoToUrl( string url )
+		{
+			_driver.Navigate().GoToUrl( url );
+		}
 
 		public XenonAssertion RunAssertion( AssertionFunc assertion )
 		{

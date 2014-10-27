@@ -1,17 +1,16 @@
 ﻿using Moq;
 using NUnit.Framework;
 
-namespace Xenon.Tests
+namespace Xenon.Tests.GoToUrlTests
 {
-	[TestFixture]
-	public class XenonTestGoToUrlTests : BaseXenonTest
+	public abstract class BaseGoToUrlTests<T> : BaseXenonTest where T : BaseXenonTest<T>
 	{
 		private const string Url = "/A/Test/Url";
 
 		private class SetupGoToUrlResult
 		{
 			public Mock<IXenonBrowser> Browser { get; set; }
-			public XenonTest XenonTest { get; set; }
+			public BaseXenonTest<T> XenonTest { get; set; }
 		}
 
 
@@ -21,11 +20,13 @@ namespace Xenon.Tests
 			var result = new SetupGoToUrlResult
 			{
 				Browser = browser,
-				XenonTest = new XenonTest( browser.Object )
+				XenonTest = CreateInstance( browser )
 			};
 
 			return result;
 		}
+
+		protected abstract BaseXenonTest<T> CreateInstance( Mock<IXenonBrowser> browser );
 
 		[Test]
 		public void GoToUrl_WhenPageIsLoadedStraightAway_CallsBrowserGoToUrl()

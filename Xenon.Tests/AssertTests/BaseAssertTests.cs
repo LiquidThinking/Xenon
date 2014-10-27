@@ -1,30 +1,36 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 
-namespace Xenon.Tests
+namespace Xenon.Tests.AssertTests
 {
-	public class XenonTestAssertTests : BaseXenonTest
+	public abstract class BaseAssertTests<T> : BaseXenonTest where T : BaseXenonTest<T>
 	{
 		[Test]
 		public void Assert_WhenAssertionPasses_CallsAssertMethodWithTrue()
 		{
 			var assertMethodCalled = false;
 
-			var xenonTest = new XenonTest( null, new XenonTestOptions
+			var browser = SetupBrowser();
+			var xenonTestOptions = new XenonTestOptions
 			{
 				AssertMethod = ( a, b ) => assertMethodCalled = a
-			} );
+			};
+			var xenonTest = CreateInstance( browser, xenonTestOptions );
 
 			xenonTest.Assert( a => a.CustomAssertion( b => true ) );
 
 			Assert.IsTrue( assertMethodCalled );
 		}
 
+		protected abstract BaseXenonTest<T> CreateInstance( Mock<IXenonBrowser> browser, XenonTestOptions xenonTestOptions );
+
 		[Test]
 		public void Assert_WhenAssertionsFails_CallsAssertMethodWithFalse()
 		{
 			var assertMethodCalled = false;
 
-			var xenonTest = new XenonTest( null, new XenonTestOptions
+			var browser = SetupBrowser();
+			var xenonTest = CreateInstance( browser, new XenonTestOptions
 			{
 				AssertMethod = ( a, b ) => assertMethodCalled = a == false
 			} );
@@ -39,7 +45,7 @@ namespace Xenon.Tests
 		{
 			var assertMethodCalled = false;
 			var browser = SetupBrowser();
-			var xenonTest = new XenonTest( browser.Object, new XenonTestOptions
+			var xenonTest = CreateInstance( browser, new XenonTestOptions
 			{
 				AssertMethod = ( a, b ) => assertMethodCalled = a
 			} );
