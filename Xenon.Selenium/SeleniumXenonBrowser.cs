@@ -18,6 +18,8 @@ namespace Xenon.Selenium
 
 		public string PageSource => _driver.PageSource;
 
+		private IXenonElement ConvertToXenonElement( IWebElement webElement ) => new SeleniumXenonElement( webElement );
+
 		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector ) => _driver.FindElementsByCssSelector( cssSelector ).Select( ConvertToXenonElement );
 
 		public void GoToUrl( string url ) => _driver.Navigate().GoToUrl( url );
@@ -37,6 +39,9 @@ namespace Xenon.Selenium
 			return result;
 		}
 
-		private IXenonElement ConvertToXenonElement( IWebElement webElement ) => new SeleniumXenonElement( webElement );
+		public void Quit()
+		{
+			_driver.Quit();
+		}
 	}
 }

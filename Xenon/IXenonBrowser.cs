@@ -9,5 +9,6 @@ namespace Xenon
 		IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector );
 		void GoToUrl( string url );
 		XenonAssertion RunAssertion( AssertionFunc assertion );
+		void Quit();
 	}
 }
