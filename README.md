@@ -12,7 +12,7 @@ Xenon is a test framework which lets you to write stable acceptance tests in a f
 
     // if you are using nunit then 
     // this tells xenon what method to call when you do XenonTest.Assert, only needs to be set once
-    XenonOptions.AssertMethod = Assert.IsTrue;
+    XenonTestOptions.Options.AssertMethod = Assert.IsTrue;
     
     //In your test
     new XenonTest(new SeleniumXenonBrowser())
