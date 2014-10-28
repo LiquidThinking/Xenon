@@ -6,12 +6,10 @@ namespace Xenon
 {
 	public abstract class BaseXenonTest<T> where T : BaseXenonTest<T>
 	{
-		public static XenonTestOptions XenonTestOptions { get; set; }
-
 		protected readonly XenonTestOptions _xenonTestOptions;
 		protected readonly IXenonBrowser _xenonBrowser;
 
-		public BaseXenonTest( IXenonBrowser xenonBrowser ) : this( xenonBrowser, XenonTestOptions ?? new XenonTestOptions() ) { }
+		public BaseXenonTest( IXenonBrowser xenonBrowser ) : this( xenonBrowser, XenonTestOptions.Options ?? new XenonTestOptions() ) { }
 
 		public BaseXenonTest( IXenonBrowser browser, XenonTestOptions options )
 		{

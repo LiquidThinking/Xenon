@@ -17,5 +17,7 @@ namespace Xenon
 			}
 			set { _assertMethod = value; }
 		}
+
+		public static XenonTestOptions Options { get; set; }
 	}
 }
