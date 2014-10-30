@@ -9,7 +9,7 @@ namespace Xenon
 		string PageSource { get; }
 		IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector );
 		IEnumerable<IXenonElement> FindElementsByXPath( string xpath );
-        void GoToUrl( string url );
+		void GoToUrl( string url );
 		XenonAssertion RunAssertion( AssertionFunc assertion );
 		void Quit();
 	}
