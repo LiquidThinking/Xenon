@@ -5,7 +5,12 @@ namespace Xenon
 	public class XenonTestOptions
 	{
 		private Action<bool, string> _assertMethod;
-		public int WaitForSeconds { get; set; } = 5;
+		public int WaitForSeconds { get; set; }
+
+		public XenonTestOptions()
+		{
+			WaitForSeconds = 5;
+		}
 
 		public Action<bool, string> AssertMethod
 		{

@@ -10,12 +10,14 @@ namespace Xenon
 		private readonly List<string> _failureMessages = new List<string>();
 		private readonly IXenonBrowser _xenonBrowser;
 
+		public bool Passing { get; private set; }
+
 		public XenonAssertion( IXenonBrowser xenonBrowser )
 		{
 			_xenonBrowser = xenonBrowser;
+			Passing = true;
 		}
 
-		public bool Passing { get; private set; } = true;
 
 		public ReadOnlyCollection<string> FailureMessages
 		{
@@ -29,17 +31,17 @@ namespace Xenon
 
 		public XenonAssertion PageContains( string content )
 		{
-			return Assert( _xenonBrowser.PageSource.Contains( content ), "Page does not conatain: " + content );
+			return Assert( _xenonBrowser.PageSource.Contains( content ), "Page does not contain: " + content );
 		}
 
 		public XenonAssertion ContainsElement( string cssSelector )
 		{
-			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Any(), "Page does not conatain element with selector: " + cssSelector );
+			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Any(), "Page does not contain element with selector: " + cssSelector );
 		}
 
 		public XenonAssertion DoesNotContainElement( string cssSelector )
 		{
-			return Assert( !_xenonBrowser.FindElementsByCssSelector( cssSelector ).Any(), "Page conatains element with selector: " + cssSelector );
+			return Assert( !_xenonBrowser.FindElementsByCssSelector( cssSelector ).Any(), "Page contains element with selector: " + cssSelector );
 		}
 
 		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc )
