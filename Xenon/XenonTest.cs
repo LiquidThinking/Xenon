@@ -1,4 +1,6 @@
-﻿namespace Xenon
+﻿using System.Linq;
+
+namespace Xenon
 {
 	public class XenonTest : BaseXenonTest<XenonTest>
 	{

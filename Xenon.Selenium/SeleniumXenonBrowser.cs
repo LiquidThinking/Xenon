@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
@@ -35,6 +36,11 @@ namespace Xenon.Selenium
 		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector )
 		{
 			return _driver.FindElementsByCssSelector( cssSelector ).Select( ConvertToXenonElement );
+		}
+
+		public IEnumerable<IXenonElement> FindElementsByXPath( string xpath )
+		{
+			return _driver.FindElementsByXPath( xpath ).Select( ConvertToXenonElement );
 		}
 
 		public void GoToUrl( string url )

@@ -33,7 +33,7 @@ namespace Xenon.Tests.ClickTests
 			var browser = SetupBrowser();
 			browser.SetupFindElementsByCssSelector( cssSelector, element, 5 );
 
-			var xenonTest = CreateInstance( browser);
+			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( cssSelector );
 
 			element.Verify( x => x.Click() );
@@ -87,11 +87,33 @@ namespace Xenon.Tests.ClickTests
 				       element.Object
 			       } );
 
-			var xenonTest = CreateInstance( browser);
+			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( cssSelector, EmptyAssertion, x => x.PageContains( content ) );
 
 
 			Assert.AreEqual( timesToCallUrl, timesCalled );
+		}
+
+		[Test]
+		public void Click_WhenXenonElementsFinderIsProvided_ShouldCallTheClickOnElementFound()
+		{
+			const string xpathFormat = "//a[contains(text(), '{0}')]";
+			const string linkText = "Click Me";
+
+
+			var mockedElement = new Mock<IXenonElement>();
+			var browser = SetupBrowser();
+			browser
+				.Setup( x => x.FindElementsByXPath( string.Format( xpathFormat, linkText ) ) )
+				.Returns( new List<IXenonElement>
+				{
+					mockedElement.Object
+				} );
+
+			var xenonTest = CreateInstance( browser );
+			xenonTest.Click( x => x.LinkText( linkText ) );
+
+			mockedElement.Verify( x => x.Click() );
 		}
 	}
 }

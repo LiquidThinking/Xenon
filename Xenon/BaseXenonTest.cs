@@ -9,7 +9,7 @@ namespace Xenon
 		protected readonly XenonTestOptions _xenonTestOptions;
 		protected readonly IXenonBrowser _xenonBrowser;
 
-		public BaseXenonTest( IXenonBrowser xenonBrowser ) : this( xenonBrowser, XenonTestOptions.Options ?? new XenonTestOptions() ) { }
+		public BaseXenonTest( IXenonBrowser xenonBrowser ) : this( xenonBrowser, XenonTestOptions.Options ?? new XenonTestOptions() ) {}
 
 		public BaseXenonTest( IXenonBrowser browser, XenonTestOptions options )
 		{
@@ -23,21 +23,21 @@ namespace Xenon
 
 			do
 			{
-				if (_xenonBrowser.RunAssertion( wait ).Passing)
+				if ( _xenonBrowser.RunAssertion( wait ).Passing )
 					break;
 
 				Thread.Sleep( 10 );
-			} while (DateTime.Now < endTime);
+			} while ( DateTime.Now < endTime );
 		}
 
 		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait )
 		{
-			if (preWait != null)
+			if ( preWait != null )
 				WaitUntil( preWait );
 
 			task( _xenonBrowser );
 
-			if (postWait != null)
+			if ( postWait != null )
 				WaitUntil( postWait );
 
 			return this as T;
@@ -70,6 +70,22 @@ namespace Xenon
 			                customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
 			                customPostWait );
 		}
+
+
+		/// <summary>
+		/// Clicks the element specified
+		/// By default waits for the element to exist before clicking
+		/// </summary>
+		/// <param name="where">element finder function</param>
+		/// <param name="customPreWait">Custom action wait upon before clicking to the element</param>
+		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
+		public T Click( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( browser => where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().First().Click(),
+			                customPreWait ?? ( a => a.ContainsElement( where ) ),
+			                customPostWait );
+		}
+
 
 		/// <summary>
 		/// Enters the text into the element specified.
