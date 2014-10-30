@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Xenon
 {
@@ -7,7 +8,8 @@ namespace Xenon
 		string Url { get; }
 		string PageSource { get; }
 		IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector );
-		void GoToUrl( string url );
+		IEnumerable<IXenonElement> FindElementsByXPath( string xpath );
+        void GoToUrl( string url );
 		XenonAssertion RunAssertion( AssertionFunc assertion );
 		void Quit();
 	}
