@@ -95,23 +95,22 @@ namespace Xenon.Tests.ClickTests
 		}
 
 		[Test]
-		public void Click_WhenXenonElementsFinderIsProvided_ShouldCallTheClickOnElementFound()
+		public void Click_WhereTextIsProvided_ShouldCallTheClickOnElementFound()
 		{
-			const string xpathFormat = "//a[contains(text(), '{0}')]";
 			const string linkText = "Click Me";
 
 
 			var mockedElement = new Mock<IXenonElement>();
 			var browser = SetupBrowser();
 			browser
-				.Setup( x => x.FindElementsByXPath( string.Format( xpathFormat, linkText ) ) )
+				.Setup( x => x.FindElementsByXPath( It.IsAny<string>() ) )
 				.Returns( new List<IXenonElement>
 				{
 					mockedElement.Object
 				} );
 
 			var xenonTest = CreateInstance( browser );
-			xenonTest.Click( x => x.LinkText( linkText ) );
+			xenonTest.Click( x => x.TextIs( linkText ) );
 
 			mockedElement.Verify( x => x.Click() );
 		}
