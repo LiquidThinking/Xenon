@@ -18,7 +18,7 @@ namespace Xenon
 
 		public XenonElementsFinder TextIs( string text )
 		{
-			const string xpathFormat = "(//input[@value='{0}' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[contains(text(), '{0}')])[position()=1]";
+			const string xpathFormat = "(//input[@value='{0}' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[text(), '{0}'])[position()=1]";
 			var criterion = string.Format( xpathFormat, text );
 			_xpathCriteria.Add( criterion );
 
