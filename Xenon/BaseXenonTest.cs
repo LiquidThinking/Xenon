@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
@@ -81,9 +82,21 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
 		public T Click( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().First().Click(),
+			return RunTask( browser => ClickFoundElement( where( new XenonElementsFinder( browser ) ).FindElements() ),
 			                customPreWait ?? ( a => a.ContainsElement( where ) ),
 			                customPostWait );
+		}
+
+		private static void ClickFoundElement( IEnumerable<IXenonElement> elements )
+		{
+			var foundElements = elements.ToList();
+
+			if ( foundElements.Count == 1 )
+				foundElements.First().Click();
+			else if ( foundElements.Count > 1 )
+				throw new Exception( "More than one element was found" );
+			else
+				throw new Exception( "No element was found" );
 		}
 
 

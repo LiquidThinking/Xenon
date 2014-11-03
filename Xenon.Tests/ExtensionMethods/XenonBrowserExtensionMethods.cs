@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Moq;
 
 namespace Xenon.Tests.ExtensionMethods
@@ -13,6 +14,14 @@ namespace Xenon.Tests.ExtensionMethods
 				   {
 					   element.Object
 				   } );
-		}		
+		}
+
+		public static void SetupFindElementsByXPath( this Mock<IXenonBrowser> browser, string xpath, params Mock<IXenonElement>[] elements  )
+		{
+			browser
+				.Setup( x => x.FindElementsByXPath( It.IsAny<string>() ) )
+				.Returns( elements.Select( x => x.Object ) );
+
+		}
 	}
 }
