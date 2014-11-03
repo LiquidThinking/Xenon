@@ -32,6 +32,7 @@ How To Use
 ---------------
 
 There are two ways to use Xenon in your acceptance test. You can either directly create a instance of XenonTest as in the previous example or you can create a class inheriting from XenonScreen. So if we redo the previous example using XenonScreen then this is how we do it
+
 	public class GoogleHomeScreen : XenonScreen<GoogleHomePage>
 	{
 		public GoogleHomeScreen(IXenonBrowser browser) : base(browser)
