@@ -27,5 +27,38 @@ Xenon is a test framework which lets you to write stable acceptance tests in a f
             .EnterText("input[name='q']", "xenon test framework")
             .Click("button[name='btnK']")
             .Assert( a => a.PageContains("results") );
+            
+How To Use
+---------------
+
+There are two ways to use Xenon in your acceptance test. You can either directly create a instance of XenonTest as in the previous example or you can create a class inheriting from XenonScreen. So if we redo the previous example using XenonScreen then this is how we do it
+	public class GoogleHomeScreen : XenonScreen<GoogleHomePage>
+	{
+		public GoogleHomeScreen(IXenonBrowser browser) : base(browser)
+		{
+			GotoUrl("http://www.google.com");
+		}
+	
+		public GoogleSearchResultsScreen Search(string text)
+		{
+			return EnterText("input[name='q']", text)
+			       .Click("button[name='btnK']")
+			       .Switch<GoogleSearchResultsScreen>();
+		}
+	}
+	
+	public class GoogleSearchResultsScreen : XenonScreen<GoogleSearchResultsScreen>
+	{
+		public GoogleSearchResultsScreen(IXenonBrowser browser) : base(browser) { }
+	}
+	
+	[Test]
+	public void CanVisitGoogle()
+	{
+		new GoogleHomeScreen(new SeleniumXenonBrowser(driver))
+		.Search("xenon test framework")
+		.Assert( a => a.PageContains("results") );
+	}
+
 
 If you have and issues or this the api should be different please raise an issue.
