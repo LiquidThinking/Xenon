@@ -81,7 +81,7 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
 		public T Click( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().First().Click(),
+			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().First().Click(),
 			                customPreWait ?? ( a => a.ContainsElement( where ) ),
 			                customPostWait );
 		}
