@@ -102,6 +102,8 @@ namespace Xenon.Tests.ClickTests
 
 
 			var mockedElement = new Mock<IXenonElement>();
+			mockedElement.SetupGet( x => x.IsVisible ).Returns( true );
+
 			var browser = SetupBrowser();
 			browser.SetupFindElementsByXPath( It.IsAny<string>(), mockedElement );
 
@@ -115,10 +117,17 @@ namespace Xenon.Tests.ClickTests
 		public void Click_WhereTextIsProvidedAndFoundMoreThanOneElement_ThrowAnException()
 		{
 			var browser = SetupBrowser();
-			browser.SetupFindElementsByXPath( It.IsAny<string>(), new Mock<IXenonElement>(), new Mock<IXenonElement>() );
+			var element1 = new Mock<IXenonElement>();
+			element1.SetupGet( x => x.IsVisible ).Returns( true );
+
+			var element2 = new Mock<IXenonElement>();
+			element2.SetupGet( x => x.IsVisible ).Returns( true );
+
+			browser.SetupFindElementsByXPath( It.IsAny<string>(), element1, element2 );
 
 			var xenonTest = CreateInstance( browser );
-			Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
+			var ex = Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
+			Assert.AreEqual( "More than one element was found", ex.Message );
 		}
 
 		[Test]
@@ -128,7 +137,25 @@ namespace Xenon.Tests.ClickTests
 			browser.SetupFindElementsByXPath( It.IsAny<string>() );
 
 			var xenonTest = CreateInstance( browser );
-			Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
+			var ex = Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
+			Assert.AreEqual( "No element was found", ex.Message );
+		}
+
+		[Test]
+		public void Click_WhenElementIsNotVisible_ShouldNotIncludeItAndThrowNoElementsFoundException()
+		{
+			var browser = SetupBrowser();
+
+			var mockedElement = new Mock<IXenonElement>();
+			mockedElement.SetupGet( x => x.IsVisible ).Returns( false );
+
+			browser.SetupFindElementsByXPath( It.IsAny<string>(), mockedElement );
+
+			var xenonTest = CreateInstance( browser );
+
+			var ex = Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
+
+			Assert.AreEqual( "No element was found", ex.Message );
 		}
 	}
 }
