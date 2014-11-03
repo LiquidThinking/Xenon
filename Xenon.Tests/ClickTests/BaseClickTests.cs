@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
@@ -102,17 +103,32 @@ namespace Xenon.Tests.ClickTests
 
 			var mockedElement = new Mock<IXenonElement>();
 			var browser = SetupBrowser();
-			browser
-				.Setup( x => x.FindElementsByXPath( It.IsAny<string>() ) )
-				.Returns( new List<IXenonElement>
-				{
-					mockedElement.Object
-				} );
+			browser.SetupFindElementsByXPath( It.IsAny<string>(), mockedElement );
 
 			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( x => x.TextIs( linkText ) );
 
 			mockedElement.Verify( x => x.Click() );
+		}
+
+		[Test]
+		public void Click_WhereTextIsProvidedAndFoundMoreThanOneElement_ThrowAnException()
+		{
+			var browser = SetupBrowser();
+			browser.SetupFindElementsByXPath( It.IsAny<string>(), new Mock<IXenonElement>(), new Mock<IXenonElement>() );
+
+			var xenonTest = CreateInstance( browser );
+			Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
+		}
+
+		[Test]
+		public void Click_WhereTextIsProvidedAndNoElementWasFound_ThrowAnException()
+		{
+			var browser = SetupBrowser();
+			browser.SetupFindElementsByXPath( It.IsAny<string>() );
+
+			var xenonTest = CreateInstance( browser );
+			Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
 		}
 	}
 }
