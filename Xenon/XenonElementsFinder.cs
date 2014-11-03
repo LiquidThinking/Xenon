@@ -16,10 +16,10 @@ namespace Xenon
 			_xpathCriteria = new List<string>();
 		}
 
-		public XenonElementsFinder LinkText( string linkTextToFind )
+		public XenonElementsFinder TextIs( string text )
 		{
-			const string xpathFormat = "//a[contains(text(), '{0}')]";
-			var criterion = string.Format( xpathFormat, linkTextToFind );
+			const string xpathFormat = "(//input[@value='{0}' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[text() = '{0}'])[position()=1]";
+			var criterion = string.Format( xpathFormat, text );
 			_xpathCriteria.Add( criterion );
 
 			return this;
