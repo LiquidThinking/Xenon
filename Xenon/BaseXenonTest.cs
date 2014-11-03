@@ -89,7 +89,7 @@ namespace Xenon
 
 		private static void ClickFoundElement( IEnumerable<IXenonElement> elements )
 		{
-			var foundElements = elements.ToList();
+			var foundElements = elements.Where( x => x.IsVisible  ).ToList();
 
 			if ( foundElements.Count == 1 )
 				foundElements.First().Click();

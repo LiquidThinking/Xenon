@@ -20,5 +20,7 @@ namespace Xenon.Selenium
 		{
 			_webElement.SendKeys( value );
 		}
+
+		public bool IsVisible { get { return _webElement.Displayed; } }
 	}
 }
