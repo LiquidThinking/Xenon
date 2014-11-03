@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon</id>
-		<version>0.1.0-alpha8</version>
+		<version>0.1.0-alpha6</version>
 		<title>Xenon</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -14,7 +14,7 @@
 			There are the following prebuilt browser automation wrappers:
 			http://www.nuget.org/packages/Xenon.Selenium/
 		</description>
-		<releaseNotes>Added TextIs method in XenonElementsFinder to find any element where content or the value attribute has same text</releaseNotes>
+		<releaseNotes>Fixed some issues like throw an exception if found elements are not exactly equal to 1 (when clicking) and also return only visible items.</releaseNotes>
 		<dependencies>
 		</dependencies>
 	</metadata>
