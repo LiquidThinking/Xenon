@@ -34,7 +34,7 @@ namespace Xenon
 			return Assert( _xenonBrowser.PageSource.Contains( content ), "Page does not contain: " + content );
 		}
 
-		public XenonAssertion PageDoesNotContains( string text )
+		public XenonAssertion PageDoesNotContain( string text )
 		{
 			return Assert( !_xenonBrowser.PageSource.Contains( text ), "Page contains: " + text );
 		}

@@ -74,7 +74,7 @@ namespace Xenon.Tests.AssertTests
 
 			var tester = CreateInstance( browser, GetXenonTestOptions() );
 
-			tester.Assert( x => x.PageDoesNotContains( "Error" ) );
+			tester.Assert( x => x.PageDoesNotContain( "Error" ) );
 		}
 
 		[Test]
@@ -86,7 +86,7 @@ namespace Xenon.Tests.AssertTests
 
 			var tester = CreateInstance( browser, GetXenonTestOptions( Assert.IsFalse ) );
 
-			tester.Assert( x => x.PageDoesNotContains( "Error" ) );
+			tester.Assert( x => x.PageDoesNotContain( "Error" ) );
 		}
 	}
 }
