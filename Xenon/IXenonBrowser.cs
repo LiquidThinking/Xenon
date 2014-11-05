@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Xenon
 {
-	public interface IXenonBrowser
+	public interface IXenonBrowser : IDisposable
 	{
 		string Url { get; }
 		string PageSource { get; }

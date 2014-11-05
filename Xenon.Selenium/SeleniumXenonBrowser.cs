@@ -61,5 +61,11 @@ namespace Xenon.Selenium
 		{
 			_driver.Quit();
 		}
+
+	    public void Dispose()
+	    {
+	        _driver.Quit();
+            _driver.Dispose();
+	    }
 	}
 }

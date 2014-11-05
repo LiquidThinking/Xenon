@@ -86,6 +86,16 @@ namespace Xenon
 			                customPostWait );
 		}
 
+		public T SelectDropdown(string cssSelector, string value, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( browser => {
+				browser.FindElementsByCssSelector( cssSelector ).First().Click();
+				browser.FindElementsByCssSelector( cssSelector + " [value='" + value + "']" ).First().Click();
+			},
+							customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
+							customPostWait );
+		}
+
 		/// <summary>
 		/// Asserts
 		/// </summary>
