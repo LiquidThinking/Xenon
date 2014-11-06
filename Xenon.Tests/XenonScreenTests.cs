@@ -62,5 +62,27 @@ namespace Xenon.Tests
 			Assert.AreEqual( browser.Object, screenB.GetBrowser() );
 			Assert.AreEqual( options, screenB.GetTestOptions() );
 		}
+
+
+		public class FirstScreenWhenNextScreenHasOnly1Constructor : DummyScreenHelper<FirstScreenWhenNextScreenHasOnly1Constructor>
+		{
+			public FirstScreenWhenNextScreenHasOnly1Constructor( IXenonBrowser browser ) : base( browser ) {}
+			public FirstScreenWhenNextScreenHasOnly1Constructor( IXenonBrowser browser, XenonTestOptions options ) : base( browser, options ) {}
+		}
+
+		public class SecondScreenWhenNextScreenHasOnly1Constructor : DummyScreenHelper<SecondScreenWhenNextScreenHasOnly1Constructor>
+		{
+			public SecondScreenWhenNextScreenHasOnly1Constructor( IXenonBrowser browser ) : base( browser ) {}
+		}
+
+		[Test]
+		public void Switch_WhenNextScreenHasOnly1Constructor_CanSwitchToNextScreen()
+		{
+			var browser = new Mock<IXenonBrowser>();
+			var options = new XenonTestOptions();
+
+			var firstScreen = new FirstScreenWhenNextScreenHasOnly1Constructor( browser.Object, options );
+			Assert.DoesNotThrow( () => firstScreen.Switch<SecondScreenWhenNextScreenHasOnly1Constructor>() );
+		}
 	}
 }
