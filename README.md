@@ -8,6 +8,9 @@ Packages
 - [Xenon](https://www.nuget.org/packages/Xenon)
 - [Xenon.Selenium](https://www.nuget.org/packages/Xenon.Selenium)
 
+###Visit the [wiki](https://github.com/LiquidThinking/Xenon/wiki) for more details.
+
+
 Documentation
 -------------
 Xenon is a test framework which lets you to write stable acceptance tests in a fluent api manner.
@@ -58,6 +61,3 @@ There are two ways to use Xenon in your acceptance test. You can either directly
 		.Search("xenon test framework")
 		.Assert( a => a.PageContains("results") );
 	}
-
-
-If you have and issues or this the api should be different please raise an issue.
