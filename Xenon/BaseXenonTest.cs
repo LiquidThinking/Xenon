@@ -83,13 +83,13 @@ namespace Xenon
 		public T Click( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
 			return RunTask( browser => ClickFoundElement( where( new XenonElementsFinder( browser ) ).FindElements() ),
-			                customPreWait ?? ( a => a.ContainsElement( where ) ),
+			                customPreWait ?? ( a => a.CustomAssertion( b => @where( new XenonElementsFinder( b ) ).FindElements().Any( x => x.IsVisible ) ) ),
 			                customPostWait );
 		}
 
 		private static void ClickFoundElement( IEnumerable<IXenonElement> elements )
 		{
-			var foundElements = elements.Where( x => x.IsVisible  ).ToList();
+			var foundElements = elements.Where( x => x.IsVisible ).ToList();
 
 			if ( foundElements.Count == 1 )
 				foundElements.First().Click();
