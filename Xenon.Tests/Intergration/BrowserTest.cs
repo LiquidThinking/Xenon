@@ -14,6 +14,7 @@ namespace Xenon.Tests.Intergration
         public Page Page { get; set; }
 
         private HttpServer _httpServer;
+        private IXenonBrowser _xenonBrowser;
 
         public BrowserTest(string html)
         {
@@ -29,7 +30,7 @@ namespace Xenon.Tests.Intergration
             var thread = new Thread(_httpServer.Listen);
             thread.Start();
 
-            return new SeleniumXenonBrowserWrapper(new ChromeDriver(Environment.CurrentDirectory), port);
+            return _xenonBrowser = new SeleniumXenonBrowserWrapper(new ChromeDriver(Environment.CurrentDirectory), port);
         }
 
         int FreeTcpPort()
@@ -60,6 +61,8 @@ namespace Xenon.Tests.Intergration
         public void Dispose()
         {
             _httpServer.Dispose();
+            if (_xenonBrowser != null)
+                _xenonBrowser.Dispose();
         }
 
         public NameValueCollection GetPostResult()
