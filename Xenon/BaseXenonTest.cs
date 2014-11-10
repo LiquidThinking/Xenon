@@ -115,6 +115,38 @@ namespace Xenon
 			                customPostWait );
 		}
 
+        /// <summary>
+        /// Selects an element in a dropdown list with specified text
+        /// </summary>
+        /// <param name="cssSelector">The css selector of the element</param>
+        /// <param name="text">The text of the option to select</param>
+        /// <param name="customPreWait">Custom action wait upon before selecting the option</param>
+        /// <param name="customPostWait">Custom action wait upon after selecting the option</param>
+        /// <returns></returns>
+        public T SelectList(string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null)
+        {
+            return RunTask(browser =>
+            {
+                Click(cssSelector);
+
+                browser.FindElementsByCssSelector( cssSelector + " option").First(x=>x.Text == text).Click();
+            },
+                            customPreWait ??(a=> SelectListPreWait(a, cssSelector, text)),
+                            customPostWait);
+        }
+
+        private XenonAssertion SelectListPreWait(XenonAssertion xenonAssertion, string cssSelector, string text)
+        {
+            if (xenonAssertion.ContainsElement(cssSelector).Passing)
+            {
+                Click(cssSelector);
+
+                xenonAssertion.CustomAssertion(
+                    browser => browser.FindElementsByCssSelector(cssSelector + " option").Any(x => x.Text == text));
+            }
+            return xenonAssertion;
+        }
+
 		/// <summary>
 		/// Asserts
 		/// </summary>

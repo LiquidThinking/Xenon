@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        var called = false;
+        function populate(element) {
+            if (!called) {
+                called = true;
+                setTimeout(function() {
+                    var opt1 = document.createElement("option");
+
+                    opt1.text = "First";
+                    opt1.value = "1";
+
+                    element.options.add(opt1);
+
+                    var opt2 = document.createElement("option");
+
+                    opt2.text = "Second";
+                    opt2.value = "2";
+
+                    element.options.add(opt2);
+
+                    var opt3 = document.createElement("option");
+
+                    opt3.text = "Third";
+                    opt3.value = "3";
+
+                    element.options.add(opt3);
+                }, 1000);
+            }
+        }
+    </script>
+</head>
+<body>
+<form method="POST">
+    <select name="select-list">
+        <option value="1">First</option>
+        <option value="2">Second</option>
+        <option value="3">Third</option>
+        <option value="4">Fourth</option>
+    </select>
+    <select name="delayed-select-list" onclick="populate(this)">
+    </select>
+    <input type="submit" value="Submit"/>
+</form>
+</body>
+</html>

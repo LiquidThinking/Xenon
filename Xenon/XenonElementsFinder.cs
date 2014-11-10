@@ -25,6 +25,8 @@ namespace Xenon
 			return this;
 		}
 
+
+
 		internal IEnumerable<IXenonElement> FindElements( )
 		{
 			var criteria = String.Join( " and ", _xpathCriteria );
