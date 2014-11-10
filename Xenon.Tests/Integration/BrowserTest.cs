@@ -3,17 +3,19 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Microsoft.Owin.Hosting;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 using Xenon.Selenium;
 
-namespace Xenon.Tests.Intergration
+namespace Xenon.Tests.Integration
 {
-    public class BrowserTest : IDisposable
+	public class BrowserTest : IDisposable
     {
         public Page Page { get; set; }
 
-        private HttpServer _httpServer;
+        private IDisposable _webApp;
+        private IXenonBrowser _xenonBrowser;
 
         public BrowserTest(string html)
         {
@@ -24,12 +26,14 @@ namespace Xenon.Tests.Intergration
         {
             var port = FreeTcpPort();
 
-            _httpServer = new MyHttpServer(port, Page);
+	        Startup.Html = Page.Html;
+	        _webApp = WebApp.Start<Startup>( new StartOptions
+	        {
+		        ServerFactory = "Nowin",
+		        Port = port
+	        } );
 
-            var thread = new Thread(_httpServer.Listen);
-            thread.Start();
-
-            return new SeleniumXenonBrowserWrapper(new ChromeDriver(Environment.CurrentDirectory), port);
+            return _xenonBrowser = new SeleniumXenonBrowserWrapper(new ChromeDriver(Environment.CurrentDirectory), port);
         }
 
         int FreeTcpPort()
@@ -59,12 +63,14 @@ namespace Xenon.Tests.Intergration
 
         public void Dispose()
         {
-            _httpServer.Dispose();
+            _webApp.Dispose();
+            if (_xenonBrowser != null)
+                _xenonBrowser.Dispose();
         }
 
         public NameValueCollection GetPostResult()
         {
-            return _httpServer.GetPostResult();
+            return Startup.GetPostResult();
         }
     }
 }

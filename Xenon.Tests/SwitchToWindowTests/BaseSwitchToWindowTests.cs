@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 using NUnit.Framework;
-using Xenon.Tests.Intergration;
+using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.SwitchToWindowTests
 {
