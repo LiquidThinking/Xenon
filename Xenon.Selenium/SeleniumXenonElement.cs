@@ -22,5 +22,10 @@ namespace Xenon.Selenium
 		}
 
 		public bool IsVisible { get { return _webElement.Displayed; } }
+
+	    public string Text
+	    {
+	        get { return _webElement.Text; }
+	    }
 	}
 }

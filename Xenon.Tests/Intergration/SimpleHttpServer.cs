@@ -73,7 +73,6 @@ namespace Xenon.Tests.Intergration
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine( "Exception: " + e.ToString() );
 				WriteFailure();
 			}
 			OutputStream.Flush();
@@ -93,19 +92,15 @@ namespace Xenon.Tests.Intergration
 			HttpMethod = tokens[ 0 ].ToUpper();
 			HttpUrl = tokens[ 1 ];
 			HttpProtocolVersionstring = tokens[ 2 ];
-
-			Console.WriteLine( "starting: " + request );
 		}
 
 		public void ReadHeaders()
 		{
-			Console.WriteLine( "readHeaders()" );
 			String line;
 			while ( ( line = StreamReadLine( _inputStream ) ) != null )
 			{
 				if ( line.Equals( "" ) )
 				{
-					Console.WriteLine( "got headers" );
 					return;
 				}
 
@@ -122,7 +117,6 @@ namespace Xenon.Tests.Intergration
 				}
 
 				var value = line.Substring( pos, line.Length - pos );
-				Console.WriteLine( "header: {0}:{1}", name, value );
 				HttpHeaders[ name ] = value;
 			}
 		}
@@ -141,7 +135,6 @@ namespace Xenon.Tests.Intergration
 			// we hand him needs to let him see the "end of the stream" at this content 
 			// length, because otherwise he won't know when he's seen it all! 
 
-			Console.WriteLine( "get post data start" );
 			var contentLen = 0;
 			var ms = new MemoryStream();
 			if ( HttpHeaders.ContainsKey( "Content-Length" ) )
@@ -157,10 +150,8 @@ namespace Xenon.Tests.Intergration
 				var toRead = contentLen;
 				while ( toRead > 0 )
 				{
-					Console.WriteLine( "starting Read, to_read={0}", toRead );
 
 					var numread = _inputStream.Read( buf, 0, Math.Min( BufSize, toRead ) );
-					Console.WriteLine( "read finished, numread={0}", numread );
 					if ( numread == 0 )
 					{
 						if ( toRead == 0 )
@@ -177,7 +168,6 @@ namespace Xenon.Tests.Intergration
 				}
 				ms.Seek( 0, SeekOrigin.Begin );
 			}
-			Console.WriteLine( "get post data end" );
 			Srv.HandlePostRequest( this, new StreamReader( ms ) );
 
 		}
@@ -255,7 +245,6 @@ namespace Xenon.Tests.Intergration
 
 		public override void HandlePostRequest( HttpProcessor p, StreamReader inputData )
 		{
-			Console.WriteLine( "POST request: {0}", p.HttpUrl );
 			var data = inputData.ReadToEnd();
 
 		    _postResult = HttpUtility.ParseQueryString(data);
