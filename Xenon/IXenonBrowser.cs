@@ -12,5 +12,7 @@ namespace Xenon
 		void GoToUrl( string url );
 		XenonAssertion RunAssertion( AssertionFunc assertion );
 		void Quit();
+		IXenonBrowser SwitchToWindow( AssertionFunc assertion );
+		void CloseWindow();
 	}
 }

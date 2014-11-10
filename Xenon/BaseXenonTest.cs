@@ -8,7 +8,7 @@ namespace Xenon
 	public abstract class BaseXenonTest<T> where T : BaseXenonTest<T>
 	{
 		protected readonly XenonTestOptions _xenonTestOptions;
-		protected readonly IXenonBrowser _xenonBrowser;
+		protected IXenonBrowser _xenonBrowser;
 
 		public BaseXenonTest( IXenonBrowser xenonBrowser ) : this( xenonBrowser, XenonTestOptions.Options ?? new XenonTestOptions() ) {}
 
@@ -126,6 +126,34 @@ namespace Xenon
 			var assertionResult = assertion( new XenonAssertion( _xenonBrowser ) );
 			_xenonTestOptions.AssertMethod( assertionResult.Passing, string.Join( "\r\n", assertionResult.FailureMessages ) );
 			return this as T;
+		}
+
+		/// <summary>
+		/// Switch To another window in the browser
+		/// </summary>
+		/// <param name="assertion">Assertion function to find the window</param>
+		/// <param name="customPreWait">Custom action wait upon before switching to another window</param>
+		/// <param name="customPostWait">Custom action wait upon after switching to another window</param>
+		/// <returns></returns>
+		public T SwitchToWindow( AssertionFunc assertion, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( b => _xenonBrowser = b.SwitchToWindow( assertion ), customPreWait, customPostWait );
+		}
+
+		/// <summary>
+		/// Close current active window and switch to another window
+		/// </summary>
+		/// <param name="switchToWindowAssertFunc">Assertion function to find the window</param>
+		/// <param name="customPreWait">Custom action wait upon before closing and switching to another window</param>
+		/// <param name="customPostWait">Custom action wait upon after closing and switching to another window</param>
+		/// <returns></returns>
+		public T CloseCurrentAndSwitchToWindow( AssertionFunc switchToWindowAssertFunc, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( b =>
+			{
+				b.CloseWindow();
+				b.SwitchToWindow( switchToWindowAssertFunc );
+			}, customPreWait, customPostWait );
 		}
 	}
 }
