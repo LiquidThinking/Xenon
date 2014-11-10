@@ -17,10 +17,7 @@ namespace Xenon.Selenium
 
 		public string Url
 		{
-			get
-			{
-				return _driver.Url;
-			}
+			get { return _driver.Url; }
 		}
 
 		public string PageSource
@@ -68,10 +65,28 @@ namespace Xenon.Selenium
 			_driver.Quit();
 		}
 
-	    public void Dispose()
-	    {
-	        _driver.Quit();
-            _driver.Dispose();
-	    }
+		public IXenonBrowser SwitchToWindow( AssertionFunc assertion )
+		{
+			foreach ( var windowHandle in _driver.WindowHandles )
+			{
+				var switchedWindowDriver = _driver.SwitchTo().Window( windowHandle );
+				var switchedWindowXenonBrowser =  new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
+				if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
+					return switchedWindowXenonBrowser;
+			}
+
+			return new SeleniumXenonBrowser( _driver );
+		}
+
+		public void CloseWindow()
+		{
+			_driver.Close();
+		}
+
+		public void Dispose()
+		{
+			_driver.Quit();
+			_driver.Dispose();
+		}
 	}
 }
