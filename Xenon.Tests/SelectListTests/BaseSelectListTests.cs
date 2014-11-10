@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using Xenon.Tests.ExtensionMethods;
-using Xenon.Tests.Intergration;
+using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.SelectListTests
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xenon.Tests.Intergration
+namespace Xenon.Tests.Integration
 {
     public class Page
     {

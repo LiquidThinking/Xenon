@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Owin;
 
-namespace Xenon.Tests.Intergration
+namespace Xenon.Tests.Integration
 {
 	public class Startup
 	{
@@ -24,12 +24,16 @@ namespace Xenon.Tests.Intergration
 
 				else if ( context.Request.Method == "POST" )
 				{
-					Stream req = context.Request.Body;
-					req.Seek( 0, System.IO.SeekOrigin.Begin );
-					string body = new StreamReader( req ).ReadToEnd();
+					var formAsync = context.Request.ReadFormAsync();
+					formAsync.Wait();
 
-					PostbackResult = HttpUtility.ParseQueryString( body );
-				}
+
+					PostbackResult = new NameValueCollection();
+					foreach ( var val in formAsync.Result )
+					{
+						PostbackResult.Add( val.Key, String.Join(",",val.Value) );
+					}
+                }
 				return Task.Delay( 0 );
 
 			} );

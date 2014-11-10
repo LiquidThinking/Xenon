@@ -8,7 +8,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 using Xenon.Selenium;
 
-namespace Xenon.Tests.Intergration
+namespace Xenon.Tests.Integration
 {
 	public class BrowserTest : IDisposable
     {
