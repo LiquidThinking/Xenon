@@ -6,7 +6,7 @@ using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.SwitchToWindowTests
 {
-	public abstract class BaseSwitchToWindowTests<T> : BaseXenonTest where T : BaseXenonTest<T>
+	public abstract class BaseSwitchToWindowTests<T> where T : BaseXenonTest<T>
 	{
 		protected abstract BaseXenonTest<T> CreateInstance( IXenonBrowser browser );
 
@@ -36,23 +36,17 @@ namespace Xenon.Tests.SwitchToWindowTests
 			using ( var browserTest = new BrowserTest( html ) )
 			{
 				var browser = browserTest.Start();
-				try
-				{
-					CreateInstance( browser )
-						.GoToUrl( "/" )
-						.Click( where => where.TextIs( "Google" ) )
-						.SwitchToWindow( a => a.PageContains( "I'm Feeling Lucky" ) )
-						.Assert( a => a.PageContains( "I'm Feeling Lucky" ) )
-						.SwitchToWindow( a => a.PageContains( "Test Page" ) )
-						.Click( where => where.TextIs( "Yahoo" ) )
-						.SwitchToWindow( a => a.PageContains( "Search web" ) )
-						.Assert( a => a.PageContains( "Search web" ) )
-						.SwitchToWindow( a => a.PageContains( "Test Page" ) )
-						.Assert( a => a.PageContains( "Test Page" ) );
-				} finally
-				{
-					browser.Quit();
-				}
+				CreateInstance( browser )
+					.GoToUrl( "/" )
+					.Click( where => where.TextIs( "Google" ) )
+					.SwitchToWindow( a => a.PageContains( "I'm Feeling Lucky" ) )
+					.Assert( a => a.PageContains( "I'm Feeling Lucky" ) )
+					.SwitchToWindow( a => a.PageContains( "Test Page" ) )
+					.Click( where => where.TextIs( "Yahoo" ) )
+					.SwitchToWindow( a => a.PageContains( "Search web" ) )
+					.Assert( a => a.PageContains( "Search web" ) )
+					.SwitchToWindow( a => a.PageContains( "Test Page" ) )
+					.Assert( a => a.PageContains( "Test Page" ) );
 			}
 		}
 
@@ -63,19 +57,13 @@ namespace Xenon.Tests.SwitchToWindowTests
 			using ( var browserTest = new BrowserTest( html ) )
 			{
 				var browser = browserTest.Start();
-				try
-				{
-					CreateInstance( browser )
-						.GoToUrl( "/" )
-						.Click( where => where.TextIs( "Google" ) )
-						.SwitchToWindow( a => a.PageContains( "I'm Feeling Lucky" ) )
-						.Assert( a => a.PageContains( "I'm Feeling Lucky" ) )
-						.CloseCurrentAndSwitchToWindow(a => a.PageContains( "Test Page" ))
-						.Assert( a => a.PageContains( "Test Page" ) );
-				} finally
-				{
-					browser.Quit();
-				}
+				CreateInstance( browser )
+					.GoToUrl( "/" )
+					.Click( where => where.TextIs( "Google" ) )
+					.SwitchToWindow( a => a.PageContains( "I'm Feeling Lucky" ) )
+					.Assert( a => a.PageContains( "I'm Feeling Lucky" ) )
+					.CloseCurrentAndSwitchToWindow( a => a.PageContains( "Test Page" ) )
+					.Assert( a => a.PageContains( "Test Page" ) );
 			}
 		}
 	}

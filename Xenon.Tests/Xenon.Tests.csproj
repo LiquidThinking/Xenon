@@ -86,6 +86,7 @@
     <Compile Include="SwitchToWindowTests\XenonTestSwitchToWindowTests.cs" />
     <Compile Include="SelectListTests\BaseSelectListTests.cs" />
     <Compile Include="SelectListTests\XenonTestSelectListTests.cs" />
+    <Compile Include="XenonElementsFinderTests.cs" />
     <Compile Include="XenonScreenTests.cs" />
     <Compile Include="XenonTestOptionsTests.cs" />
   </ItemGroup>
