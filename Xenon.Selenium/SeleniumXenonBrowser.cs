@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
@@ -70,12 +69,18 @@ namespace Xenon.Selenium
 			foreach ( var windowHandle in _driver.WindowHandles )
 			{
 				var switchedWindowDriver = _driver.SwitchTo().Window( windowHandle );
-				var switchedWindowXenonBrowser =  new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
+				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
 				if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
 					return switchedWindowXenonBrowser;
 			}
 
 			return new SeleniumXenonBrowser( _driver );
+		}
+
+		public IXenonBrowser ClickDialogBox()
+		{
+			_driver.SwitchTo().Alert().Accept();
+			return this;
 		}
 
 		public void CloseWindow()

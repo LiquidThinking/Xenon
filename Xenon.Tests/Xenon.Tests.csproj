@@ -64,6 +64,9 @@
   <ItemGroup>
     <Compile Include="AssertTests\BaseAssertTests.cs" />
     <Compile Include="BaseXenonTest.cs" />
+    <Compile Include="ClickDialogBoxTests\BaseClickDialogBoxTests.cs" />
+    <Compile Include="ClickDialogBoxTests\XenonScreenClickDialogBoxTests.cs" />
+    <Compile Include="ClickDialogBoxTests\XenonTestClickDialogBoxTests.cs" />
     <Compile Include="ClickTests\BaseClickTests.cs" />
     <Compile Include="ClickTests\XenonScreenClickTests.cs" />
     <Compile Include="DummyXenonScreen.cs" />
@@ -111,10 +114,12 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="ClickDialogBoxTests\PageWithDialogBoxes.html" />
     <EmbeddedResource Include="XenonElementsFinderTests\FindByAttributeIs.html" />
     <EmbeddedResource Include="SwitchToWindowTests\SwitchBetweenMultipleWindows.html" />
     <EmbeddedResource Include="SelectListTests\SelectListTests.html" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Label="DownloadChromeDriverBuildTask">
     <CoreBuildDependsOn>DownloadChromeDriver;$(CoreBuildDependsOn)</CoreBuildDependsOn>

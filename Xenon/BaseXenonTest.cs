@@ -187,5 +187,10 @@ namespace Xenon
 				b.SwitchToWindow( switchToWindowAssertFunc );
 			}, customPreWait, customPostWait );
 		}
-	}
+
+		public T ClickDialogBox( AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( b => b.ClickDialogBox(), customPreWait, customPostWait );
+		}
+    }
 }
