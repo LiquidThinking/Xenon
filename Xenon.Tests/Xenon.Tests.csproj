@@ -67,11 +67,14 @@
     <Compile Include="ClickTests\BaseClickTests.cs" />
     <Compile Include="ClickTests\XenonScreenClickTests.cs" />
     <Compile Include="DummyXenonScreen.cs" />
+    <Compile Include="EmbeddedResourceLookup.cs" />
     <Compile Include="EnterTextTests\BaseEnterTextTests.cs" />
     <Compile Include="EnterTextTests\XenonScreenEnterTextTests.cs" />
+    <Compile Include="Integration\BaseXenonIntegrationTest.cs" />
     <Compile Include="Integration\BrowserTest.cs" />
     <Compile Include="Integration\Page.cs" />
     <Compile Include="Integration\Startup.cs" />
+    <Compile Include="NamespaceWideSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExtensionMethods\XenonBrowserExtensionMethods.cs" />
     <Compile Include="GoToUrlTests\XenonScreenGoToUrlTests.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="SwitchToWindowTests\XenonTestSwitchToWindowTests.cs" />
     <Compile Include="SelectListTests\BaseSelectListTests.cs" />
     <Compile Include="SelectListTests\XenonTestSelectListTests.cs" />
+    <Compile Include="XenonElementsFinderTests\XenonElementsFinderTests.cs" />
     <Compile Include="XenonScreenTests.cs" />
     <Compile Include="XenonTestOptionsTests.cs" />
   </ItemGroup>
@@ -107,6 +111,7 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="XenonElementsFinderTests\FindByAttributeIs.html" />
     <EmbeddedResource Include="SwitchToWindowTests\SwitchBetweenMultipleWindows.html" />
     <EmbeddedResource Include="SelectListTests\SelectListTests.html" />
   </ItemGroup>
