@@ -64,10 +64,19 @@
   <ItemGroup>
     <Compile Include="AssertTests\BaseAssertTests.cs" />
     <Compile Include="BaseXenonTest.cs" />
+    <Compile Include="CancelDialogBoxTests\BaseCancelDialogBoxTests.cs" />
+    <Compile Include="CancelDialogBoxTests\XenonScreenCancelDialogBoxTests.cs" />
+    <Compile Include="CancelDialogBoxTests\XenonTestCancelDialogBoxTests.cs" />
+    <Compile Include="ClickDialogBoxTests\BaseClickDialogBoxTests.cs" />
+    <Compile Include="ClickDialogBoxTests\XenonScreenClickDialogBoxTests.cs" />
+    <Compile Include="ClickDialogBoxTests\XenonTestClickDialogBoxTests.cs" />
     <Compile Include="ClickTests\BaseClickTests.cs" />
     <Compile Include="ClickTests\XenonScreenClickTests.cs" />
     <Compile Include="DummyXenonScreen.cs" />
     <Compile Include="EmbeddedResourceLookup.cs" />
+    <Compile Include="EnterTextInDialogBoxTests\BaseEnterTextInDialogBoxTests.cs" />
+    <Compile Include="EnterTextInDialogBoxTests\XenonScreenEnterTextInDialogBoxTests.cs" />
+    <Compile Include="EnterTextInDialogBoxTests\XenonTestEnterTextInDialogBoxTests.cs" />
     <Compile Include="EnterTextTests\BaseEnterTextTests.cs" />
     <Compile Include="EnterTextTests\XenonScreenEnterTextTests.cs" />
     <Compile Include="Integration\BaseXenonIntegrationTest.cs" />
@@ -111,10 +120,12 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="SharedResources\PageWithDialogBoxes.html" />
     <EmbeddedResource Include="XenonElementsFinderTests\FindByAttributeIs.html" />
     <EmbeddedResource Include="SwitchToWindowTests\SwitchBetweenMultipleWindows.html" />
     <EmbeddedResource Include="SelectListTests\SelectListTests.html" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Label="DownloadChromeDriverBuildTask">
     <CoreBuildDependsOn>DownloadChromeDriver;$(CoreBuildDependsOn)</CoreBuildDependsOn>

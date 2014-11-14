@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+	<title></title>
+	<script type="text/javascript">
+		function ShowAlertDialogBox() {
+			alert("Are you sure?");
+			SetResultElementTo("Clicked Alert Dialog box");
+		}
+
+		function ShowConfirmDialogBox() {
+			var result = confirm("Are your sure?");
+			if (result)
+				SetResultElementTo("Clicked Confirm Dialog Box");
+			else
+				SetResultElementTo("Cancelled Confirm Dialog box");
+		}
+
+		function ShowPromptDialogBox() {
+			var result = prompt("Are your sure?", "Yes");
+			if (result)
+				SetResultElementTo("Clicked Prompt Dialog Box");
+		}
+		function ShowPromptDialogBoxAndSetInput() {
+			var result = prompt("Are your sure?");
+			SetResultElementTo(result);
+
+		}
+
+		function SetResultElementTo(html) {
+			document.getElementById("DialogBoxConfirmation").innerHTML = html;
+		}
+
+
+	</script>
+</head>
+<body>
+	<a href="#" onclick="ShowAlertDialogBox()">Alert Box</a>
+	<a href="#" onclick="ShowConfirmDialogBox()">Confirm Box</a>
+	<a href="#" onclick="ShowPromptDialogBox()">Prompt Box</a>
+	<a href="#" onclick="ShowPromptDialogBoxAndSetInput()">Prompt Box Enter Text</a>
+	<div id="DialogBoxConfirmation"></div>
+</body>
+</html>
