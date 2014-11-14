@@ -1,14 +1,16 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.SwitchToWindowTests
 {
-	public abstract class BaseSwitchToWindowTests<T> where T : BaseXenonTest<T>
+	public abstract class BaseSwitchToWindowTests<T> : BaseXenonIntegrationTest where T : BaseXenonTest<T>
 	{
 		protected abstract BaseXenonTest<T> CreateInstance( IXenonBrowser browser );
+
+		public BaseSwitchToWindowTests()
+		{
+			XenonTestsResourceLookup.Folder( "SwitchToWindowTests" );
+		}
 
 		[SetUp]
 		public void Setup()
@@ -19,20 +21,10 @@ namespace Xenon.Tests.SwitchToWindowTests
 			};
 		}
 
-		private static string GeEmbeddedResourceContent( string fileName )
-		{
-			const string resourceIdentifierFormat = "Xenon.Tests.SwitchToWindowTests.{0}.html";
-			string resourceIdentifier = String.Format( resourceIdentifierFormat, fileName );
-
-			var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream( resourceIdentifier );
-			var content = new StreamReader( stream ).ReadToEnd();
-			return content;
-		}
-
 		[Test]
 		public void CanSwitchToNextWindow()
 		{
-			var html = GeEmbeddedResourceContent( "SwitchBetweenMultipleWindows" );
+			var html = XenonTestsResourceLookup.GetContent( "SwitchBetweenMultipleWindows" );
 			using ( var browserTest = new BrowserTest( html ) )
 			{
 				var browser = browserTest.Start();
@@ -53,7 +45,7 @@ namespace Xenon.Tests.SwitchToWindowTests
 		[Test]
 		public void CanCloseAndSwitchToAnotherWindow()
 		{
-			var html = GeEmbeddedResourceContent( "SwitchBetweenMultipleWindows" );
+			var html = XenonTestsResourceLookup.GetContent( "SwitchBetweenMultipleWindows" );
 			using ( var browserTest = new BrowserTest( html ) )
 			{
 				var browser = browserTest.Start();
