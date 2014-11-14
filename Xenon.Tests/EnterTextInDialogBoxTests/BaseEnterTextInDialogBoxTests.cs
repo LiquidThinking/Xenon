@@ -9,7 +9,7 @@ namespace Xenon.Tests.EnterTextInDialogBoxTests
 
 		protected BaseEnterTextInDialogBoxTests()
 		{
-			XenonTestsResourceLookup.Folder( "ClickDialogBoxTests" );
+			XenonTestsResourceLookup.Folder( "SharedResources" );
 		}
 
 		[Test]

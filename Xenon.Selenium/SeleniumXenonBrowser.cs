@@ -105,6 +105,12 @@ namespace Xenon.Selenium
 			return this;
 		}
 
+		public IXenonBrowser CancelDialogBox()
+		{
+			_driver.SwitchTo().Alert().Dismiss();
+			return this;
+		}
+
 		public void CloseWindow()
 		{
 			_driver.Close();

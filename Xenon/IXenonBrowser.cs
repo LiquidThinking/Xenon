@@ -17,5 +17,6 @@ namespace Xenon
 		IXenonBrowser ClickDialogBox();
 		bool DialogBoxIsActive();
 		IXenonBrowser EnterTextInDialogBox( string text );
+		IXenonBrowser CancelDialogBox();
 	}
 }

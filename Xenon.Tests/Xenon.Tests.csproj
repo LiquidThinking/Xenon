@@ -64,6 +64,9 @@
   <ItemGroup>
     <Compile Include="AssertTests\BaseAssertTests.cs" />
     <Compile Include="BaseXenonTest.cs" />
+    <Compile Include="CancelDialogBoxTests\BaseCancelDialogBoxTests.cs" />
+    <Compile Include="CancelDialogBoxTests\XenonScreenCancelDialogBoxTests.cs" />
+    <Compile Include="CancelDialogBoxTests\XenonTestCancelDialogBoxTests.cs" />
     <Compile Include="ClickDialogBoxTests\BaseClickDialogBoxTests.cs" />
     <Compile Include="ClickDialogBoxTests\XenonScreenClickDialogBoxTests.cs" />
     <Compile Include="ClickDialogBoxTests\XenonTestClickDialogBoxTests.cs" />
@@ -117,7 +120,7 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="ClickDialogBoxTests\PageWithDialogBoxes.html" />
+    <EmbeddedResource Include="SharedResources\PageWithDialogBoxes.html" />
     <EmbeddedResource Include="XenonElementsFinderTests\FindByAttributeIs.html" />
     <EmbeddedResource Include="SwitchToWindowTests\SwitchBetweenMultipleWindows.html" />
     <EmbeddedResource Include="SelectListTests\SelectListTests.html" />

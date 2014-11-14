@@ -9,7 +9,7 @@ namespace Xenon.Tests.ClickDialogBoxTests
 
 		protected BaseClickDialogBoxTests()
 		{
-			XenonTestsResourceLookup.Folder( "ClickDialogBoxTests" );
+			XenonTestsResourceLookup.Folder( "SharedResources" );
 		}
 
 		private void ArrangeActAndAssert( string linkText, string assertResultContainsText )

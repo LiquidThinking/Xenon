@@ -210,5 +210,16 @@ namespace Xenon
 		{
 			return RunTask( b => b.EnterTextInDialogBox( text ), customPreWait ?? ( a => a.DialogBoxIsActive() ), customPostWait );
 		}
+
+		/// <summary>
+		/// Cancel an active dialog box on the page
+		/// </summary>
+		/// <param name="customPreWait">Custom action wait upon before cancelling the dialog box</param>
+		/// <param name="customPostWait">Custom action wait upon after cancelling the dialog box</param>
+		/// <returns></returns>
+		public T CancelDialogBox( AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( b => b.CancelDialogBox(), customPreWait ?? ( a => a.DialogBoxIsActive() ), customPostWait ?? ( a => a.DialogBoxIsNotActive() ) );
+		}
 	}
 }
