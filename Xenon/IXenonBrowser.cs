@@ -15,5 +15,7 @@ namespace Xenon
 		IXenonBrowser SwitchToWindow( AssertionFunc assertion );
 		void CloseWindow();
 		IXenonBrowser ClickDialogBox();
+		bool DialogBoxIsActive();
+		IXenonBrowser EnterTextInDialogBox( string text );
 	}
 }

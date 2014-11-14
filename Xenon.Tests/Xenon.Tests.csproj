@@ -71,6 +71,9 @@
     <Compile Include="ClickTests\XenonScreenClickTests.cs" />
     <Compile Include="DummyXenonScreen.cs" />
     <Compile Include="EmbeddedResourceLookup.cs" />
+    <Compile Include="EnterTextInDialogBoxTests\BaseEnterTextInDialogBoxTests.cs" />
+    <Compile Include="EnterTextInDialogBoxTests\XenonScreenEnterTextInDialogBoxTests.cs" />
+    <Compile Include="EnterTextInDialogBoxTests\XenonTestEnterTextInDialogBoxTests.cs" />
     <Compile Include="EnterTextTests\BaseEnterTextTests.cs" />
     <Compile Include="EnterTextTests\XenonScreenEnterTextTests.cs" />
     <Compile Include="Integration\BaseXenonIntegrationTest.cs" />

@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
 
 namespace Xenon.Selenium
 {
@@ -80,6 +82,26 @@ namespace Xenon.Selenium
 		public IXenonBrowser ClickDialogBox()
 		{
 			_driver.SwitchTo().Alert().Accept();
+			return this;
+		}
+
+		public bool DialogBoxIsActive()
+		{
+			bool result = false;
+			try
+			{
+				_driver.SwitchTo().Alert();
+				result = true;
+			}
+			catch ( NoAlertPresentException ) {}
+			catch ( UnhandledAlertException ) {}
+
+			return result;
+		}
+
+		public IXenonBrowser EnterTextInDialogBox( string text )
+		{
+			_driver.SwitchTo().Alert().SendKeys( text );
 			return this;
 		}
 

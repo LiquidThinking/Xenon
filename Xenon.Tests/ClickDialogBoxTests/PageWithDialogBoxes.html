@@ -21,6 +21,11 @@
 			if (result)
 				SetResultElementTo("Clicked Prompt Dialog Box");
 		}
+		function ShowPromptDialogBoxAndSetInput() {
+			var result = prompt("Are your sure?");
+			SetResultElementTo(result);
+
+		}
 
 		function SetResultElementTo(html) {
 			document.getElementById("DialogBoxConfirmation").innerHTML = html;
@@ -33,6 +38,7 @@
 	<a href="#" onclick="ShowAlertDialogBox()">Alert Box</a>
 	<a href="#" onclick="ShowConfirmDialogBox()">Confirm Box</a>
 	<a href="#" onclick="ShowPromptDialogBox()">Prompt Box</a>
+	<a href="#" onclick="ShowPromptDialogBoxAndSetInput()">Prompt Box Enter Text</a>
 	<div id="DialogBoxConfirmation"></div>
 </body>
 </html>

@@ -76,5 +76,15 @@ namespace Xenon
 
 			return this;
 		}
+
+		public XenonAssertion DialogBoxIsActive()
+		{
+			return Assert( _xenonBrowser.DialogBoxIsActive(), "There is no active dialog box on the page" );
+		}
+
+		public XenonAssertion DialogBoxIsNotActive()
+		{
+			return Assert( _xenonBrowser.DialogBoxIsActive(), "A dialog box is still active on the page" );
+		}
 	}
 }

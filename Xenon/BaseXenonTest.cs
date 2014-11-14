@@ -188,9 +188,27 @@ namespace Xenon
 			}, customPreWait, customPostWait );
 		}
 
+		/// <summary>
+		/// Click OK button of an active dialog box on the page
+		/// </summary>
+		/// <param name="customPreWait">Custom action wait upon before clicking OK button of an active dialog box</param>
+		/// <param name="customPostWait">Custom action wait upon after clicking OK button of an active dialog box</param>
+		/// <returns></returns>
 		public T ClickDialogBox( AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( b => b.ClickDialogBox(), customPreWait, customPostWait );
+			return RunTask( b => b.ClickDialogBox(), customPreWait ?? ( a => a.DialogBoxIsActive() ), customPostWait ?? ( a => a.DialogBoxIsNotActive() ) );
 		}
-    }
+
+		/// <summary>
+		/// Enter text in an active prompt dialog box on the page
+		/// </summary>
+		/// <param name="text">text to be entered in the prompt</param>
+		/// <param name="customPreWait">Custom action wait upon before entering text in the prompt dialog box</param>
+		/// <param name="customPostWait">Custom action wait upon after entering text in the prompt dialog box</param>
+		/// <returns></returns>
+		public T EnterTextInDialogBox( string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( b => b.EnterTextInDialogBox( text ), customPreWait ?? ( a => a.DialogBoxIsActive() ), customPostWait );
+		}
+	}
 }
