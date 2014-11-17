@@ -84,7 +84,7 @@ namespace Xenon
 
 		public XenonAssertion DialogBoxIsNotActive()
 		{
-			return Assert( _xenonBrowser.DialogBoxIsActive(), "A dialog box is still active on the page" );
+			return Assert( !_xenonBrowser.DialogBoxIsActive(), "A dialog box is still active on the page" );
 		}
 	}
 }

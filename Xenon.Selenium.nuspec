@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon.Selenium</id>
-		<version>0.1.0-alpha11</version>
+		<version>0.1.0-rc1</version>
 		<title>Xenon.Selenium</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -13,10 +13,10 @@
 
 			This is browser automation wrapper for Selenium.
 		</description>
-		<releaseNotes>Added Select list and ability to switch and close windows</releaseNotes>
+		<releaseNotes>Added Dialog boxes and ability to find element by attribute</releaseNotes>
 		<dependencies>
 			<dependency id="Selenium.Support" version="2.43.1" />
-			<dependency id="Xenon" version="0.1.0-alpha11" />
+			<dependency id="Xenon" version="0.1.0-rc1" />
 		</dependencies>
 	</metadata>
 	<files>
