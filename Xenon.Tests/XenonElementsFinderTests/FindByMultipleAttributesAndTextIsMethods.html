@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+	<title></title>
+	<script>
+		function Display(text) {
+			document.getElementById("result").innerHTML = text;
+		}
+	</script>
+</head>
+<body>
+	<button type="button" class="a" data-action="1" data-type="add" onclick="Display('One')">Button</button>
+	<button type="button" class="a" data-action="1" data-type="update" onclick="Display('Two')">Button</button>
+	<button type="button" class="a" data-action="1" data-type="delete" onclick="Display('Three')">Button</button>
+	<div id="result"></div>
+</body>
+</html>

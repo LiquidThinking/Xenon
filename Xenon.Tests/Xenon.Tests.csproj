@@ -120,6 +120,8 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="XenonElementsFinderTests\FindByMultipleAttributesAndTextIsMethods.html" />
+    <EmbeddedResource Include="XenonElementsFinderTests\Issue25_UsingAttributeIsMethod.html" />
     <EmbeddedResource Include="SharedResources\PageWithDialogBoxes.html" />
     <EmbeddedResource Include="XenonElementsFinderTests\FindByAttributeIs.html" />
     <EmbeddedResource Include="SwitchToWindowTests\SwitchBetweenMultipleWindows.html" />
