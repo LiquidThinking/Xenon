@@ -116,6 +116,20 @@ namespace Xenon
 		}
 
         /// <summary>
+        /// Clears text in element
+        /// By default waits for the element to exist before entering the text
+        /// </summary>
+        /// <param name="cssSelector">The css selector of the element</param>
+        /// <param name="customPreWait">Custom action wait upon before entering the text in the element</param>
+        /// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
+        public T Clear(string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null)
+        {
+            return RunTask(browser => browser.FindElementsByCssSelector(cssSelector).First().Clear(),
+                            customPreWait ?? (a => a.ContainsElement(cssSelector)),
+                            customPostWait);
+        }
+
+        /// <summary>
         /// Selects an element in a dropdown list with specified text
         /// </summary>
         /// <param name="cssSelector">The css selector of the element</param>

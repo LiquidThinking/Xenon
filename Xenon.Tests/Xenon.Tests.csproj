@@ -67,6 +67,9 @@
     <Compile Include="CancelDialogBoxTests\BaseCancelDialogBoxTests.cs" />
     <Compile Include="CancelDialogBoxTests\XenonScreenCancelDialogBoxTests.cs" />
     <Compile Include="CancelDialogBoxTests\XenonTestCancelDialogBoxTests.cs" />
+    <Compile Include="ClearTests\BaseClearTests.cs" />
+    <Compile Include="ClearTests\XenonScreenClearTests.cs" />
+    <Compile Include="ClearTests\XenonTestClearTests.cs" />
     <Compile Include="ClickDialogBoxTests\BaseClickDialogBoxTests.cs" />
     <Compile Include="ClickDialogBoxTests\XenonScreenClickDialogBoxTests.cs" />
     <Compile Include="ClickDialogBoxTests\XenonTestClickDialogBoxTests.cs" />
@@ -120,6 +123,7 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="ClearTests\Clear.html" />
     <EmbeddedResource Include="XenonElementsFinderTests\FindByMultipleAttributesAndTextIsMethods.html" />
     <EmbeddedResource Include="XenonElementsFinderTests\Issue25_UsingAttributeIsMethod.html" />
     <EmbeddedResource Include="SharedResources\PageWithDialogBoxes.html" />
