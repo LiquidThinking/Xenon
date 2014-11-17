@@ -6,5 +6,6 @@
 		void EnterText( string value );
 		bool IsVisible { get; }
 	    string Text { get; }
+	    void Clear();
 	}
 }

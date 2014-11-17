@@ -27,5 +27,10 @@ namespace Xenon.Selenium
 	    {
 	        get { return _webElement.Text; }
 	    }
+
+	    public void Clear()
+	    {
+	        _webElement.Clear();
+	    }
 	}
 }

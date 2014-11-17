@@ -116,6 +116,20 @@ namespace Xenon
 		}
 
         /// <summary>
+        /// Clears text in element
+        /// By default waits for the element to exist before entering the text
+        /// </summary>
+        /// <param name="cssSelector">The css selector of the element</param>
+        /// <param name="customPreWait">Custom action wait upon before entering the text in the element</param>
+        /// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
+        public T Clear(string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null)
+        {
+            return RunTask(browser => browser.FindElementsByCssSelector(cssSelector).First().Clear(),
+                            customPreWait ?? (a => a.ContainsElement(cssSelector)),
+                            customPostWait);
+        }
+
+        /// <summary>
         /// Selects an element in a dropdown list with specified text
         /// </summary>
         /// <param name="cssSelector">The css selector of the element</param>
@@ -186,6 +200,40 @@ namespace Xenon
 				b.CloseWindow();
 				b.SwitchToWindow( switchToWindowAssertFunc );
 			}, customPreWait, customPostWait );
+		}
+
+		/// <summary>
+		/// Click OK button of an active dialog box on the page
+		/// </summary>
+		/// <param name="customPreWait">Custom action wait upon before clicking OK button of an active dialog box</param>
+		/// <param name="customPostWait">Custom action wait upon after clicking OK button of an active dialog box</param>
+		/// <returns></returns>
+		public T ClickDialogBox( AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( b => b.ClickDialogBox(), customPreWait ?? ( a => a.DialogBoxIsActive() ), customPostWait ?? ( a => a.DialogBoxIsNotActive() ) );
+		}
+
+		/// <summary>
+		/// Enter text in an active prompt dialog box on the page
+		/// </summary>
+		/// <param name="text">text to be entered in the prompt</param>
+		/// <param name="customPreWait">Custom action wait upon before entering text in the prompt dialog box</param>
+		/// <param name="customPostWait">Custom action wait upon after entering text in the prompt dialog box</param>
+		/// <returns></returns>
+		public T EnterTextInDialogBox( string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( b => b.EnterTextInDialogBox( text ), customPreWait ?? ( a => a.DialogBoxIsActive() ), customPostWait );
+		}
+
+		/// <summary>
+		/// Cancel an active dialog box on the page
+		/// </summary>
+		/// <param name="customPreWait">Custom action wait upon before cancelling the dialog box</param>
+		/// <param name="customPostWait">Custom action wait upon after cancelling the dialog box</param>
+		/// <returns></returns>
+		public T CancelDialogBox( AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( b => b.CancelDialogBox(), customPreWait ?? ( a => a.DialogBoxIsActive() ), customPostWait ?? ( a => a.DialogBoxIsNotActive() ) );
 		}
 	}
 }

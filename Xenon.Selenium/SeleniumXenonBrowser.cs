@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
 
 namespace Xenon.Selenium
 {
@@ -70,12 +71,44 @@ namespace Xenon.Selenium
 			foreach ( var windowHandle in _driver.WindowHandles )
 			{
 				var switchedWindowDriver = _driver.SwitchTo().Window( windowHandle );
-				var switchedWindowXenonBrowser =  new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
+				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
 				if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
 					return switchedWindowXenonBrowser;
 			}
 
 			return new SeleniumXenonBrowser( _driver );
+		}
+
+		public IXenonBrowser ClickDialogBox()
+		{
+			_driver.SwitchTo().Alert().Accept();
+			return this;
+		}
+
+		public bool DialogBoxIsActive()
+		{
+			bool result = false;
+			try
+			{
+				_driver.SwitchTo().Alert();
+				result = true;
+			}
+			catch ( NoAlertPresentException ) {}
+			catch ( UnhandledAlertException ) {}
+
+			return result;
+		}
+
+		public IXenonBrowser EnterTextInDialogBox( string text )
+		{
+			_driver.SwitchTo().Alert().SendKeys( text );
+			return this;
+		}
+
+		public IXenonBrowser CancelDialogBox()
+		{
+			_driver.SwitchTo().Alert().Dismiss();
+			return this;
 		}
 
 		public void CloseWindow()
