@@ -17,6 +17,5 @@ namespace Xenon.Tests
 
 			return browser;
 		}
-
 	}
 }
