@@ -2,6 +2,7 @@
 
 ![](http://i60.tinypic.com/148er6d.png) Xenon <a href="http://buildserver.spawtz.com:8000/viewType.html?buildTypeId=Xenon_Build&guest=1"><img src="http://buildserver.spawtz.com:8000/app/rest/builds/buildType:(id:Xenon_Build)/statusIcon"/></a>
 =====
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/LiquidThinking/Xenon?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Packages
 -------------
