@@ -26,7 +26,7 @@ namespace Xenon
 
 		public XenonAssertion UrlContains( string content )
 		{
-			return Assert( _xenonBrowser.Url.Contains( content ), "Url does not contain: " + content );
+			return Assert( _xenonBrowser.Url.Contains( content ), String.Format( "Url '{0}' does not contain: {1}", _xenonBrowser.Url, content ) );
 		}
 
 		public XenonAssertion PageContains( string content )
