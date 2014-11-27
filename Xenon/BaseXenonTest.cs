@@ -54,8 +54,8 @@ namespace Xenon
 		public T GoToUrl( string url, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
 			return RunTask( w => w.GoToUrl( url ),
-			                customPreWait,
-			                customPostWait ?? ( a => a.UrlContains( url ) ) );
+				customPreWait,
+				customPostWait ?? ( a => a.UrlContains( url ) ) );
 		}
 
 		/// <summary>
@@ -68,8 +68,8 @@ namespace Xenon
 		public T Click( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
 			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().Click(),
-			                customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
-			                customPostWait );
+				customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
+				customPostWait );
 		}
 
 
@@ -83,8 +83,8 @@ namespace Xenon
 		public T Click( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
 			return RunTask( browser => ClickFoundElement( where( new XenonElementsFinder( browser ) ).FindElements() ),
-			                customPreWait ?? ( a => a.CustomAssertion( b => @where( new XenonElementsFinder( b ) ).FindElements().Any( x => x.IsVisible ) ) ),
-			                customPostWait );
+				customPreWait ?? ( a => a.CustomAssertion( b => @where( new XenonElementsFinder( b ) ).FindElements().Any( x => x.IsVisible ) ) ),
+				customPostWait );
 		}
 
 		private static void ClickFoundElement( IEnumerable<IXenonElement> elements )
@@ -111,55 +111,55 @@ namespace Xenon
 		public T EnterText( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
 			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().EnterText( text ),
-			                customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
-			                customPostWait );
+				customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
+				customPostWait );
 		}
 
-        /// <summary>
-        /// Clears text in element
-        /// By default waits for the element to exist before entering the text
-        /// </summary>
-        /// <param name="cssSelector">The css selector of the element</param>
-        /// <param name="customPreWait">Custom action wait upon before entering the text in the element</param>
-        /// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
-        public T Clear(string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null)
-        {
-            return RunTask(browser => browser.FindElementsByCssSelector(cssSelector).First().Clear(),
-                            customPreWait ?? (a => a.ContainsElement(cssSelector)),
-                            customPostWait);
-        }
+		/// <summary>
+		/// Clears text in element
+		/// By default waits for the element to exist before entering the text
+		/// </summary>
+		/// <param name="cssSelector">The css selector of the element</param>
+		/// <param name="customPreWait">Custom action wait upon before entering the text in the element</param>
+		/// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
+		public T Clear( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().Clear(),
+				customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
+				customPostWait );
+		}
 
-        /// <summary>
-        /// Selects an element in a dropdown list with specified text
-        /// </summary>
-        /// <param name="cssSelector">The css selector of the element</param>
-        /// <param name="text">The text of the option to select</param>
-        /// <param name="customPreWait">Custom action wait upon before selecting the option</param>
-        /// <param name="customPostWait">Custom action wait upon after selecting the option</param>
-        /// <returns></returns>
-        public T SelectList(string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null)
-        {
-            return RunTask(browser =>
-            {
-                Click(cssSelector);
+		/// <summary>
+		/// Selects an element in a dropdown list with specified text
+		/// </summary>
+		/// <param name="cssSelector">The css selector of the element</param>
+		/// <param name="text">The text of the option to select</param>
+		/// <param name="customPreWait">Custom action wait upon before selecting the option</param>
+		/// <param name="customPostWait">Custom action wait upon after selecting the option</param>
+		/// <returns></returns>
+		public T SelectList( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( browser =>
+			{
+				Click( cssSelector );
 
-                browser.FindElementsByCssSelector( cssSelector + " option").First(x=>x.Text == text).Click();
-            },
-                            customPreWait ??(a=> SelectListPreWait(a, cssSelector, text)),
-                            customPostWait);
-        }
+				browser.FindElementsByCssSelector( cssSelector + " option" ).First( x => x.Text == text ).Click();
+			},
+				customPreWait ?? ( a => SelectListPreWait( a, cssSelector, text ) ),
+				customPostWait );
+		}
 
-        private XenonAssertion SelectListPreWait(XenonAssertion xenonAssertion, string cssSelector, string text)
-        {
-            if (xenonAssertion.ContainsElement(cssSelector).Passing)
-            {
-                Click(cssSelector);
+		private XenonAssertion SelectListPreWait( XenonAssertion xenonAssertion, string cssSelector, string text )
+		{
+			if ( xenonAssertion.ContainsElement( cssSelector ).Passing )
+			{
+				Click( cssSelector );
 
-                xenonAssertion.CustomAssertion(
-                    browser => browser.FindElementsByCssSelector(cssSelector + " option").Any(x => x.Text == text));
-            }
-            return xenonAssertion;
-        }
+				xenonAssertion.CustomAssertion(
+					browser => browser.FindElementsByCssSelector( cssSelector + " option" ).Any( x => x.Text == text ) );
+			}
+			return xenonAssertion;
+		}
 
 		/// <summary>
 		/// Asserts
@@ -234,6 +234,18 @@ namespace Xenon
 		public T CancelDialogBox( AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
 			return RunTask( b => b.CancelDialogBox(), customPreWait ?? ( a => a.DialogBoxIsActive() ), customPostWait ?? ( a => a.DialogBoxIsNotActive() ) );
+		}
+
+		/// <summary>
+		/// Allow you create a custom interaction with browser
+		/// </summary>
+		/// <param name="task">The custom interaction with the browser</param>
+		/// <param name="customPreWait">Custom action wait upon before calling custom interaction</param>
+		/// <param name="customPostWait">Custom action wait upon after calling custom interaction</param>
+		/// <returns></returns>
+		public T Custom( Action<IXenonBrowser> task, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( task, customPreWait, customPostWait );
 		}
 	}
 }
