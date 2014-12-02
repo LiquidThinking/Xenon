@@ -50,7 +50,7 @@ namespace Xenon.Tests.GoToUrlTests
 
 			result.XenonTest.GoToUrl( Url );
 
-			Assert.AreEqual( 5, timesCalled );
+			Assert.AreEqual( 6, timesCalled );
 		}
 
 		[Test]
