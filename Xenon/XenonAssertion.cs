@@ -41,17 +41,17 @@ namespace Xenon
 
 		public XenonAssertion ContainsElement( string cssSelector )
 		{
-			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Any(), "Page does not contain element with selector: " + cssSelector );
+			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Any( e => e.IsVisible ), "Page does not contain element with selector: " + cssSelector );
 		}
 
 		public XenonAssertion ContainsElement( Func<XenonElementsFinder, XenonElementsFinder> where )
 		{
-			return Assert( where(new XenonElementsFinder( _xenonBrowser )).FindElements().Any(), "Page does not contain element with selector: "  );
+			return Assert( where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().Any( e => e.IsVisible ), "Page does not contain element with selector: " );
 		}
 
 		public XenonAssertion DoesNotContainElement( string cssSelector )
 		{
-			return Assert( !_xenonBrowser.FindElementsByCssSelector( cssSelector ).Any(), "Page contains element with selector: " + cssSelector );
+			return Assert( !_xenonBrowser.FindElementsByCssSelector( cssSelector ).Any( e => e.IsVisible ), "Page contains element with selector: " + cssSelector );
 		}
 
 		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc )
