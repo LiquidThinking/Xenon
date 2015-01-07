@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Moq;
+using Moq.Language.Flow;
 using NUnit.Framework;
 using Xenon.Tests.ExtensionMethods;
 
@@ -19,10 +20,19 @@ namespace Xenon.Tests.ClickTests
 			var browser = SetupBrowser();
 			browser.SetupFindElementsByCssSelector( cssSelector, element );
 
+			SetupExpectedSequenceForElement( element ).Returns( () => element.Object );
+
 			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( cssSelector );
 
-			element.Verify( x => x.Click() );
+			element.VerifyAll();
+		}
+
+		private static ISetup<IXenonElement, IXenonElement> SetupExpectedSequenceForElement( Mock<IXenonElement> element )
+		{
+			var sequence = new MockSequence();
+			element.InSequence( sequence ).Setup( x => x.ScrollToElement() ).Returns( () => element.Object );
+			return element.InSequence( sequence ).Setup( x => x.Click() );
 		}
 
 		[Test]
@@ -34,10 +44,12 @@ namespace Xenon.Tests.ClickTests
 			var browser = SetupBrowser();
 			browser.SetupFindElementsByCssSelector( cssSelector, element, 5 );
 
+			SetupExpectedSequenceForElement( element ).Returns( () => element.Object );
+
 			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( cssSelector );
 
-			element.Verify( x => x.Click() );
+			element.VerifyAll();
 		}
 
 		[Test]
@@ -52,11 +64,12 @@ namespace Xenon.Tests.ClickTests
 
 			var browser = SetupBrowser();
 			browser.SetupGet( x => x.PageSource )
-			       .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
+				   .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
 
 			browser.SetupFindElementsByCssSelector( cssSelector, element );
 			var calledToEarly = false;
-			element.Setup( x => x.Click() ).Callback( () =>
+
+			SetupExpectedSequenceForElement( element ).Callback( () =>
 			{
 				if ( timesCalled != 5 )
 					calledToEarly = true;
@@ -80,13 +93,15 @@ namespace Xenon.Tests.ClickTests
 
 			var browser = SetupBrowser();
 			browser.SetupGet( x => x.PageSource )
-			       .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
+				   .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
 
 			browser.Setup( x => x.FindElementsByCssSelector( cssSelector ) )
-			       .Returns( new List<IXenonElement>
-			       {
-				       element.Object
-			       } );
+				   .Returns( new List<IXenonElement>
+				   {
+					   element.Object
+				   } );
+
+			SetupExpectedSequenceForElement( element );
 
 			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( cssSelector, EmptyAssertion, x => x.PageContains( content ) );
@@ -101,16 +116,18 @@ namespace Xenon.Tests.ClickTests
 			const string linkText = "Click Me";
 
 
-			var mockedElement = new Mock<IXenonElement>();
-			mockedElement.SetupGet( x => x.IsVisible ).Returns( true );
+			var element = new Mock<IXenonElement>();
+			element.SetupGet( x => x.IsVisible ).Returns( true );
 
 			var browser = SetupBrowser();
-			browser.SetupFindElementsByXPath( It.IsAny<string>(), mockedElement );
+			browser.SetupFindElementsByXPath( It.IsAny<string>(), element );
+
+			SetupExpectedSequenceForElement( element );
 
 			var xenonTest = CreateInstance( browser );
 			xenonTest.Click( x => x.TextIs( linkText ) );
 
-			mockedElement.Verify( x => x.Click() );
+			element.VerifyAll();
 		}
 
 		[Test]
