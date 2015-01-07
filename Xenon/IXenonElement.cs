@@ -2,10 +2,11 @@
 {
 	public interface IXenonElement
 	{
-		void Click();
-		void EnterText( string value );
+		IXenonElement Click();
+		IXenonElement EnterText( string value );
 		bool IsVisible { get; }
 	    string Text { get; }
-	    void Clear();
+		IXenonElement Clear();
+		IXenonElement ScrollToElement();
 	}
 }

@@ -67,7 +67,7 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
 		public T Click( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().Click(),
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().ScrollToElement().Click(),
 				customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
 				customPostWait );
 		}
@@ -92,7 +92,7 @@ namespace Xenon
 			var foundElements = elements.Where( x => x.IsVisible ).ToList();
 
 			if ( foundElements.Count == 1 )
-				foundElements.First().Click();
+				foundElements.First().ScrollToElement().Click();
 			else if ( foundElements.Count > 1 )
 				throw new Exception( "More than one element was found" );
 			else
@@ -110,7 +110,7 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
 		public T EnterText( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().EnterText( text ),
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().ScrollToElement().EnterText( text ),
 				customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
 				customPostWait );
 		}
@@ -124,7 +124,7 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
 		public T Clear( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().Clear(),
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().ScrollToElement().Clear(),
 				customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
 				customPostWait );
 		}

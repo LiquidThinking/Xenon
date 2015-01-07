@@ -28,7 +28,7 @@ namespace Xenon.Selenium
 
 		private IXenonElement ConvertToXenonElement( IWebElement webElement )
 		{
-			return new SeleniumXenonElement( webElement );
+			return new SeleniumXenonElement( _driver, webElement );
 		}
 
 		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector )
