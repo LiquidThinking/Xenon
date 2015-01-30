@@ -82,23 +82,35 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
 		public T Click( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => ClickFoundElement( where( new XenonElementsFinder( browser ) ).FindElements() ),
+			return RunTask( browser => ClickFoundElement( where( new XenonElementsFinder( browser ) ) ),
 				customPreWait ?? ( a => a.CustomAssertion( b => @where( new XenonElementsFinder( b ) ).FindElements().Any( x => x.IsVisible ) ) ),
 				customPostWait );
 		}
 
-		private static void ClickFoundElement( IEnumerable<IXenonElement> elements )
+		private void ClickFoundElement( XenonElementsFinder finder )
 		{
+			var elements = finder.FindElements();
 			var foundElements = elements.Where( x => x.IsVisible ).ToList();
 
 			if ( foundElements.Count == 1 )
 				foundElements.First().ScrollToElement().Click();
 			else if ( foundElements.Count > 1 )
-				throw new Exception( "More than one element was found" );
+				throw BuildException( "More than one element was found", finder );
 			else
-				throw new Exception( "No element was found" );
+			{
+				throw BuildException( "No element was found", finder );
+			}
 		}
 
+		private Exception BuildException( string message, XenonElementsFinder finder )
+		{
+			return new Exception( 
+				string.Format(
+				"{0}.  Criteria was {1}.  Page source was {2}", 
+				message, 
+				finder.CriteriaDetails(), 
+				_xenonBrowser.PageSource ) );
+		}
 
 		/// <summary>
 		/// Enters the text into the element specified.

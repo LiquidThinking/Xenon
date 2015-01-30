@@ -58,5 +58,22 @@ namespace Xenon.Tests.XenonElementsFinderTests
 					                                                                 .TextIs( "Button" ) )
 				                                                         .Assert( a => a.ContainsElement( where => @where.TextIs( "Three" ) ) ) );
 		}
+
+		[Test]
+		public void CriteriaDetails_WithAttributeIsCriteria_DisplaysAttributeCriteriaText()
+		{
+			var finder = new XenonElementsFinder( null );
+			finder.AttributeIs( "Hello", "World" );
+			Assert.AreEqual( "[@Hello='World']", finder.CriteriaDetails() );
+		}
+
+		[Test]
+		public void CriteriaDetails_WithTextIsCriteria_DisplaysTextIsCriteriaText()
+		{
+			var finder = new XenonElementsFinder( null );
+			finder.TextIs( "Hello World" );
+			Assert.AreEqual( "(//input[@value='Hello World' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[text() = 'Hello World'])", finder.CriteriaDetails() );
+		}
+
 	}
 }
