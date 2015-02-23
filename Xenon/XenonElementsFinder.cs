@@ -59,6 +59,16 @@ namespace Xenon
 			}
 		}
 
+		private class FindByCssClassXPathCriteria : BaseXpathCriteria
+		{
+			public FindByCssClassXPathCriteria( string className) : base( "[contains(@class, '{0}')]", className ) {}
+
+			public override bool CanHandleSearchingAll
+			{
+				get { return false; }
+			}
+		}
+
 		private class XPathCriteriaBuilder
 		{
 			private readonly List<BaseXpathCriteria> _criteria;
@@ -137,6 +147,12 @@ namespace Xenon
 		public XenonElementsFinder AttributeIs( string attributeName, string attributeValue )
 		{
 			_criteriaBuilder.AddCriteria( new FindByAttributeXPathCriteria( attributeName, attributeValue ) );
+			return this;
+		}
+
+		public XenonElementsFinder CssClassIs( string className )
+		{
+			_criteriaBuilder.AddCriteria( new FindByCssClassXPathCriteria( className ) );
 			return this;
 		}
 

@@ -126,6 +126,7 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="XenonElementsFinderTests\FindByCssClassIs.html" />
     <EmbeddedResource Include="ClearTests\Clear.html" />
     <EmbeddedResource Include="XenonElementsFinderTests\FindByMultipleAttributesAndTextIsMethods.html" />
     <EmbeddedResource Include="XenonElementsFinderTests\Issue25_UsingAttributeIsMethod.html" />

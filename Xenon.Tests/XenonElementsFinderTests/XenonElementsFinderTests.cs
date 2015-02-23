@@ -75,5 +75,28 @@ namespace Xenon.Tests.XenonElementsFinderTests
 			Assert.AreEqual( "(//input[@value='Hello World' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[text() = 'Hello World'])", finder.CriteriaDetails() );
 		}
 
+		[Test]
+		public void CssClassIs_ElementsPresent_ReturnsThatElement()
+		{
+			StartTest( "FindByCssClassIs", xt =>
+				                               xt.Click( where => where.CssClassIs( "active" ) )
+				                                 .Assert( a => a.UrlContains( "yahoo" ) ) );
+		}
+
+		[Test]
+		public void CssClassIs_ElementContainsMultipleCssClasses_ReturnElementsWhichContainsThatCssClass()
+		{
+			StartTest( "FindByCssClassIs", xt =>
+				                               xt.Click( where => where.CssClassIs( "hub" ) )
+				                                 .Assert( a => a.UrlContains( "github" ) ) );
+		}
+
+		[Test]
+		public void CssClassIs_WhenMultipleCriteriaAreUsed_ReturnElementWhichMeetAllCriteria()
+		{
+			StartTest( "FindByCssClassIs", xt =>
+				                               xt.Click( where => where.TextIs( "Link" ).CssClassIs( "offline" ) )
+				                                 .Assert( a => a.UrlContains( "google" ) ) );
+		}
 	}
 }
