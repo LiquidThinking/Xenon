@@ -8,7 +8,7 @@ namespace Xenon.Tests
 	{
 		private readonly StringBuilder _pathBuilder;
 
-		public EmbeddedResourceLookup(  )
+		public EmbeddedResourceLookup()
 		{
 			_pathBuilder = new StringBuilder();
 		}
@@ -24,13 +24,12 @@ namespace Xenon.Tests
 			return _pathBuilder + fileName + ".html";
 		}
 
-		public string GetContent(string htmlFileName)
+		public string GetContent( string htmlFileName )
 		{
 			string resourceIdentifier = GetFullPath( htmlFileName );
 			var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream( resourceIdentifier );
 			var content = new StreamReader( stream ).ReadToEnd();
 			return content;
-
 		}
 	}
 }

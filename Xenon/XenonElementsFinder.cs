@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Xenon
 {
@@ -107,6 +108,15 @@ namespace Xenon
 				string result = String.Join( String.Empty, criteriaWithCorrectPositions.Select( x => x.CreateCriteria() ) );
 				return result;
 			}
+
+			public string CriteriaDetails()
+			{
+				var builder = new StringBuilder();
+				foreach ( var criterion in _criteria )
+					builder.Append( criterion.CreateCriteria() );
+				return builder.ToString();
+			}
+
 		}
 
 		private readonly IXenonBrowser _browser;
@@ -137,5 +147,11 @@ namespace Xenon
 
 			return result;
 		}
+
+		public string CriteriaDetails()
+		{
+			return _criteriaBuilder.CriteriaDetails();
+		}
+
 	}
 }
