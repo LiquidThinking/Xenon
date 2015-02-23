@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon</id>
-		<version>0.1.0-rc1</version>
+		<version>0.1.2-beta1002</version>
 		<title>Xenon</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -11,10 +11,10 @@
 		<description>
 			Xenon is a test framework which lets you to write stable acceptance tests in a fluent api manner.
 
-			There are the following prebuilt browser automation wrappers:
+			There are the following pre-built browser automation wrappers:
 			http://www.nuget.org/packages/Xenon.Selenium/
 		</description>
-		<releaseNotes>Added Dialog boxes and ability to find element by attribute</releaseNotes>
+		<releaseNotes>Made BaseXenonTests output details of the criteria it was looking for if it can't find an element</releaseNotes>
 		<dependencies>
 		</dependencies>
 	</metadata>
