@@ -64,7 +64,7 @@ namespace Xenon.Tests.ClickTests
 
 			var browser = SetupBrowser();
 			browser.SetupGet( x => x.PageSource )
-				   .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
+			       .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
 
 			browser.SetupFindElementsByCssSelector( cssSelector, element );
 			var calledToEarly = false;
@@ -93,13 +93,13 @@ namespace Xenon.Tests.ClickTests
 
 			var browser = SetupBrowser();
 			browser.SetupGet( x => x.PageSource )
-				   .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
+			       .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
 
 			browser.Setup( x => x.FindElementsByCssSelector( cssSelector ) )
-				   .Returns( new List<IXenonElement>
-				   {
-					   element.Object
-				   } );
+			       .Returns( new List<IXenonElement>
+			       {
+				       element.Object
+			       } );
 
 			SetupExpectedSequenceForElement( element );
 
@@ -144,7 +144,7 @@ namespace Xenon.Tests.ClickTests
 
 			var xenonTest = CreateInstance( browser );
 			var ex = Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
-			Assert.AreEqual( "More than one element was found", ex.Message );
+			Assert.IsTrue( ex.Message.Contains( "More than one element was found" ) );
 		}
 
 		[Test]
@@ -155,7 +155,7 @@ namespace Xenon.Tests.ClickTests
 
 			var xenonTest = CreateInstance( browser );
 			var ex = Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
-			Assert.AreEqual( "No element was found", ex.Message );
+			Assert.IsTrue( ex.Message.Contains( "No element was found" ) );
 		}
 
 		[Test]
@@ -172,7 +172,7 @@ namespace Xenon.Tests.ClickTests
 
 			var ex = Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
 
-			Assert.AreEqual( "No element was found", ex.Message );
+			Assert.IsTrue( ex.Message.Contains( "No element was found" ) );
 		}
 	}
 }

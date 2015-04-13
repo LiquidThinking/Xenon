@@ -35,8 +35,8 @@ namespace Xenon.Tests.SwitchToWindowTests
 					.Assert( a => a.PageContains( "I'm Feeling Lucky" ) )
 					.SwitchToWindow( a => a.PageContains( "Test Page" ) )
 					.Click( where => where.TextIs( "Yahoo" ) )
-					.SwitchToWindow( a => a.PageContains( "Search web" ) )
-					.Assert( a => a.PageContains( "Search web" ) )
+					.SwitchToWindow( a => a.PageContains( "Search Web" ) )
+					.Assert( a => a.PageContains( "Search Web" ) )
 					.SwitchToWindow( a => a.PageContains( "Test Page" ) )
 					.Assert( a => a.PageContains( "Test Page" ) );
 			}

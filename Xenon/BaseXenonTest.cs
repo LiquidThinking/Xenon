@@ -103,7 +103,7 @@ namespace Xenon
 		{
 			return new Exception( 
 				string.Format(
-				"{0}.  Criteria was {1}.  Page source was {2}", 
+				"{0}. Criteria was {1}.  Page source was {2}", 
 				message, 
 				finder.CriteriaDetails(), 
 				_xenonBrowser.PageSource ) );
