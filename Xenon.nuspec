@@ -14,7 +14,7 @@
 			There are the following pre-built browser automation wrappers:
 			http://www.nuget.org/packages/Xenon.Selenium/
 		</description>
-		<releaseNotes>Made BaseXenonTests output details of the criteria it was looking for if it can't find an element</releaseNotes>
+		<releaseNotes>Removed default post wait in GoToUrl</releaseNotes>
 		<dependencies>
 		</dependencies>
 	</metadata>
