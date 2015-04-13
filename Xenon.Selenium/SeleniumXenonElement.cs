@@ -1,3 +1,4 @@
+using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 
@@ -26,16 +27,19 @@ namespace Xenon.Selenium
 			return this;
 		}
 
-		public bool IsVisible { get { return _webElement.Displayed; } }
+		public bool IsVisible
+		{
+			get { return _webElement.Displayed; }
+		}
 
-	    public string Text
-	    {
-	        get { return _webElement.Text; }
-	    }
+		public string Text
+		{
+			get { return _webElement.Text; }
+		}
 
-	    public IXenonElement Clear()
-	    {
-	        _webElement.Clear();
+		public IXenonElement Clear()
+		{
+			_webElement.Clear();
 			return this;
 		}
 

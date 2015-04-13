@@ -38,22 +38,6 @@ namespace Xenon.Tests.GoToUrlTests
 		}
 
 		[Test]
-		public void GoToUrl_WhenPageTakesTimeToLoad_ShouldWaitAndThenReturn()
-		{
-			var result = SetupGoToUrl();
-
-			const int timesToCallUrl = 5;
-			var timesCalled = 0;
-
-			result.Browser.SetupGet( x => x.Url )
-			      .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : Url );
-
-			result.XenonTest.GoToUrl( Url );
-
-			Assert.AreEqual( 6, timesCalled );
-		}
-
-		[Test]
 		public void GoToUrl_WhenCustomPostWaitIsSet_ShouldWaitUponThatAssertion()
 		{
 			var result = SetupGoToUrl();

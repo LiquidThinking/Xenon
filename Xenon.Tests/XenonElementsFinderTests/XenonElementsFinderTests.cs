@@ -29,7 +29,7 @@ namespace Xenon.Tests.XenonElementsFinderTests
 		{
 			StartTest( "FindByAttributeIs", xt =>
 				                                xt.Click( x => x.AttributeIs( "data-type", "google" ) )
-				                                  .Assert( a => a.UrlContains( "google" ) ) );
+				                                  .Assert( a => a.UrlContains( "Google" ) ) );
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace Xenon.Tests.XenonElementsFinderTests
 		{
 			StartTest( "FindByAttributeIs", xt =>
 				                                xt.Click( x => x.TextIs( "Link" ).AttributeIs( "data-type", "github" ) )
-				                                  .Assert( a => a.UrlContains( "github.com" ) ) );
+				                                  .Assert( a => a.UrlContains( "Github" ) ) );
 		}
 
 		[Test]
@@ -80,7 +80,7 @@ namespace Xenon.Tests.XenonElementsFinderTests
 		{
 			StartTest( "FindByCssClassIs", xt =>
 				                               xt.Click( where => where.CssClassIs( "active" ) )
-				                                 .Assert( a => a.UrlContains( "yahoo" ) ) );
+				                                 .Assert( a => a.UrlContains( "Yahoo" ) ) );
 		}
 
 		[Test]
@@ -88,7 +88,7 @@ namespace Xenon.Tests.XenonElementsFinderTests
 		{
 			StartTest( "FindByCssClassIs", xt =>
 				                               xt.Click( where => where.CssClassIs( "hub" ) )
-				                                 .Assert( a => a.UrlContains( "github" ) ) );
+				                                 .Assert( a => a.UrlContains( "Github" ) ) );
 		}
 
 		[Test]
@@ -96,7 +96,7 @@ namespace Xenon.Tests.XenonElementsFinderTests
 		{
 			StartTest( "FindByCssClassIs", xt =>
 				                               xt.Click( where => where.TextIs( "Link" ).CssClassIs( "offline" ) )
-				                                 .Assert( a => a.UrlContains( "google" ) ) );
+				                                 .Assert( a => a.UrlContains( "Google" ) ) );
 		}
 	}
 }
