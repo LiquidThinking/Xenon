@@ -46,16 +46,13 @@ namespace Xenon
 
 		/// <summary>
 		/// Goes to the url specified.
-		/// By default waits for the page to change to the specified url
 		/// </summary>
 		/// <param name="url">The url you want to goto, must be absolute</param>
 		/// <param name="customPreWait">Custom action wait upon before going to the url</param>
 		/// <param name="customPostWait">Custom action wait upon after going to the url</param>
 		public T GoToUrl( string url, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( w => w.GoToUrl( url ),
-				customPreWait,
-				customPostWait ?? ( a => a.UrlContains( url ) ) );
+			return RunTask( w => w.GoToUrl( url ), customPreWait, customPostWait );
 		}
 
 		/// <summary>

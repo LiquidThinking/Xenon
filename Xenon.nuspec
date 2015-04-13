@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon</id>
-		<version>0.1.2-beta1002</version>
+		<version>0.1.3</version>
 		<title>Xenon</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -14,7 +14,7 @@
 			There are the following pre-built browser automation wrappers:
 			http://www.nuget.org/packages/Xenon.Selenium/
 		</description>
-		<releaseNotes>Made BaseXenonTests output details of the criteria it was looking for if it can't find an element</releaseNotes>
+		<releaseNotes>Removed default post wait in GoToUrl</releaseNotes>
 		<dependencies>
 		</dependencies>
 	</metadata>
