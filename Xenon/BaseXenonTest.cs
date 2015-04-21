@@ -152,7 +152,7 @@ namespace Xenon
 			{
 				Click( cssSelector );
 
-				browser.FindElementsByCssSelector( cssSelector + " option" ).First( x => x.Text == text ).Click();
+				browser.FindElementsByCssSelector( cssSelector + " option" ).First( x => x.Text == text ).ScrollToElement().Click();
 			},
 				customPreWait ?? ( a => SelectListPreWait( a, cssSelector, text ) ),
 				customPostWait );

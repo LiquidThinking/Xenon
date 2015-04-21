@@ -33,7 +33,7 @@ namespace Xenon.Tests.Integration
 			_webApp = WebApp.Start<Startup>( new StartOptions
 			{
 				ServerFactory = "Nowin",
-				Port = port
+				Port = port,
 			} );
 
 			return _xenonBrowser = new SeleniumXenonBrowserWrapper( new ChromeDriver( Environment.CurrentDirectory ), port );

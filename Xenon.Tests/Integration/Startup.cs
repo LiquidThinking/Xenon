@@ -15,7 +15,27 @@ namespace Xenon.Tests.Integration
 		{
 			app.Use( (context,a) =>
 			{
-				
+
+				if ( context.Request.Path.Value == "/Google" )
+				{
+					context.Response.ContentType = "text/html";
+					return context.Response.WriteAsync( "google" );
+				}
+
+				if ( context.Request.Path.Value == "/Github" )
+				{
+					context.Response.ContentType = "text/html";
+					return context.Response.WriteAsync( "github" );
+				}
+
+				if ( context.Request.Path.Value == "/Yahoo" )
+				{
+					context.Response.ContentType = "text/html";
+					return context.Response.WriteAsync( "yahoo" );
+				}
+
+
+
 				if ( context.Request.Method == "GET" )
 				{
 					context.Response.ContentType = "text/html";
