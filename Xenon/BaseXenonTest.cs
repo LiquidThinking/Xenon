@@ -24,8 +24,15 @@ namespace Xenon
 
 			do
 			{
-				if ( _xenonBrowser.RunAssertion( wait ).Passing )
-					break;
+				try
+				{
+					if ( _xenonBrowser.RunAssertion( wait ).Passing )
+						break;
+
+				}
+				catch ( Exception )
+				{
+				}
 
 				Thread.Sleep( 10 );
 			} while ( DateTime.Now < endTime );
