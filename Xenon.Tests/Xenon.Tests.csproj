@@ -86,6 +86,7 @@
     <Compile Include="EnterTextInDialogBoxTests\XenonTestEnterTextInDialogBoxTests.cs" />
     <Compile Include="EnterTextTests\BaseEnterTextTests.cs" />
     <Compile Include="EnterTextTests\XenonScreenEnterTextTests.cs" />
+    <Compile Include="InputTests\XenonTestInputTests.cs" />
     <Compile Include="Integration\BaseXenonIntegrationTest.cs" />
     <Compile Include="Integration\BrowserTest.cs" />
     <Compile Include="Integration\Page.cs" />
@@ -139,7 +140,9 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="InputTests\InputTests.html" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
