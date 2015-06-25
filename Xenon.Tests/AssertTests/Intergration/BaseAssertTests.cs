@@ -27,7 +27,8 @@ namespace Xenon.Tests.AssertTests.Intergration
                 CreateInstance( browser )
                     .GoToUrl( "/" )
                     .Click( where => where.TextIs( "Fill Form" ) )
-                    .Assert( a => a.PageContains( "First Name" ) );
+                    .Assert( a => a.PageContains( "First Name" ) )
+                    .Assert( a => a.PageContains( "Description Content" ) );
             }
         }
     }

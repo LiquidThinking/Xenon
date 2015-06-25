@@ -36,7 +36,7 @@ namespace Xenon.Selenium
 		{
 			get
 			{
-				if ( _webElement.TagName == "input" )
+				if ( _webElement.TagName == "input" || _webElement.TagName == "textarea" )
 					return _webElement.GetAttribute( "value" );
 				return _webElement.Text;
 			}

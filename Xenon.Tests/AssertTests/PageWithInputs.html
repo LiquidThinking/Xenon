@@ -7,11 +7,13 @@
     <script>
         function fillForm() {
             document.querySelector("[name='Name']").value = "First" + " Name";
+            document.querySelector("[name='Description']").value = "Description" + " Content";
         }
     </script>
 </head>
 <body>
 <input type="text" name="Name"/>
+<textarea type="text" name="Description"></textarea>
 <button onclick="fillForm()">Fill Form</button>
 </body>
 </html>
