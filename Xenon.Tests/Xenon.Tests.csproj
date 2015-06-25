@@ -64,6 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertTests\BaseAssertTests.cs" />
+    <Compile Include="AssertTests\Intergration\BaseAssertTests.cs" />
+    <Compile Include="AssertTests\Intergration\XenonScreenAssertTests.cs" />
+    <Compile Include="AssertTests\Intergration\XenonTestAssertTests.cs" />
     <Compile Include="BaseXenonTest.cs" />
     <Compile Include="CancelDialogBoxTests\BaseCancelDialogBoxTests.cs" />
     <Compile Include="CancelDialogBoxTests\XenonScreenCancelDialogBoxTests.cs" />
@@ -140,6 +143,7 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="AssertTests\PageWithInputs.html" />
     <EmbeddedResource Include="InputTests\InputTests.html" />
   </ItemGroup>
   <ItemGroup />
