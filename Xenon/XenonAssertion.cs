@@ -33,8 +33,8 @@ namespace Xenon
 		{
 		    var pageContains = _xenonBrowser.PageSource.Contains( content );
 		    if ( !pageContains )
-		        pageContains = _xenonBrowser.FindElementsByCssSelector( "input" ).Any( e => e.Text.Contains( content ) );
-            
+		        pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Any( e => e.Text.Contains( content ) );
+
             return Assert( pageContains, "Page does not contain: " + content );
 		}
 
