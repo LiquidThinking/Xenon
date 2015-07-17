@@ -18,7 +18,6 @@ namespace Xenon
 			Passing = true;
 		}
 
-
 		public ReadOnlyCollection<string> FailureMessages
 		{
 			get { return _failureMessages.AsReadOnly(); }
@@ -56,6 +55,11 @@ namespace Xenon
 		public XenonAssertion DoesNotContainElement( string cssSelector )
 		{
 			return Assert( !_xenonBrowser.FindElementsByCssSelector( cssSelector ).Any( e => e.IsVisible ), "Page contains element with selector: " + cssSelector );
+		}
+
+		public XenonAssertion DoesNotContainElement( Func<XenonElementsFinder, XenonElementsFinder> where )
+		{
+			return Assert( !where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().Any( e => e.IsVisible ), "Page does contains element with selector: " );
 		}
 
 		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc )
