@@ -64,6 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertTests\BaseAssertTests.cs" />
+    <Compile Include="AssertTests\Intergration\BaseAssertTests.cs" />
+    <Compile Include="AssertTests\Intergration\XenonScreenAssertTests.cs" />
+    <Compile Include="AssertTests\Intergration\XenonTestAssertTests.cs" />
     <Compile Include="BaseXenonTest.cs" />
     <Compile Include="CancelDialogBoxTests\BaseCancelDialogBoxTests.cs" />
     <Compile Include="CancelDialogBoxTests\XenonScreenCancelDialogBoxTests.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="EnterTextInDialogBoxTests\XenonTestEnterTextInDialogBoxTests.cs" />
     <Compile Include="EnterTextTests\BaseEnterTextTests.cs" />
     <Compile Include="EnterTextTests\XenonScreenEnterTextTests.cs" />
+    <Compile Include="InputTests\XenonTestInputTests.cs" />
     <Compile Include="Integration\BaseXenonIntegrationTest.cs" />
     <Compile Include="Integration\BrowserTest.cs" />
     <Compile Include="Integration\Page.cs" />
@@ -139,7 +143,10 @@
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="AssertTests\PageWithInputs.html" />
+    <EmbeddedResource Include="InputTests\InputTests.html" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

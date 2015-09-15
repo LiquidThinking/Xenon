@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script>
+        function fillForm() {
+            document.querySelector("[name='Name']").value = "First" + " Name";
+            document.querySelector("[name='Description']").value = "Description" + " Content";
+        }
+    </script>
+</head>
+<body>
+<input type="text" name="Name"/>
+<textarea type="text" name="Description"></textarea>
+<button onclick="fillForm()">Fill Form</button>
+</body>
+</html>

@@ -34,7 +34,12 @@ namespace Xenon.Selenium
 
 		public string Text
 		{
-			get { return _webElement.Text; }
+			get
+			{
+				if ( _webElement.TagName == "input" || _webElement.TagName == "textarea" )
+					return _webElement.GetAttribute( "value" );
+				return _webElement.Text;
+			}
 		}
 
 		public IXenonElement Clear()
