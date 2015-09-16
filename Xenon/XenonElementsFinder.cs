@@ -37,7 +37,7 @@ namespace Xenon
 
 		private class FindByTextXpathCriteria : BaseXpathCriteria
 		{
-			private const string Format = "(//input[@value='{0}' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[normalize-space(text()) = normalize-space('{0}'])";
+			private const string Format = "(//input[@value='{0}' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[normalize-space(text()) = normalize-space('{0}')])";
 
 			public FindByTextXpathCriteria( string text ) : base( Format, text ) {}
 
