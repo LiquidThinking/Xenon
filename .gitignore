@@ -185,3 +185,4 @@ Xenon.sln.ide/
 /packages
 packages/
 *.ncrunchsolution
+.vs/config/applicationhost.config

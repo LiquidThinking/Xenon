@@ -59,6 +59,13 @@ namespace Xenon.Tests.XenonElementsFinderTests
 				                                                         .Assert( a => a.ContainsElement( where => @where.TextIs( "Three" ) ) ) );
 		}
 
+	    [Test]
+	    public void TextIs_WhenContainsWhiteSpace_ShouldFindTheElement_Issue46()
+	    {
+	        StartTest( "Issue46_IgnoreWhiteSpace", xt =>
+	                                 xt.Assert( a => a.ContainsElement( where => where.TextIs( "Hello World" ) ) ) );
+	    }
+
 		[Test]
 		public void CriteriaDetails_WithAttributeIsCriteria_DisplaysAttributeCriteriaText()
 		{

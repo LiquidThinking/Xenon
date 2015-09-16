@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Text;
 
@@ -28,6 +29,8 @@ namespace Xenon.Tests
 		{
 			string resourceIdentifier = GetFullPath( htmlFileName );
 			var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream( resourceIdentifier );
+		    if ( stream == null )
+		        throw new ArgumentNullException( htmlFileName, "Unable to find following resource in the assembly: " + resourceIdentifier );
 			var content = new StreamReader( stream ).ReadToEnd();
 			return content;
 		}
