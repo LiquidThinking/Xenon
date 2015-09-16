@@ -48,12 +48,13 @@ namespace Xenon.Tests.Integration
 					formAsync.Wait();
 
 
-					PostbackResult = new NameValueCollection();
+					var postbackResult = new NameValueCollection();
 					foreach ( var val in formAsync.Result )
 					{
-						PostbackResult.Add( val.Key, String.Join(",",val.Value) );
+                        postbackResult.Add( val.Key, String.Join(",",val.Value) );
 					}
-                }
+				    PostbackResult = postbackResult;
+				}
 				return Task.Delay( 0 );
 
 			} );
@@ -64,8 +65,12 @@ namespace Xenon.Tests.Integration
 			var startTime = DateTime.Now;
 			while ( startTime.AddMinutes( 2 ) > DateTime.Now )
 			{
-				if ( PostbackResult != null )
-					return PostbackResult;
+			    if ( PostbackResult != null )
+			    {
+			        var postbackResult = PostbackResult;
+			        PostbackResult = null;
+			        return postbackResult;
+			    }
 			}
 			return null;
 		}
