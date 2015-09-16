@@ -79,7 +79,7 @@ namespace Xenon.Tests.XenonElementsFinderTests
 		{
 			var finder = new XenonElementsFinder( null );
 			finder.TextIs( "Hello World" );
-			Assert.AreEqual( "(//input[@value='Hello World' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[normalize-space(text()) = normalize-space('Hello World')]", finder.CriteriaDetails() );
+			Assert.AreEqual( "(//input[@value='Hello World' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[normalize-space(text()) = normalize-space('Hello World')])", finder.CriteriaDetails() );
 		}
 
 		[Test]
