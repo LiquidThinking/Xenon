@@ -182,11 +182,13 @@ namespace Xenon
 		/// </summary>
 		/// <param name="assertion">The Function with your assertions</param>
 		/// <returns></returns>
-		public T Assert( AssertionFunc assertion )
+		public T Assert( AssertionFunc assertion, String message = "" )
 		{
 			WaitUntil( assertion );
 			var assertionResult = assertion( new XenonAssertion( _xenonBrowser ) );
-			_xenonTestOptions.AssertMethod( assertionResult.Passing, string.Join( "\r\n", assertionResult.FailureMessages ) );
+			if ( String.IsNullOrEmpty( message ) )
+				message = string.Join( "\r\n", assertionResult.FailureMessages );
+			_xenonTestOptions.AssertMethod( assertionResult.Passing, message );
 			return this as T;
 		}
 
