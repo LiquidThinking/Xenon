@@ -26,6 +26,10 @@ namespace Xenon.Selenium
             {
                 throw new StaleElementException();
             }
+            catch ( WebDriverException )
+            {
+                return Click();
+            }
         }
 
         public IXenonElement EnterText( string value )
@@ -38,6 +42,10 @@ namespace Xenon.Selenium
             catch ( StaleElementReferenceException )
             {
                 throw new StaleElementException();
+            }
+            catch ( WebDriverException )
+            {
+                return EnterText( value );
             }
         }
 
@@ -52,6 +60,10 @@ namespace Xenon.Selenium
                 catch ( StaleElementReferenceException )
                 {
                     throw new StaleElementException();
+                }
+                catch ( WebDriverException )
+                {
+                    return IsVisible;
                 }
             }
         }
@@ -70,6 +82,10 @@ namespace Xenon.Selenium
                 {
                     throw new StaleElementException();
                 }
+                catch ( WebDriverException )
+                {
+                    return Text;
+                }
             }
         }
 
@@ -84,6 +100,10 @@ namespace Xenon.Selenium
             {
                 throw new StaleElementException();
             }
+            catch ( WebDriverException )
+            {
+                return Clear();
+            }
         }
 
         public IXenonElement ScrollToElement()
@@ -97,6 +117,10 @@ namespace Xenon.Selenium
             catch ( StaleElementReferenceException )
             {
                 throw new StaleElementException();
+            }
+            catch ( WebDriverException )
+            {
+                return ScrollToElement();
             }
         }
     }
