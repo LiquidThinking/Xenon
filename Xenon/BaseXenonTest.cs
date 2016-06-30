@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Xenon
 {
-	public abstract class BaseXenonTest<T> where T : BaseXenonTest<T>
+    public abstract class BaseXenonTest<T> where T : BaseXenonTest<T>
 	{
 		protected readonly XenonTestOptions _xenonTestOptions;
 		protected IXenonBrowser _xenonBrowser;
@@ -43,9 +43,16 @@ namespace Xenon
 			if ( preWait != null )
 				WaitUntil( preWait );
 
-			task( _xenonBrowser );
+		    try
+		    {
+		        task( _xenonBrowser );
+		    }
+            catch( StaleElementException )
+		    {
+		        return RunTask( task, preWait, postWait );
+		    }
 
-			if ( postWait != null )
+		    if ( postWait != null )
 				WaitUntil( postWait );
 
 			return this as T;

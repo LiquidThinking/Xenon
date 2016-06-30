@@ -4,55 +4,100 @@ using OpenQA.Selenium.Interactions;
 
 namespace Xenon.Selenium
 {
-	public class SeleniumXenonElement : IXenonElement
-	{
-		private readonly IWebDriver _webDriver;
-		private readonly IWebElement _webElement;
+    public class SeleniumXenonElement : IXenonElement
+    {
+        private readonly IWebDriver _webDriver;
+        private readonly IWebElement _webElement;
 
-		public SeleniumXenonElement( IWebDriver webDriver, IWebElement webElement )
-		{
-			_webDriver = webDriver;
-			_webElement = webElement;
-		}
+        public SeleniumXenonElement( IWebDriver webDriver, IWebElement webElement )
+        {
+            _webDriver = webDriver;
+            _webElement = webElement;
+        }
 
-		public IXenonElement Click()
-		{
-			_webElement.Click();
-			return this;
-		}
+        public IXenonElement Click()
+        {
+            try
+            {
+                _webElement.Click();
+                return this;
+            }
+            catch ( StaleElementReferenceException )
+            {
+                throw new StaleElementException();
+            }
+        }
 
-		public IXenonElement EnterText( string value )
-		{
-			_webElement.SendKeys( value );
-			return this;
-		}
+        public IXenonElement EnterText( string value )
+        {
+            try
+            {
+                _webElement.SendKeys( value );
+                return this;
+            }
+            catch ( StaleElementReferenceException )
+            {
+                throw new StaleElementException();
+            }
+        }
 
-		public bool IsVisible
-		{
-			get { return _webElement.Displayed; }
-		}
+        public bool IsVisible
+        {
+            get
+            {
+                try
+                {
+                    return _webElement.Displayed;
+                }
+                catch ( StaleElementReferenceException )
+                {
+                    throw new StaleElementException();
+                }
+            }
+        }
 
-		public string Text
-		{
-			get
-			{
-				if ( _webElement.TagName == "input" || _webElement.TagName == "textarea" )
-					return _webElement.GetAttribute( "value" );
-				return _webElement.Text;
-			}
-		}
+        public string Text
+        {
+            get
+            {
+                try
+                {
+                    if ( _webElement.TagName == "input" || _webElement.TagName == "textarea" )
+                        return _webElement.GetAttribute( "value" );
+                    return _webElement.Text;
+                }
+                catch ( StaleElementReferenceException )
+                {
+                    throw new StaleElementException();
+                }
+            }
+        }
 
-		public IXenonElement Clear()
-		{
-			_webElement.Clear();
-			return this;
-		}
+        public IXenonElement Clear()
+        {
+            try
+            {
+                _webElement.Clear();
+                return this;
+            }
+            catch ( StaleElementReferenceException )
+            {
+                throw new StaleElementException();
+            }
+        }
 
-		public IXenonElement ScrollToElement()
-		{
-			var actions = new Actions( _webDriver );
-			actions.MoveToElement( _webElement ).Perform();
-			return this;
-		}
-	}
+        public IXenonElement ScrollToElement()
+        {
+            try
+            {
+                var actions = new Actions( _webDriver );
+                actions.MoveToElement( _webElement ).Perform();
+                return this;
+            }
+            catch ( StaleElementReferenceException )
+            {
+                throw new StaleElementException();
+            }
+        }
+    }
 }

@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AssertionFunc.cs" />
     <Compile Include="BaseXenonTest.cs" />
+    <Compile Include="StaleElementReferenceException.cs" />
     <Compile Include="XenonElementsFinder.cs" />
     <Compile Include="XenonAssertion.cs" />
     <Compile Include="IXenonBrowser.cs" />

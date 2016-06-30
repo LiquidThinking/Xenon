@@ -53,7 +53,7 @@ namespace Xenon.Selenium
 			{
 				result = assertion( new XenonAssertion( this ) );
 			}
-			catch ( StaleElementReferenceException exception )
+			catch ( StaleElementException exception )
 			{
 				result = new XenonAssertion( this ).BrowserFailure( exception.Message );
 			}
