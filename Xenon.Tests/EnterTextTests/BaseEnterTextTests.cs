@@ -24,8 +24,9 @@ namespace Xenon.Tests.EnterTextTests
 		public void EnterText_WhenCalled_EnterText()
 		{
 			var browser = SetupBrowser();
-			var element = new Mock<IXenonElement>();
-			browser.SetupFindElementsByCssSelector( CssSelector, element );
+			var element = GetElement();
+
+		    browser.SetupFindElementsByCssSelector( CssSelector, element );
 
 			SetupExpectedSequenceForElement( element );
 
@@ -35,13 +36,14 @@ namespace Xenon.Tests.EnterTextTests
 			element.VerifyAll( );
 		}
 
-		[Test]
+
+	    [Test]
 		public void EnterText_WhenElementDoesNotExistStraightAway_WaitsForItThenEntersText()
 		{
 			var browser = SetupBrowser();
-			var element = new Mock<IXenonElement>();
+            var element = GetElement();
 
-			browser.SetupFindElementsByCssSelector( CssSelector, element, 5 );
+            browser.SetupFindElementsByCssSelector( CssSelector, element, 5 );
 			var xenonTest = CreateInstance( browser );
 
 			SetupExpectedSequenceForElement( element );
@@ -57,8 +59,8 @@ namespace Xenon.Tests.EnterTextTests
 			const string ready = "Ready";
 
 			var browser = SetupBrowser();
-			var element = new Mock<IXenonElement>();
-			var xenonTest = CreateInstance( browser );
+            var element = GetElement();
+            var xenonTest = CreateInstance( browser );
 
 
 			browser.SetupFindElementsByCssSelector( CssSelector, element );
@@ -86,8 +88,8 @@ namespace Xenon.Tests.EnterTextTests
 		public void EnterText_WhenCustomPostWaitIsSet_ShouldWaitUponThatAssertion()
 		{
 			var browser = SetupBrowser();
-			var element = new Mock<IXenonElement>();
-			var xenonTest = CreateInstance( browser );
+            var element = GetElement();
+            var xenonTest = CreateInstance( browser );
 
 
 			browser.SetupFindElementsByCssSelector( CssSelector, element );
@@ -107,5 +109,13 @@ namespace Xenon.Tests.EnterTextTests
 
 			Assert.AreEqual( timesToCallUrl, timesCalled );
 		}
-	}
+
+        private static Mock<IXenonElement> GetElement()
+        {
+            var element = new Mock<IXenonElement>();
+            element.Setup( x => x.IsVisible ).Returns( true );
+            return element;
+        }
+
+    }
 }

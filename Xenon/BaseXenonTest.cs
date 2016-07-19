@@ -93,34 +93,9 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
 		public T Click( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => ClickFoundElement( where( new XenonElementsFinder( browser ) ) ),
+			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().LocateSingleVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( b => @where( new XenonElementsFinder( b ) ).FindElements().Any( x => x.IsVisible ) ) ),
 				customPostWait );
-		}
-
-		private void ClickFoundElement( XenonElementsFinder finder )
-		{
-			var elements = finder.FindElements();
-			var foundElements = elements.Where( x => x.IsVisible ).ToList();
-
-			if ( foundElements.Count == 1 )
-				foundElements.First().ScrollToElement().Click();
-			else if ( foundElements.Count > 1 )
-				throw BuildException( "More than one element was found", finder );
-			else
-			{
-				throw BuildException( "No element was found", finder );
-			}
-		}
-
-		private Exception BuildException( string message, XenonElementsFinder finder )
-		{
-			return new Exception( 
-				string.Format(
-				"{0}. Criteria was {1}.  Page source was {2}", 
-				message, 
-				finder.CriteriaDetails(), 
-				_xenonBrowser.PageSource ) );
 		}
 
 		/// <summary>
@@ -133,8 +108,8 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
 		public T EnterText( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().ScrollToElement().EnterText( text ),
-				customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().EnterText( text ),
+				customPreWait ?? ( a => a.CustomAssertion( b => b.FindElementsByCssSelector( cssSelector ).Any( x => x.IsVisible ) ) ),
 				customPostWait );
 		}
 
@@ -147,8 +122,8 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
 		public T Clear( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().ScrollToElement().Clear(),
-				customPreWait ?? ( a => a.ContainsElement( cssSelector ) ),
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().Clear(),
+				customPreWait ?? ( a => a.CustomAssertion( b => b.FindElementsByCssSelector( cssSelector ).Any( x => x.IsVisible ) ) ),
 				customPostWait );
 		}
 
