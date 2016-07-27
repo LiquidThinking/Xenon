@@ -78,8 +78,8 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
 		public T Click( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateSingleVisibleElement().Click(),
-				customPreWait ?? ( a => a.CustomAssertion( browser => browser.FindElementsByCssSelector( cssSelector ).LocateSingleVisibleElement().IsVisible ) ),
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().Click(),
+				customPreWait ?? ( a => a.CustomAssertion( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
 				customPostWait );
 		}
 
@@ -109,7 +109,7 @@ namespace Xenon
 		public T EnterText( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
 			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().EnterText( text ),
-				customPreWait ?? ( a => a.CustomAssertion( b => b.FindElementsByCssSelector( cssSelector ).LocateSingleVisibleElement().IsVisible ) ),
+				customPreWait ?? ( a => a.CustomAssertion( b => b.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
 				customPostWait );
 		}
 
@@ -123,7 +123,7 @@ namespace Xenon
 		public T Clear( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
 			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().Clear(),
-				customPreWait ?? ( a => a.CustomAssertion( b => b.FindElementsByCssSelector( cssSelector ).LocateSingleVisibleElement().IsVisible ) ),
+				customPreWait ?? ( a => a.CustomAssertion( b => b.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
 				customPostWait );
 		}
 
