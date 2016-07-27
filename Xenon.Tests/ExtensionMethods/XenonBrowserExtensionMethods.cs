@@ -12,7 +12,7 @@ namespace Xenon.Tests.ExtensionMethods
 			browser.Setup( x => x.FindElementsByCssSelector( cssSelector ) )
 				   .Returns( () =>
 				   {
-					   if ( ++timesCalled == returnElementAfterCalls )
+					   if ( ++timesCalled >= returnElementAfterCalls )
 						   element.SetupGet( x => x.IsVisible ).Returns( true );
 					   return new List<IXenonElement>
 					   {

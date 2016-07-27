@@ -16,6 +16,7 @@ namespace Xenon.Tests.ClickTests
 		{
 			const string cssSelector = "button";
 			var element = new Mock<IXenonElement>();
+		    element.Setup( x => x.ScrollToElement() ).Returns( () => element.Object );
 
 			var browser = SetupBrowser();
 			browser.SetupFindElementsByCssSelector( cssSelector, element );
@@ -40,8 +41,9 @@ namespace Xenon.Tests.ClickTests
 		{
 			const string cssSelector = "button";
 			var element = new Mock<IXenonElement>();
+            element.Setup( x => x.ScrollToElement() ).Returns( () => element.Object );
 
-			var browser = SetupBrowser();
+            var browser = SetupBrowser();
 			browser.SetupFindElementsByCssSelector( cssSelector, element, 5 );
 
 			SetupExpectedSequenceForElement( element ).Returns( () => element.Object );
@@ -58,8 +60,9 @@ namespace Xenon.Tests.ClickTests
 			const string cssSelector = "button";
 			const string content = "Ready";
 			var element = new Mock<IXenonElement>();
+            element.Setup( x => x.ScrollToElement() ).Returns( () => element.Object );
 
-			const int timesToCallUrl = 5;
+            const int timesToCallUrl = 5;
 			var timesCalled = 0;
 
 			var browser = SetupBrowser();
@@ -87,6 +90,8 @@ namespace Xenon.Tests.ClickTests
 			const string cssSelector = "button";
 			const string content = "Ready";
 			var element = new Mock<IXenonElement>();
+            element.Setup( x => x.ScrollToElement() ).Returns( () => element.Object );
+            element.Setup( x => x.IsVisible ).Returns( true );
 
 			const int timesToCallUrl = 5;
 			var timesCalled = 0;
@@ -117,7 +122,8 @@ namespace Xenon.Tests.ClickTests
 
 
 			var element = new Mock<IXenonElement>();
-			element.SetupGet( x => x.IsVisible ).Returns( true );
+            element.Setup( x => x.ScrollToElement() ).Returns( () => element.Object );
+            element.SetupGet( x => x.IsVisible ).Returns( true );
 
 			var browser = SetupBrowser();
 			browser.SetupFindElementsByXPath( It.IsAny<string>(), element );
@@ -135,10 +141,12 @@ namespace Xenon.Tests.ClickTests
 		{
 			var browser = SetupBrowser();
 			var element1 = new Mock<IXenonElement>();
-			element1.SetupGet( x => x.IsVisible ).Returns( true );
+            element1.Setup( x => x.ScrollToElement() ).Returns( () => element1.Object );
+            element1.SetupGet( x => x.IsVisible ).Returns( true );
 
 			var element2 = new Mock<IXenonElement>();
-			element2.SetupGet( x => x.IsVisible ).Returns( true );
+            element2.Setup( x => x.ScrollToElement() ).Returns( () => element2.Object );
+            element2.SetupGet( x => x.IsVisible ).Returns( true );
 
 			browser.SetupFindElementsByXPath( It.IsAny<string>(), element1, element2 );
 
@@ -164,7 +172,8 @@ namespace Xenon.Tests.ClickTests
 			var browser = SetupBrowser();
 
 			var mockedElement = new Mock<IXenonElement>();
-			mockedElement.SetupGet( x => x.IsVisible ).Returns( false );
+            mockedElement.Setup( x => x.ScrollToElement() ).Returns( () => mockedElement.Object );
+            mockedElement.SetupGet( x => x.IsVisible ).Returns( false );
 
 			browser.SetupFindElementsByXPath( It.IsAny<string>(), mockedElement );
 

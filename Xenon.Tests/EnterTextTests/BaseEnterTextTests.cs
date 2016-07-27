@@ -114,6 +114,7 @@ namespace Xenon.Tests.EnterTextTests
         {
             var element = new Mock<IXenonElement>();
             element.Setup( x => x.IsVisible ).Returns( true );
+            element.Setup( x => x.ScrollToElement() ).Returns( () => element.Object );
             return element;
         }
 
