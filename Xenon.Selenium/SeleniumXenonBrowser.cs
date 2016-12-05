@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
@@ -81,8 +82,26 @@ namespace Xenon.Selenium
 
 		public IXenonBrowser ClickDialogBox()
 		{
-			_driver.SwitchTo().Alert().Accept();
-			return this;
+			return DialogBoxInteraction( () => _driver.SwitchTo().Alert().Accept() );
+		}
+
+		private IXenonBrowser DialogBoxInteraction( Action actionToPerform )
+		{
+			var tryUntil = DateTime.Now.AddSeconds( XenonTestOptions.Options.WaitForSeconds );
+			while ( true )
+			{
+				try
+				{
+					actionToPerform();
+					return this;
+				}
+				catch ( Exception )
+				{
+					if ( DateTime.Now > tryUntil )
+						throw;
+					Thread.Sleep( 100 );
+				}
+			}
 		}
 
 		public bool DialogBoxIsActive()
@@ -101,14 +120,12 @@ namespace Xenon.Selenium
 
 		public IXenonBrowser EnterTextInDialogBox( string text )
 		{
-			_driver.SwitchTo().Alert().SendKeys( text );
-			return this;
+			return DialogBoxInteraction( () => _driver.SwitchTo().Alert().SendKeys( text ) );
 		}
 
 		public IXenonBrowser CancelDialogBox()
 		{
-			_driver.SwitchTo().Alert().Dismiss();
-			return this;
+			return DialogBoxInteraction( () => _driver.SwitchTo().Alert().Dismiss() );
 		}
 
 		public void CloseWindow()
