@@ -51,7 +51,6 @@ namespace Xenon
 		private class FindByContainsTextXpathCriteria : BaseXpathCriteria
 		{
 			private const string Format = "//*[contains(@value,'{0}')] | //*[contains(normalize-space(text()), normalize-space('{0}'))]";
-			//private const string Format = "//*[contains(@value, '{0}')]";
 			public FindByContainsTextXpathCriteria( string text ) : base( Format, text )
 			{
 			}
