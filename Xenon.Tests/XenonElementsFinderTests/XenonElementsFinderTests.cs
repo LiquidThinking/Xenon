@@ -105,5 +105,25 @@ namespace Xenon.Tests.XenonElementsFinderTests
 				                               xt.Click( where => where.TextIs( "Link" ).CssClassIs( "offline" ) )
 				                                 .Assert( a => a.UrlContains( "Google" ) ) );
 		}
+
+		[Test]
+		public void ContainsText_ButtonValueContainsText_ReturnsThatElement()
+		{
+			const string expected = "Worked";
+			StartTest( "FindByContainsText", xt =>
+
+							xt
+								.Assert( x => x.PageDoesNotContain( expected ) )
+								.Click( where => where.ContainsText( "Add an item" ) )
+								.Assert( x => x.DialogBoxIsNotActive().PageContains( expected ) )
+								 );
+		}
+
+		[Test]
+		public void ContainsText_DivContainsText_ReturnsThatElement()
+		{
+			StartTest( "FindByContainsText", xt =>
+							xt.Assert( x => x.ContainsElement( where => where.ContainsText( "Hello" ) ) ) );
+		}
 	}
 }
