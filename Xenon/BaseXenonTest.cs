@@ -113,6 +113,20 @@ namespace Xenon
 		}
 
 		/// <summary>
+		/// Right clicks the element specified
+		/// By default waits for the element to exist before clicking
+		/// </summary>
+		/// <param name="cssSelector">The css selector of the element</param>
+		/// <param name="customPreWait">Custom action wait upon before clicking to the element</param>
+		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
+		public T RightClick( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().LocateSingleVisibleElement().RightClick(),
+				customPreWait ?? ( a => a.CustomAssertion( b => where( new XenonElementsFinder( b ) ).FindElements().LocateSingleVisibleElement().IsVisible ) ),
+				customPostWait );
+		}
+
+		/// <summary>
 		/// Enters the text into the element specified.
 		/// By default waits for the element to exist before entering the text
 		/// </summary>
