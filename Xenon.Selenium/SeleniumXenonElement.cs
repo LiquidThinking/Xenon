@@ -32,7 +32,24 @@ namespace Xenon.Selenium
             }
         }
 
-        public IXenonElement EnterText( string value )
+	    public IXenonElement RightClick()
+	    {
+		    try
+		    {
+			    new Actions( _webDriver ).ContextClick( _webElement ).Build().Perform();
+			    return this;
+		    }
+		    catch ( StaleElementReferenceException )
+		    {
+			    throw new StaleElementException();
+		    }
+		    catch ( WebDriverException )
+		    {
+			    return RightClick();
+		    }
+	    }
+
+	    public IXenonElement EnterText( string value )
         {
             try
             {
