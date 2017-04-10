@@ -106,6 +106,9 @@
     <Compile Include="GoToUrlTests\BaseGoToUrlTests.cs" />
     <Compile Include="ClickTests\XenonTestClickTests.cs" />
     <Compile Include="GoToUrlTests\XenonTestGoToUrlTests.cs" />
+    <Compile Include="RightClickTests\BaseRightClickTests.cs" />
+    <Compile Include="RightClickTests\XenonScreenRightClickTests.cs" />
+    <Compile Include="RightClickTests\XenonTestRightClickTests.cs" />
     <Compile Include="SwitchToWindowTests\BaseSwitchToWindowTests.cs" />
     <Compile Include="SwitchToWindowTests\XenonScreenSwitchToWindowTests.cs" />
     <Compile Include="SwitchToWindowTests\XenonTestSwitchToWindowTests.cs" />

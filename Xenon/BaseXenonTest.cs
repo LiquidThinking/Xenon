@@ -83,6 +83,20 @@ namespace Xenon
 				customPostWait );
 		}
 
+		/// <summary>
+		/// Right clicks the element specified
+		/// By default waits for the element to exist before clicking
+		/// </summary>
+		/// <param name="cssSelector">The css selector of the element</param>
+		/// <param name="customPreWait">Custom action wait upon before clicking to the element</param>
+		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
+		public T RightClick( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().RightClick(),
+				customPreWait ?? ( a => a.CustomAssertion( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
+				customPostWait );
+		}
+
 
 		/// <summary>
 		/// Clicks the element specified
