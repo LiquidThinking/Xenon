@@ -1,6 +1,8 @@
 using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.Extensions;
+using OpenQA.Selenium.Support.UI;
 
 namespace Xenon.Selenium
 {
@@ -32,11 +34,19 @@ namespace Xenon.Selenium
             }
         }
 
+		public IXenonElement SelectDropdownItem( string name )
+		{
+			new SelectElement( _webElement ).SelectByText( name );
+			return this;
+		}
+
 	    public IXenonElement RightClick()
 	    {
 		    try
 		    {
-			    new Actions( _webDriver ).ContextClick( _webElement ).Build().Perform();
+				const string script = "var evt = document.createEvent('MouseEvents'); evt.initMouseEvent('contextmenu',true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0,null); arguments[0].dispatchEvent(evt);";
+
+				_webDriver.ExecuteJavaScript( script, _webElement );
 			    return this;
 		    }
 		    catch ( StaleElementReferenceException )
@@ -126,9 +136,8 @@ namespace Xenon.Selenium
         public IXenonElement ScrollToElement()
         {
             try
-            {
-                var actions = new Actions( _webDriver );
-                actions.MoveToElement( _webElement ).Perform();
+			{
+				_webDriver.ExecuteJavaScript( "arguments[0].scrollIntoView(true);", _webElement );
                 return this;
             }
             catch ( StaleElementReferenceException )
