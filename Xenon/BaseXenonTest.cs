@@ -165,12 +165,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T SelectList( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser =>
-			{
-				Click( cssSelector );
-
-				browser.FindElementsByCssSelector( cssSelector + " option" ).First( x => x.Text == text ).ScrollToElement().Click();
-			},
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().SelectDropdownItem( text ),
 				customPreWait ?? ( a => SelectListPreWait( a, cssSelector, text ) ),
 				customPostWait );
 		}
