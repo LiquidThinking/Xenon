@@ -18,5 +18,9 @@ namespace Xenon
 		bool DialogBoxIsActive();
 		IXenonBrowser EnterTextInDialogBox( string text );
 		IXenonBrowser CancelDialogBox();
+		void TakeScreenshot( string path );
+		void ClearLocalStorage();
+		void ClearSessionStorage();
+		void ClearCookies();
 	}
 }

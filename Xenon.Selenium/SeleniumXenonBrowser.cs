@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 
 namespace Xenon.Selenium
@@ -126,6 +127,30 @@ namespace Xenon.Selenium
 		public IXenonBrowser CancelDialogBox()
 		{
 			return DialogBoxInteraction( () => _driver.SwitchTo().Alert().Dismiss() );
+		}
+
+		public void TakeScreenshot( string path )
+		{
+			_driver.TakeScreenshot().SaveAsFile( path, ScreenshotImageFormat.Jpeg );
+		}
+
+		public void ClearLocalStorage()
+		{
+			_driver.ExecuteScript( "try { localStorage.clear(); } catch(ex){} " );
+		}
+
+		public void ClearSessionStorage()
+		{
+			_driver.ExecuteScript("try { sessionStorage.clear(); } catch(ex){} ");
+		}
+
+		public void ClearCookies()
+		{
+			try
+			{
+				_driver.Manage().Cookies.DeleteAllCookies();
+			}
+			catch { }
 		}
 
 		public void CloseWindow()

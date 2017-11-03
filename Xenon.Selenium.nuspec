@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon.Selenium</id>
-		<version>0.2.2</version>
+		<version>0.2.3</version>
 		<title>Xenon.Selenium</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -13,11 +13,11 @@
 
 			This is browser automation wrapper for Selenium.
 		</description>
-		<releaseNotes>enhancement: Scroll to an element first before performing an action on it e.g. (Click, EnterText, Clear)</releaseNotes>
+		<releaseNotes>Added TakeScreenshot, ClearLocalStorage, ClearSessionStorage and ClearCookies in IXenonBrowser</releaseNotes>
 		<dependencies>
 			<dependency id="Selenium.Support" version="3.5.2" />
 			<dependency id="Selenium.WebDriver" version="3.5.2" />
-			<dependency id="Xenon" version="0.2.0" />
+			<dependency id="Xenon" version="0.2.3" />
 		</dependencies>
 	</metadata>
 	<files>
