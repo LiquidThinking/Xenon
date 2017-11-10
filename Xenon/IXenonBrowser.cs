@@ -22,5 +22,6 @@ namespace Xenon
 		void ClearLocalStorage();
 		void ClearSessionStorage();
 		void ClearCookies();
+		object ExecuteJavascript( string script, params object[] args );
 	}
 }

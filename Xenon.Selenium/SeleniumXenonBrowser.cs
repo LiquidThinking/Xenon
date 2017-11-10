@@ -153,6 +153,18 @@ namespace Xenon.Selenium
 			catch { }
 		}
 
+		public object ExecuteJavascript( string script, params object[] args )
+		{
+			try
+			{
+				return _driver.ExecuteScript( script, args );
+			}
+			catch
+			{
+				return new object();
+			}
+		}
+
 		public void CloseWindow()
 		{
 			_driver.Close();
