@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -36,7 +37,8 @@ namespace Xenon.Tests.Integration
 				Port = port,
 			} );
 
-			return _xenonBrowser = new SeleniumXenonBrowserWrapper( new ChromeDriver( Environment.CurrentDirectory ), port );
+			var binFolder = new FileInfo( this.GetType().Assembly.Location ).Directory.FullName;
+			return _xenonBrowser = new SeleniumXenonBrowserWrapper( new ChromeDriver( binFolder ), port );
 		}
 
 		private int FreeTcpPort()

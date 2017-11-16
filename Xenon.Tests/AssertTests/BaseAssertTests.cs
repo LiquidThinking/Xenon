@@ -61,7 +61,7 @@ namespace Xenon.Tests.AssertTests
 		{
 			return new XenonTestOptions
 			{
-				AssertMethod = assertMethod ?? Assert.IsTrue
+				AssertMethod = assertMethod ?? ( ( b, s ) => Assert.IsTrue( b, s ) )
 			};
 		}
 
@@ -84,7 +84,7 @@ namespace Xenon.Tests.AssertTests
 			var browser = SetupBrowser();
 			browser.SetupGet( x => x.PageSource ).Returns( pageSource );
 
-			var tester = CreateInstance( browser, GetXenonTestOptions( Assert.IsFalse ) );
+			var tester = CreateInstance( browser, GetXenonTestOptions( ( b, s ) => Assert.IsFalse( b, s ) ) );
 
 			tester.Assert( x => x.PageDoesNotContain( "Error" ) );
 		}

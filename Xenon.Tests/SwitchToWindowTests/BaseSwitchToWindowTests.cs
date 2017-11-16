@@ -17,7 +17,7 @@ namespace Xenon.Tests.SwitchToWindowTests
 		{
 			XenonTestOptions.Options = new XenonTestOptions
 			{
-				AssertMethod = Assert.IsTrue,
+				AssertMethod = ( b, s ) => Assert.IsTrue( b, s ),
 			};
 		}
 

@@ -11,7 +11,7 @@ namespace Xenon.Tests.InputTests
 	public class XenonTestInputTests : BaseXenonIntegrationTest
 	{
 
-		[TestFixtureSetUp]
+		[SetUp]
 		public void TestFixtureSetUp()
 		{
 			XenonTestsResourceLookup.Folder( "InputTests" );

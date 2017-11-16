@@ -10,13 +10,12 @@ namespace Xenon.Tests
 	[SetUpFixture]
 	public class NamespaceWideSetup
 	{
-		[SetUp]
+		[OneTimeSetUp]
 		public void Initialize()
 		{
 			XenonTestOptions.Options = new XenonTestOptions
 			{
-				AssertMethod = Assert.IsTrue,
-
+				AssertMethod = ( b, s ) => Assert.IsTrue( b, s ),
 			};
 		}
 	}
