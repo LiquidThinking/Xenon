@@ -42,14 +42,16 @@ namespace Xenon
 			return Assert( !_xenonBrowser.PageSource.Contains( text ), "Page contains: " + text );
 		}
 
-		public XenonAssertion ContainsElement( string cssSelector )
+		public XenonAssertion ContainsElement( string cssSelector, bool includeHidden = false )
 		{
-			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Any( e => e.IsVisible ), "Page does not contain element with selector: " + cssSelector );
+			var elements = _xenonBrowser.FindElementsByCssSelector( cssSelector );
+			return Assert( includeHidden ? elements.Any() : elements.Any( e => e.IsVisible ), "Page does not contain element with selector: " + cssSelector );
 		}
 
-		public XenonAssertion ContainsElement( Func<XenonElementsFinder, XenonElementsFinder> where )
+		public XenonAssertion ContainsElement( Func<XenonElementsFinder, XenonElementsFinder> where, bool includeHidden = false )
 		{
-			return Assert( where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().Any( e => e.IsVisible ), "Page does not contain element with selector: " );
+			var elements = where( new XenonElementsFinder( _xenonBrowser ) ).FindElements();
+			return Assert( includeHidden ? elements.Any() : elements.Any( e => e.IsVisible ), "Page does not contain element with selector: " );
 		}
 
 		public XenonAssertion DoesNotContainElement( string cssSelector )

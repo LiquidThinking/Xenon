@@ -31,5 +31,18 @@ namespace Xenon.Tests.AssertTests.Intergration
                     .Assert( a => a.PageContains( "Description Content" ) );
             }
         }
-    }
+
+		[Test]
+		public void AssertContainsElement_WhenIncludeHiddenIsTrue_CanFindHiddenFields()
+		{
+			var html = XenonTestsResourceLookup.GetContent( "PageWithInputs" );
+			using ( var bt = new BrowserTest( html ) )
+			{
+				var browser = bt.Start();
+				CreateInstance( browser )
+					.GoToUrl( "/" )
+					.Assert( a => a.ContainsElement( "input[type='hidden'][name='IAmHidden']", true ) );
+			}
+		}
+	}
 }

@@ -125,5 +125,12 @@ namespace Xenon.Tests.XenonElementsFinderTests
 			StartTest( "FindByContainsText", xt =>
 							xt.Assert( x => x.ContainsElement( where => where.ContainsText( "Hello" ) ) ) );
 		}
+
+		[Test]
+		public void AssertContainsElement_WhenIncludeHiddenIsTrue_CanFindHiddenFields()
+		{
+			StartTest( "FindHiddenElements", xt => xt.Assert( a => a.ContainsElement( "input[type='hidden'][name='IAmHidden']", true ) ) );
+		}
+
 	}
 }
