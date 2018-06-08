@@ -23,14 +23,14 @@ namespace Xenon.Tests.DatePickerTests
 			var html = XenonTestsResourceLookup.GetContent("VanillaDatePicker");
 			using (var browserTest = new BrowserTest(html))
 			{
-				var date = new DateTime(2015, 1, 1).ToString("yyyy-MM-dd");
+				var theFifthOfNovember = new DateTime(1605, 11, 5).ToString("yyyy-MM-dd");
 
 				CreateInstance(browserTest.Start())
 					.GoToUrl("/")
-					.EnterText("input[name=\"date\"]", date)
+					.EnterText("input[name=\"date\"]", theFifthOfNovember)
 					.Click(x => x.TextIs("Submit"));
 
-				Assert.AreEqual(date, GetPostedDateValue());
+				Assert.AreEqual(theFifthOfNovember, GetPostedDateValue());
 
 				string GetPostedDateValue()
 				{
