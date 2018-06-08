@@ -1,7 +1,6 @@
-﻿using Moq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace Xenon.Tests.AssertTests.Intergration
+namespace Xenon.Tests.AssertTests.Integration
 {
     [TestFixture]
     public class XenonScreenAssertTests : BaseAssertTests<DummyXenonScreen>

@@ -15,8 +15,7 @@ namespace Xenon.Tests
 		{
 			XenonTestOptions.Options = new XenonTestOptions
 			{
-				AssertMethod = Assert.IsTrue,
-
+				AssertMethod = Assert.IsTrue
 			};
 		}
 	}

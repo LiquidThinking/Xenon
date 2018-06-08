@@ -41,10 +41,10 @@ namespace Xenon.Tests.Integration
 
 		private int FreeTcpPort()
 		{
-			TcpListener l = new TcpListener( IPAddress.Loopback, 0 );
-			l.Start();
-			int port = ( (IPEndPoint)l.LocalEndpoint ).Port;
-			l.Stop();
+			var tcpListener = new TcpListener( IPAddress.Loopback, 0 );
+			tcpListener.Start();
+			var port = ( (IPEndPoint)tcpListener.LocalEndpoint ).Port;
+			tcpListener.Stop();
 			return port;
 		}
 
@@ -67,8 +67,7 @@ namespace Xenon.Tests.Integration
 		public void Dispose()
 		{
 			_webApp.Dispose();
-			if ( _xenonBrowser != null )
-				_xenonBrowser.Dispose();
+			_xenonBrowser?.Dispose();
 		}
 
 		public NameValueCollection GetPostResult()

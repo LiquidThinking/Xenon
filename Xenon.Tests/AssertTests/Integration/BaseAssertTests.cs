@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Xenon.Tests.Integration;
 
-namespace Xenon.Tests.AssertTests.Intergration
+namespace Xenon.Tests.AssertTests.Integration
 {
     public abstract class BaseAssertTests<T> : BaseXenonIntegrationTest where T : BaseXenonTest<T>
     {

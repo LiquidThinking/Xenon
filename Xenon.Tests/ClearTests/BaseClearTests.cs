@@ -5,27 +5,27 @@ namespace Xenon.Tests.ClearTests
 {
 	public abstract class BaseClearTests<T> : BaseXenonIntegrationTest where T : BaseXenonTest<T>
 	{
-		protected abstract BaseXenonTest<T> CreateInstance( IXenonBrowser browser );
+		protected abstract BaseXenonTest<T> CreateInstance(IXenonBrowser browser);
 
-        public BaseClearTests()
+		protected BaseClearTests()
 		{
-            XenonTestsResourceLookup.Folder("ClearTests");
+			XenonTestsResourceLookup.Folder("ClearTests");
 		}
 
 		[Test]
 		public void ClickDialogBox_AlertDialogBoxIsActive_ClickIt()
 		{
-            var html = XenonTestsResourceLookup.GetContent("Clear");
-            using (var bt = new BrowserTest(html))
-            {
-                var browser = bt.Start();
-                CreateInstance(browser)
-                    .GoToUrl("/")
-                    .Clear("#text-box")
-                    .Click(where => where.TextIs("Submit"));
+			var html = XenonTestsResourceLookup.GetContent("Clear");
+			using (var bt = new BrowserTest(html))
+			{
+				var browser = bt.Start();
+				CreateInstance(browser)
+					.GoToUrl("/")
+					.Clear("#text-box")
+					.Click(where => where.TextIs("Submit"));
 
-                Assert.AreEqual("", bt.GetPostResult()["text-box"]);
-            }
+				Assert.AreEqual("", bt.GetPostResult()["text-box"]);
+			}
 		}
 	}
 }
