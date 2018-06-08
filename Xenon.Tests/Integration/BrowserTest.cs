@@ -18,7 +18,7 @@ namespace Xenon.Tests.Integration
 		private IDisposable _webApp;
 		private IXenonBrowser _xenonBrowser;
 
-		public BrowserTest( string html )
+		public BrowserTest(string html)
 		{
 			Page = new Page
 			{
@@ -26,25 +26,38 @@ namespace Xenon.Tests.Integration
 			};
 		}
 
-		public IXenonBrowser Start()
+		public IXenonBrowser Start(BrowserType browserType = BrowserType.Chrome)
 		{
 			var port = GetFreeTcpPort();
 
 			Startup.Html = Page.Html;
-			_webApp = WebApp.Start<Startup>( new StartOptions
+			_webApp = WebApp.Start<Startup>(new StartOptions
 			{
 				ServerFactory = "Nowin",
 				Port = port,
-			} );
+			});
 
-			return _xenonBrowser = new SeleniumXenonBrowserWrapper( new FirefoxDriver( Environment.CurrentDirectory ), port );
+			return _xenonBrowser = new SeleniumXenonBrowserWrapper( CreateDriver(), port);
+
+			RemoteWebDriver CreateDriver()
+			{
+				switch (browserType)
+				{
+					case BrowserType.Chrome:
+						return new ChromeDriver(Environment.CurrentDirectory);
+					case BrowserType.Firefox:
+						return new FirefoxDriver(Environment.CurrentDirectory);
+					default:
+						throw new IndexOutOfRangeException();
+				}
+			}
 		}
 
 		private int GetFreeTcpPort()
 		{
-			var tcpListener = new TcpListener( IPAddress.Loopback, 0 );
+			var tcpListener = new TcpListener(IPAddress.Loopback, 0);
 			tcpListener.Start();
-			var port = ( (IPEndPoint)tcpListener.LocalEndpoint ).Port;
+			var port = ((IPEndPoint) tcpListener.LocalEndpoint).Port;
 			tcpListener.Stop();
 			return port;
 		}
@@ -53,15 +66,15 @@ namespace Xenon.Tests.Integration
 		{
 			private readonly int _port;
 
-			public SeleniumXenonBrowserWrapper( RemoteWebDriver driver, int port )
-				: base( driver )
+			public SeleniumXenonBrowserWrapper(RemoteWebDriver driver, int port)
+				: base(driver)
 			{
 				_port = port;
 			}
 
-			void IXenonBrowser.GoToUrl( string url )
+			void IXenonBrowser.GoToUrl(string url)
 			{
-				base.GoToUrl( "http://localhost:" + _port + url );
+				base.GoToUrl("http://localhost:" + _port + url);
 			}
 		}
 
@@ -75,5 +88,11 @@ namespace Xenon.Tests.Integration
 		{
 			return Startup.GetPostResult();
 		}
+	}
+
+	public enum BrowserType
+	{
+		Chrome,
+		Firefox
 	}
 }

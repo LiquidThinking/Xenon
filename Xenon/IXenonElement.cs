@@ -1,4 +1,6 @@
-﻿namespace Xenon
+﻿using System;
+
+namespace Xenon
 {
 	public interface IXenonElement
 	{
@@ -10,5 +12,6 @@
 	    string Text { get; }
 		IXenonElement Clear();
 		IXenonElement ScrollToElement();
+		IXenonElement EnterDate( DateTime date );
 	}
 }

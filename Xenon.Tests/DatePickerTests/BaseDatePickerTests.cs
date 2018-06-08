@@ -17,25 +17,44 @@ namespace Xenon.Tests.DatePickerTests
 			XenonTestsResourceLookup.Folder("DatePickerTests");
 		}
 
-		[Test]
-		public void SelectDate_WhenNativeBrowserDatePicker_CanSetValue()
+		private string GetHtml()
 		{
-			var html = XenonTestsResourceLookup.GetContent("VanillaDatePicker");
-			using (var browserTest = new BrowserTest(html))
-			{
-				var theFifthOfNovember = new DateTime(1605, 11, 5).ToString("yyyy-MM-dd");
+			return XenonTestsResourceLookup.GetContent("DatePicker");
+		}
 
-				CreateInstance(browserTest.Start())
+		[Test]
+		public void EnterText_WhenTextElementIsDatePicker_ThrowsException()
+		{
+			using (var browserTest = new BrowserTest(GetHtml()))
+			{
+				Assert.Throws<IncorrectInputElementTypeException>(() =>
+				{
+					CreateInstance(browserTest.Start())
+						.GoToUrl("/")
+						.EnterText("input[type=\"date\"]", new DateTime(2000, 1, 1).ToString());
+				});
+			}
+		}
+
+		[TestCase(BrowserType.Chrome)]
+		[TestCase(BrowserType.Firefox)]
+		public void EnterDateIntoDatePicker_DoesSetValue(BrowserType browserType )
+		{
+			using (var browserTest = new BrowserTest(GetHtml()))
+			{
+				var theFifthOfNovember = new DateTime(1605, 11, 5);
+
+				CreateInstance(browserTest.Start(browserType))
 					.GoToUrl("/")
-					.EnterText("input[name=\"date\"]", theFifthOfNovember)
+					.EnterDate("input[name=\"date\"]", theFifthOfNovember)
 					.Click(x => x.TextIs("Submit"));
 
 				Assert.AreEqual(theFifthOfNovember, GetPostedDateValue());
 
-				string GetPostedDateValue()
+				DateTime GetPostedDateValue()
 				{
 					var postResult = browserTest.GetPostResult();
-					return postResult["date"];
+					return DateTime.Parse(postResult["date"]);
 				}
 			}
 		}
