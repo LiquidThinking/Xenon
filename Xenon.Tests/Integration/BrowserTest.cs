@@ -28,7 +28,7 @@ namespace Xenon.Tests.Integration
 
 		public IXenonBrowser Start()
 		{
-			var port = FreeTcpPort();
+			var port = GetFreeTcpPort();
 
 			Startup.Html = Page.Html;
 			_webApp = WebApp.Start<Startup>( new StartOptions
@@ -40,7 +40,7 @@ namespace Xenon.Tests.Integration
 			return _xenonBrowser = new SeleniumXenonBrowserWrapper( new FirefoxDriver( Environment.CurrentDirectory ), port );
 		}
 
-		private int FreeTcpPort()
+		private int GetFreeTcpPort()
 		{
 			var tcpListener = new TcpListener( IPAddress.Loopback, 0 );
 			tcpListener.Start();
