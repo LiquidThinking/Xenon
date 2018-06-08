@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading;
 using Microsoft.Owin.Hosting;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 using Xenon.Selenium;
 
@@ -36,7 +37,7 @@ namespace Xenon.Tests.Integration
 				Port = port,
 			} );
 
-			return _xenonBrowser = new SeleniumXenonBrowserWrapper( new ChromeDriver( Environment.CurrentDirectory ), port );
+			return _xenonBrowser = new SeleniumXenonBrowserWrapper( new FirefoxDriver( Environment.CurrentDirectory ), port );
 		}
 
 		private int FreeTcpPort()
