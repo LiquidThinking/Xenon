@@ -10,9 +10,9 @@ namespace Xenon.Tests.DatePickerTests
 	[TestFixture]
 	public class XenonScreenDatePickerTests : BaseDatePickerTests<DummyXenonScreen>
 	{
-		protected override BaseXenonTest<DummyXenonScreen> CreateInstance(IXenonBrowser browser)
+		protected override BaseXenonTest<DummyXenonScreen> CreateInstance( IXenonBrowser browser )
 		{
-			return new DummyXenonScreen(browser);
+			return new DummyXenonScreen( browser );
 		}
 	}
 }

@@ -135,22 +135,20 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
 		public T EnterText( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser =>
-				{
-					var textInputElement = browser.FindElementsByCssSelector(cssSelector).LocateFirstVisibleElement();
-					textInputElement.EnterText(text);
-				},
+			return RunTask( browser => {
+								var textInputElement = browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement();
+								textInputElement.EnterText( text );
+							},
 				customPreWait ?? ( a => a.CustomAssertion( b => b.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
 				customPostWait );
 		}
 
 		public T EnterDate( string cssSelector, DateTime date, AssertionFunc preWait = null, AssertionFunc postWait = null )
 		{
-			return RunTask(browser =>
-			{
-				var dateInputElement = browser.FindElementsByCssSelector(cssSelector).LocateFirstVisibleElement();
-				dateInputElement.EnterDate(date);
-			}, preWait, postWait);
+			return RunTask( browser => {
+								var dateInputElement = browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement();
+								dateInputElement.EnterDate( date );
+							}, preWait, postWait );
 		}
 
 		/// <summary>

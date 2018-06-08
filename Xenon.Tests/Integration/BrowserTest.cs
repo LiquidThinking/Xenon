@@ -26,27 +26,27 @@ namespace Xenon.Tests.Integration
 			};
 		}
 
-		public IXenonBrowser Start(BrowserType browserType = BrowserType.Chrome)
+		public IXenonBrowser Start( BrowserType browserType = BrowserType.Chrome )
 		{
 			var port = GetFreeTcpPort();
 
 			Startup.Html = Page.Html;
-			_webApp = WebApp.Start<Startup>(new StartOptions
+			_webApp = WebApp.Start<Startup>( new StartOptions
 			{
 				ServerFactory = "Nowin",
 				Port = port,
-			});
+			} );
 
-			return _xenonBrowser = new SeleniumXenonBrowserWrapper( CreateDriver(), port);
+			return _xenonBrowser = new SeleniumXenonBrowserWrapper( CreateDriver(), port );
 
 			RemoteWebDriver CreateDriver()
 			{
-				switch (browserType)
+				switch ( browserType )
 				{
 					case BrowserType.Chrome:
-						return new ChromeDriver(Environment.CurrentDirectory);
+						return new ChromeDriver( Environment.CurrentDirectory );
 					case BrowserType.Firefox:
-						return new FirefoxDriver(Environment.CurrentDirectory);
+						return new FirefoxDriver( Environment.CurrentDirectory );
 					default:
 						throw new IndexOutOfRangeException();
 				}
@@ -55,9 +55,9 @@ namespace Xenon.Tests.Integration
 
 		private int GetFreeTcpPort()
 		{
-			var tcpListener = new TcpListener(IPAddress.Loopback, 0);
+			var tcpListener = new TcpListener( IPAddress.Loopback, 0 );
 			tcpListener.Start();
-			var port = ((IPEndPoint) tcpListener.LocalEndpoint).Port;
+			var port = ( (IPEndPoint)tcpListener.LocalEndpoint ).Port;
 			tcpListener.Stop();
 			return port;
 		}

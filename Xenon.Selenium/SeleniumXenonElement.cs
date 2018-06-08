@@ -62,28 +62,28 @@ namespace Xenon.Selenium
 		    }
 	    }
 
-	    public IXenonElement EnterText( string value )
-        {
-			if( _webElement.GetAttribute("type") == "date" )
-				throw new IncorrectInputElementTypeException($"Do not use {nameof(EnterText)} to set DatePicker values, " +
-																	$"use {nameof(EnterDate)} instead");
+		public IXenonElement EnterText( string value )
+		{
+			if ( _webElement.GetAttribute( "type" ) == "date" )
+				throw new IncorrectInputElementTypeException( $"Do not use {nameof( EnterText )} to set DatePicker values, " +
+															$"use {nameof( EnterDate )} instead" );
 
-            try
-            {
-                _webElement.SendKeys( value );
-                return this;
-            }
-            catch ( StaleElementReferenceException )
-            {
-                throw new StaleElementException();
-            }
-            catch ( WebDriverException )
-            {
-                return EnterText( value );
-            }
-        }
+			try
+			{
+				_webElement.SendKeys( value );
+				return this;
+			}
+			catch ( StaleElementReferenceException )
+			{
+				throw new StaleElementException();
+			}
+			catch ( WebDriverException )
+			{
+				return EnterText( value );
+			}
+		}
 
-        public bool IsVisible
+		public bool IsVisible
         {
             get
             {
@@ -157,18 +157,18 @@ namespace Xenon.Selenium
             }
         }
 
-	    public IXenonElement EnterDate( DateTime date )
-	    {
-		    _webElement.SendKeys(date.ToString(GetDriverDateFormat()));
-		    return this;
+		public IXenonElement EnterDate( DateTime date )
+		{
+			_webElement.SendKeys( date.ToString( GetDriverDateFormat() ) );
+			return this;
 
 			string GetDriverDateFormat()
-		    {
-			    var driverTypeName = _webDriver.GetType().Name;
-			    return driverTypeName == nameof(FirefoxDriver)
-				    ? "yyyy-MM-dd"
+			{
+				var driverTypeName = _webDriver.GetType().Name;
+				return driverTypeName == nameof( FirefoxDriver )
+					? "yyyy-MM-dd"
 					: "dd/MM/yyyy";
-		    }
-	    }
-    }
+			}
+		}
+	}
 }
