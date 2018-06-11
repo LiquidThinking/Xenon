@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
-
-namespace Xenon.Tests.AssertTests.Intergration
+﻿namespace Xenon.Tests.AssertTests.Integration
 {
     public class XenonTestAssertTests : BaseAssertTests<XenonTest>
     {

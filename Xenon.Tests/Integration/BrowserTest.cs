@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading;
 using Microsoft.Owin.Hosting;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
 using Xenon.Selenium;
 
@@ -17,7 +18,7 @@ namespace Xenon.Tests.Integration
 		private IDisposable _webApp;
 		private IXenonBrowser _xenonBrowser;
 
-		public BrowserTest( string html )
+		public BrowserTest(string html)
 		{
 			Page = new Page
 			{
@@ -25,9 +26,9 @@ namespace Xenon.Tests.Integration
 			};
 		}
 
-		public IXenonBrowser Start()
+		public IXenonBrowser Start( BrowserType browserType = BrowserType.Chrome )
 		{
-			var port = FreeTcpPort();
+			var port = GetFreeTcpPort();
 
 			Startup.Html = Page.Html;
 			_webApp = WebApp.Start<Startup>( new StartOptions
@@ -36,15 +37,28 @@ namespace Xenon.Tests.Integration
 				Port = port,
 			} );
 
-			return _xenonBrowser = new SeleniumXenonBrowserWrapper( new ChromeDriver( Environment.CurrentDirectory ), port );
+			return _xenonBrowser = new SeleniumXenonBrowserWrapper( CreateDriver(), port );
+
+			RemoteWebDriver CreateDriver()
+			{
+				switch ( browserType )
+				{
+					case BrowserType.Chrome:
+						return new ChromeDriver( Environment.CurrentDirectory );
+					case BrowserType.Firefox:
+						return new FirefoxDriver( Environment.CurrentDirectory );
+					default:
+						throw new IndexOutOfRangeException();
+				}
+			}
 		}
 
-		private int FreeTcpPort()
+		private int GetFreeTcpPort()
 		{
-			TcpListener l = new TcpListener( IPAddress.Loopback, 0 );
-			l.Start();
-			int port = ( (IPEndPoint)l.LocalEndpoint ).Port;
-			l.Stop();
+			var tcpListener = new TcpListener( IPAddress.Loopback, 0 );
+			tcpListener.Start();
+			var port = ( (IPEndPoint)tcpListener.LocalEndpoint ).Port;
+			tcpListener.Stop();
 			return port;
 		}
 
@@ -52,28 +66,33 @@ namespace Xenon.Tests.Integration
 		{
 			private readonly int _port;
 
-			public SeleniumXenonBrowserWrapper( RemoteWebDriver driver, int port )
-				: base( driver )
+			public SeleniumXenonBrowserWrapper(RemoteWebDriver driver, int port)
+				: base(driver)
 			{
 				_port = port;
 			}
 
-			void IXenonBrowser.GoToUrl( string url )
+			void IXenonBrowser.GoToUrl(string url)
 			{
-				base.GoToUrl( "http://localhost:" + _port + url );
+				base.GoToUrl("http://localhost:" + _port + url);
 			}
 		}
 
 		public void Dispose()
 		{
 			_webApp.Dispose();
-			if ( _xenonBrowser != null )
-				_xenonBrowser.Dispose();
+			_xenonBrowser?.Dispose();
 		}
 
 		public NameValueCollection GetPostResult()
 		{
 			return Startup.GetPostResult();
 		}
+	}
+
+	public enum BrowserType
+	{
+		Chrome,
+		Firefox
 	}
 }

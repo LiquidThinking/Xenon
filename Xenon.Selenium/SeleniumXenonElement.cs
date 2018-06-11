@@ -1,5 +1,8 @@
 using System;
+using System.Diagnostics;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
@@ -59,24 +62,28 @@ namespace Xenon.Selenium
 		    }
 	    }
 
-	    public IXenonElement EnterText( string value )
-        {
-            try
-            {
-                _webElement.SendKeys( value );
-                return this;
-            }
-            catch ( StaleElementReferenceException )
-            {
-                throw new StaleElementException();
-            }
-            catch ( WebDriverException )
-            {
-                return EnterText( value );
-            }
-        }
+		public IXenonElement EnterText( string value )
+		{
+			if ( _webElement.GetAttribute( "type" ) == "date" )
+				throw new IncorrectInputElementTypeException( $"Do not use {nameof( EnterText )} to set DatePicker values, " +
+															$"use {nameof( EnterDate )} instead" );
 
-        public bool IsVisible
+			try
+			{
+				_webElement.SendKeys( value );
+				return this;
+			}
+			catch ( StaleElementReferenceException )
+			{
+				throw new StaleElementException();
+			}
+			catch ( WebDriverException )
+			{
+				return EnterText( value );
+			}
+		}
+
+		public bool IsVisible
         {
             get
             {
@@ -149,5 +156,19 @@ namespace Xenon.Selenium
                 return ScrollToElement();
             }
         }
-    }
+
+		public IXenonElement EnterDate( DateTime date )
+		{
+			_webElement.SendKeys( date.ToString( GetDriverDateFormat() ) );
+			return this;
+
+			string GetDriverDateFormat()
+			{
+				var driverTypeName = _webDriver.GetType().Name;
+				return driverTypeName == nameof( FirefoxDriver )
+					? "yyyy-MM-dd"
+					: "dd/MM/yyyy";
+			}
+		}
+	}
 }
