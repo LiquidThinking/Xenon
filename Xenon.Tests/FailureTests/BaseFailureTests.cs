@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
-using Xenon.Selenium;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.FailureTests
@@ -22,20 +25,46 @@ namespace Xenon.Tests.FailureTests
 			{
 				var exception = Assert.Throws<NoElementsFoundException>( () => CreateInstance( browserTest.Start() )
 																			.Click( selector ) );
-				Assert.True( exception.Message.Contains( $"No elements found with selector '{selector}'" ) );
+				Assert.True( exception.Message.Contains( selector ) );
 			}
 		}
 
-		[Test]
-		public void SearchForNonExistentElement_ByTextIs_IncludesTextInException()
+		[TestCaseSource( typeof( XenonElementsFinderTestCase ) )]
+		public void ClickNonExistentElement_ByTextIs_IncludesTextInException( XenonElementsFinderTestCase testCase )
 		{
-			const string text = "Hello";
 			using ( var browserTest = new BrowserTest( XenonTestsResourceLookup.GetContent( FailureTests ) ) )
 			{
 				var exception = Assert.Throws<NoElementsFoundException>( () => CreateInstance( browserTest.Start() )
-																			.Click( x => x.TextIs( text ) ) );
-				Assert.True( exception.Message.Contains( text ) );
+																			.Click( testCase.SearchCriteria ) );
+				Assert.True( testCase.SearchIdentifiers.All( x => exception.Message.Contains( x ) ) );
 			}
+		}		
+	}
+
+	public class XenonElementsFinderTestCase : IEnumerable
+	{
+		public List<string> SearchIdentifiers { get; }
+		public Func<XenonElementsFinder, XenonElementsFinder> SearchCriteria { get; }
+
+		public XenonElementsFinderTestCase( Func<XenonElementsFinder, XenonElementsFinder> searchCriteria, params string[] searchIdentifiers )
+		{
+			SearchIdentifiers = searchIdentifiers.ToList();
+			SearchCriteria = searchCriteria;
+		}
+
+		public XenonElementsFinderTestCase()
+		{
+		}
+
+		private static IEnumerable<XenonElementsFinderTestCase> GetXenonElementsFinderTestCases()
+		{
+			const string textIsNot = nameof( textIsNot );
+			yield return new XenonElementsFinderTestCase( x => x.TextIs( textIsNot ), textIsNot );
+		}
+
+		public IEnumerator GetEnumerator()
+		{
+			return GetXenonElementsFinderTestCases().GetEnumerator();
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace Xenon
 				_formatArguments = formatArguments;
 			}
 
-			internal virtual string CreateCriteria( )
+			internal virtual string CreateCriteria()
 			{
 				return string.Format( _format, _formatArguments );
 			}
