@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 
 namespace Xenon.Tests
@@ -15,11 +10,6 @@ namespace Xenon.Tests
 		{
 			private readonly IXenonBrowser _browser;
 			private readonly XenonTestOptions _options;
-
-			public DummyScreenHelper( IXenonBrowser browser ) : base( browser )
-			{
-				_browser = browser;
-			}
 
 			public DummyScreenHelper( IXenonBrowser browser, XenonTestOptions options ) : base( browser, options )
 			{
@@ -40,14 +30,12 @@ namespace Xenon.Tests
 
 		public class ScreenA : DummyScreenHelper<ScreenA>
 		{
-			public ScreenA( IXenonBrowser xenonBrowser ) : base( xenonBrowser ) {}
-			public ScreenA( IXenonBrowser browser, XenonTestOptions options ) : base( browser, options ) {}
+			public ScreenA( IXenonBrowser browser, XenonTestOptions options = null ) : base( browser, options ) {}
 		}
 
 		public class ScreenB : DummyScreenHelper<ScreenB>
 		{
-			public ScreenB( IXenonBrowser xenonBrowser ) : base( xenonBrowser ) {}
-			public ScreenB( IXenonBrowser browser, XenonTestOptions options ) : base( browser, options ) {}
+			public ScreenB( IXenonBrowser browser, XenonTestOptions options = null ) : base( browser, options ) {}
 		}
 
 		[Test]
@@ -66,13 +54,12 @@ namespace Xenon.Tests
 
 		public class FirstScreenWhenNextScreenHasOnly1Constructor : DummyScreenHelper<FirstScreenWhenNextScreenHasOnly1Constructor>
 		{
-			public FirstScreenWhenNextScreenHasOnly1Constructor( IXenonBrowser browser ) : base( browser ) {}
-			public FirstScreenWhenNextScreenHasOnly1Constructor( IXenonBrowser browser, XenonTestOptions options ) : base( browser, options ) {}
+			public FirstScreenWhenNextScreenHasOnly1Constructor( IXenonBrowser browser, XenonTestOptions options = null ) : base( browser, options ) {}
 		}
 
 		public class SecondScreenWhenNextScreenHasOnly1Constructor : DummyScreenHelper<SecondScreenWhenNextScreenHasOnly1Constructor>
 		{
-			public SecondScreenWhenNextScreenHasOnly1Constructor( IXenonBrowser browser ) : base( browser ) {}
+			public SecondScreenWhenNextScreenHasOnly1Constructor( IXenonBrowser browser, XenonTestOptions options = null ) : base( browser, options ) {}
 		}
 
 		[Test]
