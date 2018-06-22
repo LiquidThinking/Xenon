@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 
-namespace Xenon.Tests.FailureTests
+namespace Xenon.Tests.MissingElementsTests
 {
 	[TestFixture]
-	public class XenonScreenFailureTests : BaseFailureTests<DummyXenonScreen>
+	public class XenonScreenMissingElementsTest : BaseMissingElementsTest<DummyXenonScreen>
 	{
 		protected override BaseXenonTest<DummyXenonScreen> CreateInstance( IXenonBrowser browser )
 		{

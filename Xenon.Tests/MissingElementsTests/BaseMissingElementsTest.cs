@@ -5,26 +5,47 @@ using System.Linq;
 using NUnit.Framework;
 using Xenon.Tests.Integration;
 
-namespace Xenon.Tests.FailureTests
+namespace Xenon.Tests.MissingElementsTests
 {
-	public abstract class BaseFailureTests<T> : BaseXenonIntegrationTest where T : BaseXenonTest<T>
+	public abstract class BaseMissingElementsTest<T> : BaseXenonIntegrationTest where T : BaseXenonTest<T>
 	{
-		private const string FailureTests = "FailureTests";
+		private const string NonExistentCssSelector = ".IDontExist";
+		private const string NonExistentId = "#NorMe";
 		protected abstract BaseXenonTest<T> CreateInstance( IXenonBrowser browser );
 
-		protected BaseFailureTests()
+		protected BaseMissingElementsTest()
 		{
-			XenonTestsResourceLookup.Folder( FailureTests );
+			XenonTestsResourceLookup.Folder( "MissingElementsTests" );
 		}
 
-		[TestCase( "#IDontExist" )]
-		[TestCase( ".NorMe" )]
+		[TestCase( NonExistentCssSelector )]
+		[TestCase( NonExistentId )]
 		public void SearchForNonExistentElement_ByCssSelector_IncludesCssSelectorInException( string selector )
 		{
-			using ( var browserTest = new BrowserTest( XenonTestsResourceLookup.GetContent( FailureTests ) ) )
+			RunCssSelectorActionForExceptionMessgae( selector, ( b, css ) => b.Click( css ) );
+		}
+
+
+		[TestCase( NonExistentCssSelector )]
+		[TestCase( NonExistentId )]
+		public void ClearNonExistentElement_IncludesCssSelectorInException( string selector )
+		{
+			RunCssSelectorActionForExceptionMessgae( selector, ( b, css ) => b.Clear( css ) );
+		}
+
+		[TestCase( NonExistentCssSelector )]
+		[TestCase( NonExistentId )]
+		public void EnterTextIntoNonExistentElement_IncludesCssSelectorInException( string selector )
+		{
+			RunCssSelectorActionForExceptionMessgae( selector, ( b, css ) => b.EnterText( css, string.Empty ) );
+		}
+
+		private void RunCssSelectorActionForExceptionMessgae( string selector, Func<BaseXenonTest<T>, string, BaseXenonTest<T>> xenonAction )
+		{
+			using ( var browserTest = CreateBrowserTest() )
 			{
-				var exception = Assert.Throws<NoElementsFoundException>( () => CreateInstance( browserTest.Start() )
-																			.Click( selector ) );
+				var browser = CreateInstance( browserTest.Start() );
+				var exception = Assert.Throws<NoElementsFoundException>( () => xenonAction( browser, selector ) );
 				Assert.True( exception.Message.Contains( selector ) );
 			}
 		}
@@ -41,18 +62,32 @@ namespace Xenon.Tests.FailureTests
 			AssertXenonActionThrowsWithMessage( ( x, tc ) => x.RightClick( tc.SearchCriteria ), testCase );
 		}
 
-		private void AssertXenonActionThrowsWithMessage( PerformXenonAction<T> xenonAction, XenonElementsFinderTestCase testCase )
+		[Test]
+		public void CustomForNonExistentElement_IncludesTextInException()
 		{
-			using ( var browserTest = new BrowserTest( XenonTestsResourceLookup.GetContent( FailureTests ) ) )
+			const string cssSelector = "not there";
+			using ( var browserTest = CreateBrowserTest() )
+			{
+				var browser = CreateInstance( browserTest.Start() );
+				var exception = Assert.Throws<NoElementsFoundException>( () => browser.Custom( x => x.FindElementsByCssSelector( cssSelector ) ) );
+				Assert.True( exception.Message.Contains( cssSelector ) );
+			}
+		}
+
+		private void AssertXenonActionThrowsWithMessage( 
+			Func<BaseXenonTest<T>, XenonElementsFinderTestCase, BaseXenonTest<T>> xenonAction, 
+			XenonElementsFinderTestCase testCase )
+		{
+			using ( var browserTest = CreateBrowserTest() )
 			{
 				var browser = CreateInstance( browserTest.Start() );
 				var exception = Assert.Throws<NoElementsFoundException>( () => xenonAction( browser, testCase ) );
 				Assert.True( testCase.SearchIdentifiers.All( x => exception.Message.Contains( x ) ) );
 			}
 		}
-	}
 
-	delegate BaseXenonTest<T> PerformXenonAction<T>( BaseXenonTest<T> item, XenonElementsFinderTestCase testCase ) where T : BaseXenonTest<T>;
+		private BrowserTest CreateBrowserTest() => new BrowserTest( "Empty" );
+	}
 
 	public class XenonElementsFinderTestCase : IEnumerable
 	{
@@ -76,11 +111,11 @@ namespace Xenon.Tests.FailureTests
 			const string textDoesNotContain = nameof( textDoesNotContain );
 			yield return new XenonElementsFinderTestCase( x => x.ContainsText( textDoesNotContain ), textDoesNotContain );
 
-			const string attributeName = "not";
-			const string attributeValue = "present";
+			const string attributeName = nameof( attributeName );
+			const string attributeValue = nameof( attributeValue );
 			yield return new XenonElementsFinderTestCase( x => x.AttributeIs( attributeName, attributeValue ), attributeName, attributeValue );
 
-			const string cssClass = "superStylish";
+			const string cssClass = nameof( cssClass );
 			yield return new XenonElementsFinderTestCase( x => x.CssClassIs( cssClass ), cssClass );
 
 			yield return new XenonElementsFinderTestCase( x => x.TextIs( textIsNot ).ContainsText( textDoesNotContain ).CssClassIs( cssClass ), textIsNot, textDoesNotContain, cssClass );
