@@ -5,7 +5,6 @@ using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
-using OpenQA.Selenium.Support.UI;
 
 namespace Xenon.Selenium
 {
@@ -35,7 +34,11 @@ namespace Xenon.Selenium
 
 		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector )
 		{
-			return _driver.FindElementsByCssSelector( cssSelector ).Select( ConvertToXenonElement );
+			var elements = _driver.FindElementsByCssSelector( cssSelector );
+			if ( !elements.Any() )
+				throw new NoElementsFoundException( $"No elements found with selector '{cssSelector}'" );
+
+			return elements.Select( ConvertToXenonElement );
 		}
 
 		public IEnumerable<IXenonElement> FindElementsByXPath( string xpath )
@@ -113,8 +116,8 @@ namespace Xenon.Selenium
 				_driver.SwitchTo().Alert();
 				result = true;
 			}
-			catch ( NoAlertPresentException ) {}
-			catch ( UnhandledAlertException ) {}
+			catch ( NoAlertPresentException ) { }
+			catch ( UnhandledAlertException ) { }
 
 			return result;
 		}
@@ -141,7 +144,7 @@ namespace Xenon.Selenium
 
 		public void ClearSessionStorage()
 		{
-			_driver.ExecuteScript("try { sessionStorage.clear(); } catch(ex){} ");
+			_driver.ExecuteScript( "try { sessionStorage.clear(); } catch(ex){} " );
 		}
 
 		public void ClearCookies()

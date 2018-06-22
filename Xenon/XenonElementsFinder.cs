@@ -10,19 +10,19 @@ namespace Xenon
 		private abstract class BaseXpathCriteria
 		{
 			private readonly string _format;
-			private readonly string[] _formatArguments;
+			protected readonly string[] _formatArguments;
 
 			public abstract bool CanHandleSearchingAll { get; }
 
-			public BaseXpathCriteria(string format, params string[] formatArguments )
+			protected BaseXpathCriteria(string format, params string[] formatArguments )
 			{
 				_format = format;
 				_formatArguments = formatArguments;
 			}
 
-			public virtual string CreateCriteria( )
+			internal virtual string CreateCriteria( )
 			{
-				return String.Format( _format, _formatArguments );
+				return string.Format( _format, _formatArguments );
 			}
 
 			public virtual string CreateCriteriaForcingSearchAll()
@@ -33,19 +33,24 @@ namespace Xenon
 				return "//*" + CreateCriteria();
 			}
 
+			/// <summary>
+			/// A summary of what this object was searching for for logging in case of failure
+			/// </summary>
+			/// <returns></returns>
+			public abstract string GetVerboseMessage();
 		}
 
 		private class FindByTextXpathCriteria : BaseXpathCriteria
 		{
 			private const string Format = "(//input[@value='{0}' and (@type='submit' or @type='button' or @type= 'reset' ) ] | //*[normalize-space(text()) = normalize-space('{0}')])";
 
-			public FindByTextXpathCriteria( string text ) : base( Format, text ) {}
-
-
-			public override bool CanHandleSearchingAll
+			public FindByTextXpathCriteria( string text ) : base( Format, text )
 			{
-				get { return true; }
 			}
+
+			public override bool CanHandleSearchingAll => true;
+
+			public override string GetVerboseMessage() => $"Searching for element(s) with text '{_formatArguments.Single()}'";
 		}
 
 		private class FindByContainsTextXpathCriteria : BaseXpathCriteria
@@ -55,28 +60,30 @@ namespace Xenon
 			{
 			}
 
-			public override bool CanHandleSearchingAll { get; } = true;
+			public override bool CanHandleSearchingAll => true;
+
+			public override string GetVerboseMessage() => $"Searching for element(s) containing text {_formatArguments.Single()}";
 		}
 
 
 		private class FindByAttributeXPathCriteria : BaseXpathCriteria
 		{
-			public FindByAttributeXPathCriteria( string attributeName, string attributeValue ) : base( "[@{0}='{1}']", attributeName, attributeValue ) {}
-
-			public override bool CanHandleSearchingAll
+			public FindByAttributeXPathCriteria( string attributeName, string attributeValue ) : base( "[@{0}='{1}']", attributeName, attributeValue )
 			{
-				get { return false; }
 			}
+
+			public override bool CanHandleSearchingAll => false;
+
+			public override string GetVerboseMessage() => $"Searching for element(s) with attribute '{_formatArguments[0]}' with value '{_formatArguments[1]}'";
 		}
 
 		private class FindByCssClassXPathCriteria : BaseXpathCriteria
 		{
 			public FindByCssClassXPathCriteria( string className) : base( "[contains(@class, '{0}')]", className ) {}
 
-			public override bool CanHandleSearchingAll
-			{
-				get { return false; }
-			}
+			public override bool CanHandleSearchingAll => false;
+
+			public override string GetVerboseMessage() => $"Searching for element(s) with css class '{_formatArguments.Single()}'";
 		}
 
 		private class XPathCriteriaBuilder
@@ -125,7 +132,7 @@ namespace Xenon
 				} ).ToList();
 
 				criteriaWithCorrectPositions.Insert( 0, criteriaWhichShouldBeFirst );
-				string result = String.Join( String.Empty, criteriaWithCorrectPositions.Select( x => x.CreateCriteria() ) );
+				var result = string.Join( string.Empty, criteriaWithCorrectPositions.Select( x => x.CreateCriteria() ) );
 				return result;
 			}
 
@@ -137,6 +144,10 @@ namespace Xenon
 				return builder.ToString();
 			}
 
+			public override string ToString()
+			{
+				return string.Join( ", ", _criteria.Select( x => x.GetVerboseMessage() ) );
+			}
 		}
 
 		private readonly IXenonBrowser _browser;
@@ -174,16 +185,18 @@ namespace Xenon
 
 		internal IEnumerable<IXenonElement> FindElements()
 		{
-			string criteria = _criteriaBuilder.GenerateCriteria();
-			var result = _browser.FindElementsByXPath( criteria );
+			var criteria = _criteriaBuilder.GenerateCriteria();
+			var result = _browser.FindElementsByXPath( criteria ).ToList();
 
-			return result;
+			if ( result.Any() )
+				return result;
+
+			throw new NoElementsFoundException( $"Did not find any elements. Search criteria: {_criteriaBuilder}" );
 		}
 
 		public string CriteriaDetails()
 		{
 			return _criteriaBuilder.CriteriaDetails();
 		}
-
 	}
 }
