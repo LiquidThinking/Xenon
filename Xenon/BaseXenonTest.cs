@@ -9,11 +9,9 @@ namespace Xenon
 		protected readonly XenonTestOptions _xenonTestOptions;
 		protected IXenonBrowser _xenonBrowser;
 
-		protected BaseXenonTest( IXenonBrowser xenonBrowser ) : this( xenonBrowser, XenonTestOptions.Options ?? new XenonTestOptions() ) {}
-
-		protected BaseXenonTest( IXenonBrowser browser, XenonTestOptions options )
+		protected BaseXenonTest( IXenonBrowser browser, XenonTestOptions options = null )
 		{
-			_xenonTestOptions = options;
+			_xenonTestOptions = options ?? XenonTestOptions.Options ?? new XenonTestOptions();
 			_xenonBrowser = browser;
 		}
 

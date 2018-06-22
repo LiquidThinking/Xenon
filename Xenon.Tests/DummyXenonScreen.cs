@@ -2,7 +2,6 @@
 {
 	public class DummyXenonScreen : XenonScreen<DummyXenonScreen>
 	{
-		public DummyXenonScreen( IXenonBrowser xenonBrowser ) : base( xenonBrowser ) { }
-		public DummyXenonScreen( IXenonBrowser browser, XenonTestOptions options ) : base( browser, options ) { }
+		public DummyXenonScreen( IXenonBrowser browser, XenonTestOptions options = null) : base( browser, options ) { }
 	}
 }
