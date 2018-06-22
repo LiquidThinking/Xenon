@@ -156,17 +156,6 @@ namespace Xenon.Tests.ClickTests
 		}
 
 		[Test]
-		public void Click_WhereTextIsProvidedAndNoElementWasFound_ThrowAnException()
-		{
-			var browser = SetupBrowser();
-			browser.SetupFindElementsByXPath( It.IsAny<string>() );
-
-			var xenonTest = CreateInstance( browser );
-			var ex = Assert.Throws<Exception>( () => xenonTest.Click( x => x.TextIs( It.IsAny<string>() ) ) );
-			Assert.IsTrue( ex.Message.Contains( "No element was found" ) );
-		}
-
-		[Test]
 		public void Click_WhenElementIsNotVisible_ShouldNotIncludeItAndThrowNoElementsFoundException()
 		{
 			var browser = SetupBrowser();

@@ -77,8 +77,14 @@ namespace Xenon.Selenium
 			{
 				var switchedWindowDriver = _driver.SwitchTo().Window( windowHandle );
 				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
-				if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
-					return switchedWindowXenonBrowser;
+				try
+				{
+					if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
+						return switchedWindowXenonBrowser;
+				}
+				catch ( NoElementsFoundException )
+				{
+				}
 			}
 
 			return new SeleniumXenonBrowser( _driver );
