@@ -52,5 +52,7 @@ namespace Xenon
 			if ( !Elements.Any() )
 				throw new NoElementsFoundException( _searchCriteria );
 		}
+
+		public override string ToString() => _searchCriteria;
 	}
 }
