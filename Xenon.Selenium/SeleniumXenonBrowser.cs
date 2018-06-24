@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using OpenQA.Selenium;
@@ -44,7 +43,7 @@ namespace Xenon.Selenium
 
 			return new XenonElementsSearchResult(
 				elements,
-				$"Searching for elements with XPath '{xpath}'" );
+				$"Searching for element(s) with XPath '{xpath}'" );
 		}
 
 		public void GoToUrl( string url ) => _driver.Navigate().GoToUrl( url );
@@ -72,6 +71,7 @@ namespace Xenon.Selenium
 			{
 				var switchedWindowDriver = _driver.SwitchTo().Window( windowHandle );
 				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver) switchedWindowDriver );
+
 				if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
 					return switchedWindowXenonBrowser;
 			}
@@ -111,8 +111,12 @@ namespace Xenon.Selenium
 				_driver.SwitchTo().Alert();
 				result = true;
 			}
-			catch ( NoAlertPresentException ) { }
-			catch ( UnhandledAlertException ) { }
+			catch ( NoAlertPresentException )
+			{
+			}
+			catch ( UnhandledAlertException )
+			{
+			}
 
 			return result;
 		}
@@ -148,7 +152,9 @@ namespace Xenon.Selenium
 			{
 				_driver.Manage().Cookies.DeleteAllCookies();
 			}
-			catch { }
+			catch
+			{
+			}
 		}
 
 		public object ExecuteJavascript( string script, params object[] args )

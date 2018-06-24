@@ -32,7 +32,7 @@ namespace Xenon.Tests.DoesNotContainTests
 		[Test]
 		public void DoesNotContainAssertionFunc_WhenNoElementsNotFound_Passing()
 		{
-			AssertDoesNotContainElement( DoesNotContainHamburgers );
+			AssertThat( DoesNotContainHamburgers );
 
 			XenonAssertion DoesNotContainHamburgers( XenonAssertion assertion )
 			{
@@ -43,18 +43,25 @@ namespace Xenon.Tests.DoesNotContainTests
 		[Test]
 		public void DoesNotContainAssertionFunc_WhenElementsNotFound_Failing()
 		{
+			const string nothingToSeeHere = "Nothing to see here";
 			var assertionException = Assert.Throws<AssertionException>(
-				() => AssertDoesNotContainElement( DoesNotContainNothingToSeeHere ) );
+				() => AssertThat( DoesNotContainNothingToSeeHere ) );
 
-			Assert.True( assertionException.Message.Contains( "Page does contains element with selector" ) );
+			AssertExceptionContains( "Page contains elements matching the following criteria", nothingToSeeHere );
+
+			void AssertExceptionContains( params string[] values )
+			{
+				foreach ( var value in values )
+					Assert.True( assertionException.Message.Contains( @value ) );
+			}
 
 			XenonAssertion DoesNotContainNothingToSeeHere( XenonAssertion assertion )
 			{
-				return assertion.DoesNotContainElement( e => e.ContainsText( "Nothing to see here" ) );
+				return assertion.DoesNotContainElement( e => e.ContainsText( nothingToSeeHere ) );
 			}
 		}
 
-		private void AssertDoesNotContainElement( AssertionFunc assertion )
+		private void AssertThat( AssertionFunc assertion )
 			=> PerformXenonAction( x => x.Assert( assertion ) );
 
 		private void AssertDoesNotContainElement( string cssSelector )
