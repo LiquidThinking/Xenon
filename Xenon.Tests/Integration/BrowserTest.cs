@@ -26,7 +26,7 @@ namespace Xenon.Tests.Integration
 			};
 		}
 
-		public IXenonBrowser Start( BrowserType browserType = BrowserType.Chrome )
+		public IXenonBrowser Start( BrowserType browserType = BrowserType.Firefox )
 		{
 			var port = GetFreeTcpPort();
 
@@ -41,12 +41,14 @@ namespace Xenon.Tests.Integration
 
 			RemoteWebDriver CreateDriver()
 			{
+				var firefoxOptions = new FirefoxOptions();
+				firefoxOptions.AddArgument( "--headless" );
 				switch ( browserType )
 				{
 					case BrowserType.Chrome:
 						return new ChromeDriver( Environment.CurrentDirectory );
 					case BrowserType.Firefox:
-						return new FirefoxDriver( Environment.CurrentDirectory );
+						return new FirefoxDriver( Environment.CurrentDirectory, firefoxOptions );
 					default:
 						throw new IndexOutOfRangeException();
 				}

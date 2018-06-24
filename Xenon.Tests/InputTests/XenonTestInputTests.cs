@@ -28,9 +28,14 @@ namespace Xenon.Tests.InputTests
 
 				new DummyXenonScreen( browser )
 					.GoToUrl( "/" )
-					.Assert( x => x.CustomAssertion( y => y.FindElementsByCssSelector( String.Format( "input[type='{0}']", inputType ) ).First().Text == expectedValue ) );
+					.Assert( x => InputHasExpectedValue( inputType, expectedValue, x ) );
 			}
 		}
 
+		private static XenonAssertion InputHasExpectedValue( string inputType, string expectedValue, XenonAssertion xenonAssertion )
+		{
+			return xenonAssertion.CustomAssertion( y => y.FindElementsByCssSelector( $"input[type='{inputType}']" )
+				                               .Elements.First().Text == expectedValue );
+		}
 	}
 }

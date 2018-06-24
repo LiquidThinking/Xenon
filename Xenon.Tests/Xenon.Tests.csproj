@@ -86,6 +86,9 @@
     <Compile Include="DatePickerTests\BaseDatePickerTests.cs" />
     <Compile Include="DatePickerTests\XenonScreenDatePickerTests.cs" />
     <Compile Include="DatePickerTests\XenonTestDatePickerTests.cs" />
+    <Compile Include="DoesNotContainTests\BaseDoesNotContainTests.cs" />
+    <Compile Include="DoesNotContainTests\XenonScreenDoesNotContainTests.cs" />
+    <Compile Include="DoesNotContainTests\XenonTestDoesNotContainTests.cs" />
     <Compile Include="DummyXenonScreen.cs" />
     <Compile Include="EmbeddedResourceLookup.cs" />
     <Compile Include="EnterTextInDialogBoxTests\BaseEnterTextInDialogBoxTests.cs" />
@@ -167,6 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MissingElementsTests\Empty.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DoesNotContainTests\DoesNotContain.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.2.39.0\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.2.39.0\build\Selenium.WebDriver.ChromeDriver.targets')" />

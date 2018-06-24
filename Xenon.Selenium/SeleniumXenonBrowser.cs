@@ -17,39 +17,37 @@ namespace Xenon.Selenium
 			_driver = driver;
 		}
 
-		public string Url
-		{
-			get { return _driver.Url; }
-		}
+		public string Url => _driver.Url;
 
-		public string PageSource
-		{
-			get { return _driver.PageSource; }
-		}
+		public string PageSource => _driver.PageSource;
 
 		private IXenonElement ConvertToXenonElement( IWebElement webElement )
 		{
 			return new SeleniumXenonElement( _driver, webElement );
 		}
 
-		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector )
+		public XenonElementSearchResult FindElementsByCssSelector( string cssSelector )
 		{
-			var elements = _driver.FindElementsByCssSelector( cssSelector );
-			if ( !elements.Any() )
-				throw new NoElementsFoundException( $"No elements found with selector '{cssSelector}'" );
+			var elements = _driver.FindElementsByCssSelector( cssSelector )
+				.Select( ConvertToXenonElement ).ToList();
 
-			return elements.Select( ConvertToXenonElement );
+			return new XenonElementSearchResult(
+				elements,
+				$"Searching for element(s) with Css Selector '{cssSelector}'" );
 		}
 
-		public IEnumerable<IXenonElement> FindElementsByXPath( string xpath )
+		public XenonElementSearchResult FindElementsByXPath( string xpath )
 		{
-			return _driver.FindElementsByXPath( xpath ).Select( ConvertToXenonElement );
+			var elements = _driver.FindElementsByXPath( xpath )
+				.Select( ConvertToXenonElement )
+				.ToList();
+
+			return new XenonElementSearchResult(
+				elements,
+				$"Searching for elements with XPath '{xpath}'" );
 		}
 
-		public void GoToUrl( string url )
-		{
-			_driver.Navigate().GoToUrl( url );
-		}
+		public void GoToUrl( string url ) => _driver.Navigate().GoToUrl( url );
 
 		public XenonAssertion RunAssertion( AssertionFunc assertion )
 		{
@@ -66,10 +64,7 @@ namespace Xenon.Selenium
 			return result;
 		}
 
-		public void Quit()
-		{
-			_driver.Quit();
-		}
+		public void Quit() => _driver.Quit();
 
 		public IXenonBrowser SwitchToWindow( AssertionFunc assertion )
 		{
@@ -116,7 +111,7 @@ namespace Xenon.Selenium
 
 		public bool DialogBoxIsActive()
 		{
-			bool result = false;
+			var result = false;
 			try
 			{
 				_driver.SwitchTo().Alert();
@@ -174,10 +169,7 @@ namespace Xenon.Selenium
 			}
 		}
 
-		public void CloseWindow()
-		{
-			_driver.Close();
-		}
+		public void CloseWindow() => _driver.Close();
 
 		public void Dispose()
 		{

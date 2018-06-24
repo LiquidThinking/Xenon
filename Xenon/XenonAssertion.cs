@@ -25,14 +25,14 @@ namespace Xenon
 
 		public XenonAssertion UrlContains( string content )
 		{
-			return Assert( _xenonBrowser.Url.Contains( content ), String.Format( "Url '{0}' does not contain: {1}", _xenonBrowser.Url, content ) );
+			return Assert( _xenonBrowser.Url.Contains( content ), $"Url '{_xenonBrowser.Url}' does not contain: {content}" );
 		}
 
 		public XenonAssertion PageContains( string content )
 		{
 		    var pageContains = _xenonBrowser.PageSource.Contains( content );
 		    if ( !pageContains )
-		        pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Any( e => e.Text.Contains( content ) );
+		        pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Elements.Any( e => e.Text.Contains( content ) );
 
             return Assert( pageContains, "Page does not contain: " + content );
 		}
@@ -44,22 +44,22 @@ namespace Xenon
 
 		public XenonAssertion ContainsElement( string cssSelector )
 		{
-			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Any( e => e.IsVisible ), "Page does not contain element with selector: " + cssSelector );
+			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Elements.Any( e => e.IsVisible ), "Page does not contain element with selector: " + cssSelector );
 		}
 
 		public XenonAssertion ContainsElement( Func<XenonElementsFinder, XenonElementsFinder> where )
 		{
-			return Assert( where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().Any( e => e.IsVisible ), "Page does not contain element with selector: " );
+			return Assert( where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().Elements.Any( e => e.IsVisible ), "Page does not contain element with selector: " );
 		}
 
 		public XenonAssertion DoesNotContainElement( string cssSelector )
 		{
-			return Assert( !_xenonBrowser.FindElementsByCssSelector( cssSelector ).Any( e => e.IsVisible ), "Page contains element with selector: " + cssSelector );
+			return Assert( !_xenonBrowser.FindElementsByCssSelector( cssSelector ).Elements.Any( e => e.IsVisible ), "Page contains element with selector: " + cssSelector );
 		}
 
 		public XenonAssertion DoesNotContainElement( Func<XenonElementsFinder, XenonElementsFinder> where )
 		{
-			return Assert( !where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().Any( e => e.IsVisible ), "Page does contains element with selector: " );
+			return Assert( !where( new XenonElementsFinder( _xenonBrowser ) ).FindElements().Elements.Any( e => e.IsVisible ), "Page does contains element with selector: " );
 		}
 
 		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc )
