@@ -7,8 +7,8 @@ namespace Xenon
 	{
 		string Url { get; }
 		string PageSource { get; }
-		XenonElementSearchResult FindElementsByCssSelector( string cssSelector );
-		XenonElementSearchResult FindElementsByXPath( string xpath );
+		XenonElementsSearchResult FindElementsByCssSelector( string cssSelector );
+		XenonElementsSearchResult FindElementsByXPath( string xpath );
 		void GoToUrl( string url );
 		XenonAssertion RunAssertion( AssertionFunc assertion );
 		void Quit();

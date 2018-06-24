@@ -26,23 +26,23 @@ namespace Xenon.Selenium
 			return new SeleniumXenonElement( _driver, webElement );
 		}
 
-		public XenonElementSearchResult FindElementsByCssSelector( string cssSelector )
+		public XenonElementsSearchResult FindElementsByCssSelector( string cssSelector )
 		{
 			var elements = _driver.FindElementsByCssSelector( cssSelector )
 				.Select( ConvertToXenonElement ).ToList();
 
-			return new XenonElementSearchResult(
+			return new XenonElementsSearchResult(
 				elements,
 				$"Searching for element(s) with Css Selector '{cssSelector}'" );
 		}
 
-		public XenonElementSearchResult FindElementsByXPath( string xpath )
+		public XenonElementsSearchResult FindElementsByXPath( string xpath )
 		{
 			var elements = _driver.FindElementsByXPath( xpath )
 				.Select( ConvertToXenonElement )
 				.ToList();
 
-			return new XenonElementSearchResult(
+			return new XenonElementsSearchResult(
 				elements,
 				$"Searching for elements with XPath '{xpath}'" );
 		}
@@ -71,15 +71,9 @@ namespace Xenon.Selenium
 			foreach ( var windowHandle in _driver.WindowHandles )
 			{
 				var switchedWindowDriver = _driver.SwitchTo().Window( windowHandle );
-				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
-				try
-				{
-					if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
-						return switchedWindowXenonBrowser;
-				}
-				catch ( NoElementsFoundException )
-				{
-				}
+				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver) switchedWindowDriver );
+				if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
+					return switchedWindowXenonBrowser;
 			}
 
 			return new SeleniumXenonBrowser( _driver );

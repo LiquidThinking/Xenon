@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Drawing.Design;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using Microsoft.Owin.Hosting;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
@@ -41,14 +43,12 @@ namespace Xenon.Tests.Integration
 
 			RemoteWebDriver CreateDriver()
 			{
-				var firefoxOptions = new FirefoxOptions();
-				firefoxOptions.AddArgument( "--headless" );
 				switch ( browserType )
 				{
 					case BrowserType.Chrome:
 						return new ChromeDriver( Environment.CurrentDirectory );
 					case BrowserType.Firefox:
-						return new FirefoxDriver( Environment.CurrentDirectory, firefoxOptions );
+						return new FirefoxDriver( Environment.CurrentDirectory );
 					default:
 						throw new IndexOutOfRangeException();
 				}

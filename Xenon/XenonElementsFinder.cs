@@ -180,13 +180,11 @@ namespace Xenon
 			return this;
 		}
 
-		internal XenonElementSearchResult FindElements()
+		internal XenonElementsSearchResult FindElements()
 		{	
 			var criteria = _criteriaBuilder.GenerateCriteria();
 			var elements = _browser.FindElementsByXPath( criteria ).Elements;
-
-			//todo: this is a bit hacky, we already have that thing in hand at this point
-			return new XenonElementSearchResult( elements, _criteriaBuilder.SearchCriteria );
+			return new XenonElementsSearchResult( elements, _criteriaBuilder.SearchCriteria );
 		}
 
 		public string CriteriaDetails() => _criteriaBuilder.CriteriaDetails();

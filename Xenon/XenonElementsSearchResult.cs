@@ -4,18 +4,18 @@ using System.Linq;
 
 namespace Xenon
 {
-	public class XenonElementSearchResult
+	public class XenonElementsSearchResult
 	{
 		private readonly string _searchCriteria;
 		public List<IXenonElement> Elements { get; }
 
-		internal XenonElementSearchResult( List<IXenonElement> elements, IEnumerable<string> searchCriteria )
+		internal XenonElementsSearchResult( List<IXenonElement> elements, IEnumerable<string> searchCriteria )
 		{
 			_searchCriteria = string.Join( ", ", searchCriteria );
 			Elements = elements;
 		}
 
-		internal XenonElementSearchResult( List<IXenonElement> elements, string searchCriteria, params string[] additionalSearchCriteria )
+		internal XenonElementsSearchResult( List<IXenonElement> elements, string searchCriteria, params string[] additionalSearchCriteria )
 		{
 			_searchCriteria = string.Join( ", ", new List<string>( additionalSearchCriteria )
 			{

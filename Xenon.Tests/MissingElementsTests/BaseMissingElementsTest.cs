@@ -62,18 +62,6 @@ namespace Xenon.Tests.MissingElementsTests
 			AssertXenonActionThrowsWithMessage( ( x, tc ) => x.RightClick( tc.SearchCriteria ), testCase );
 		}
 
-		[Test]
-		public void CustomForNonExistentElement_IncludesTextInException()
-		{
-			const string cssSelector = "not there";
-			using ( var browserTest = CreateBrowserTest() )
-			{
-				var browser = CreateInstance( browserTest.Start() );
-				var exception = Assert.Throws<NoElementsFoundException>( () => browser.Custom( x => x.FindElementsByCssSelector( cssSelector ) ) );
-				Assert.True( exception.Message.Contains( cssSelector ) );
-			}
-		}
-
 		private void AssertXenonActionThrowsWithMessage( 
 			Func<BaseXenonTest<T>, XenonElementsFinderTestCase, BaseXenonTest<T>> xenonAction, 
 			XenonElementsFinderTestCase testCase )
