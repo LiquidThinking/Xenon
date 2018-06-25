@@ -101,10 +101,10 @@ namespace Xenon.Tests.ClickTests
 			       .Returns( () => ++timesCalled < timesToCallUrl ? string.Empty : content );
 
 			browser.Setup( x => x.FindElementsByCssSelector( cssSelector ) )
-			       .Returns( new List<IXenonElement>
-			       {
-				       element.Object
-			       } );
+				.Returns( new XenonElementsSearchResult( new List<IXenonElement>
+				{
+					element.Object
+				}, "Searching for css selector" ) );
 
 			SetupExpectedSequenceForElement( element );
 

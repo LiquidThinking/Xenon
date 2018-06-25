@@ -90,6 +90,8 @@ namespace Xenon
 		{
 			private readonly List<BaseXpathCriteria> _criteria;
 
+			public List<string> SearchCriteria => _criteria.Select( x => x.GetVerboseMessage() ).ToList();
+
 			public XPathCriteriaBuilder()
 			{
 				_criteria = new List<BaseXpathCriteria>();
@@ -143,11 +145,6 @@ namespace Xenon
 					builder.Append( criterion.CreateCriteria() );
 				return builder.ToString();
 			}
-
-			public override string ToString()
-			{
-				return string.Join( ", ", _criteria.Select( x => x.GetVerboseMessage() ) );
-			}
 		}
 
 		private readonly IXenonBrowser _browser;
@@ -183,20 +180,13 @@ namespace Xenon
 			return this;
 		}
 
-		internal IEnumerable<IXenonElement> FindElements()
-		{
+		internal XenonElementsSearchResult FindElements()
+		{	
 			var criteria = _criteriaBuilder.GenerateCriteria();
-			var result = _browser.FindElementsByXPath( criteria ).ToList();
-
-			if ( result.Any() )
-				return result;
-
-			throw new NoElementsFoundException( $"Did not find any elements. Search criteria: {_criteriaBuilder}" );
+			var elements = _browser.FindElementsByXPath( criteria ).Elements;
+			return new XenonElementsSearchResult( elements, _criteriaBuilder.SearchCriteria );
 		}
 
-		public string CriteriaDetails()
-		{
-			return _criteriaBuilder.CriteriaDetails();
-		}
+		public string CriteriaDetails() => _criteriaBuilder.CriteriaDetails();
 	}
 }

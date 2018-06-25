@@ -14,10 +14,10 @@ namespace Xenon.Tests.ExtensionMethods
 				   {
 					   if ( ++timesCalled >= returnElementAfterCalls )
 						   element.SetupGet( x => x.IsVisible ).Returns( true );
-					   return new List<IXenonElement>
+					   return new XenonElementsSearchResult( new List<IXenonElement>
 					   {
 						   element.Object
-					   };
+					   }, "Searching for css selector" );
 				   } );
 		}
 
@@ -25,7 +25,7 @@ namespace Xenon.Tests.ExtensionMethods
 		{
 			browser
 				.Setup( x => x.FindElementsByXPath( It.IsAny<string>() ) )
-				.Returns( elements.Select( x => x.Object ) );
+				.Returns( new XenonElementsSearchResult( elements.Select( x => x.Object ).ToList(), "Seaching for XPath" ) );
 
 		}
 	}

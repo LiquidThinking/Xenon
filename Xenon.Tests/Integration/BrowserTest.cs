@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Drawing.Design;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using Microsoft.Owin.Hosting;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Remote;
@@ -26,7 +28,7 @@ namespace Xenon.Tests.Integration
 			};
 		}
 
-		public IXenonBrowser Start( BrowserType browserType = BrowserType.Chrome )
+		public IXenonBrowser Start( BrowserType browserType = BrowserType.Firefox )
 		{
 			var port = GetFreeTcpPort();
 

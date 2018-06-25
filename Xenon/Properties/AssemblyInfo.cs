@@ -35,3 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion( "0.2.5.0" )]
 [assembly: AssemblyFileVersion( "0.2.5.0" )]
 [assembly: InternalsVisibleTo("Xenon.Selenium")]
+[assembly: InternalsVisibleTo("Xenon.Tests")]

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using OpenQA.Selenium;
@@ -17,39 +16,37 @@ namespace Xenon.Selenium
 			_driver = driver;
 		}
 
-		public string Url
-		{
-			get { return _driver.Url; }
-		}
+		public string Url => _driver.Url;
 
-		public string PageSource
-		{
-			get { return _driver.PageSource; }
-		}
+		public string PageSource => _driver.PageSource;
 
 		private IXenonElement ConvertToXenonElement( IWebElement webElement )
 		{
 			return new SeleniumXenonElement( _driver, webElement );
 		}
 
-		public IEnumerable<IXenonElement> FindElementsByCssSelector( string cssSelector )
+		public XenonElementsSearchResult FindElementsByCssSelector( string cssSelector )
 		{
-			var elements = _driver.FindElementsByCssSelector( cssSelector );
-			if ( !elements.Any() )
-				throw new NoElementsFoundException( $"No elements found with selector '{cssSelector}'" );
+			var elements = _driver.FindElementsByCssSelector( cssSelector )
+				.Select( ConvertToXenonElement ).ToList();
 
-			return elements.Select( ConvertToXenonElement );
+			return new XenonElementsSearchResult(
+				elements,
+				$"Searching for element(s) with Css Selector '{cssSelector}'" );
 		}
 
-		public IEnumerable<IXenonElement> FindElementsByXPath( string xpath )
+		public XenonElementsSearchResult FindElementsByXPath( string xpath )
 		{
-			return _driver.FindElementsByXPath( xpath ).Select( ConvertToXenonElement );
+			var elements = _driver.FindElementsByXPath( xpath )
+				.Select( ConvertToXenonElement )
+				.ToList();
+
+			return new XenonElementsSearchResult(
+				elements,
+				$"Searching for element(s) with XPath '{xpath}'" );
 		}
 
-		public void GoToUrl( string url )
-		{
-			_driver.Navigate().GoToUrl( url );
-		}
+		public void GoToUrl( string url ) => _driver.Navigate().GoToUrl( url );
 
 		public XenonAssertion RunAssertion( AssertionFunc assertion )
 		{
@@ -66,25 +63,17 @@ namespace Xenon.Selenium
 			return result;
 		}
 
-		public void Quit()
-		{
-			_driver.Quit();
-		}
+		public void Quit() => _driver.Quit();
 
 		public IXenonBrowser SwitchToWindow( AssertionFunc assertion )
 		{
 			foreach ( var windowHandle in _driver.WindowHandles )
 			{
 				var switchedWindowDriver = _driver.SwitchTo().Window( windowHandle );
-				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
-				try
-				{
-					if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
-						return switchedWindowXenonBrowser;
-				}
-				catch ( NoElementsFoundException )
-				{
-				}
+				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver) switchedWindowDriver );
+
+				if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
+					return switchedWindowXenonBrowser;
 			}
 
 			return new SeleniumXenonBrowser( _driver );
@@ -116,14 +105,18 @@ namespace Xenon.Selenium
 
 		public bool DialogBoxIsActive()
 		{
-			bool result = false;
+			var result = false;
 			try
 			{
 				_driver.SwitchTo().Alert();
 				result = true;
 			}
-			catch ( NoAlertPresentException ) { }
-			catch ( UnhandledAlertException ) { }
+			catch ( NoAlertPresentException )
+			{
+			}
+			catch ( UnhandledAlertException )
+			{
+			}
 
 			return result;
 		}
@@ -159,7 +152,9 @@ namespace Xenon.Selenium
 			{
 				_driver.Manage().Cookies.DeleteAllCookies();
 			}
-			catch { }
+			catch
+			{
+			}
 		}
 
 		public object ExecuteJavascript( string script, params object[] args )
@@ -174,10 +169,7 @@ namespace Xenon.Selenium
 			}
 		}
 
-		public void CloseWindow()
-		{
-			_driver.Close();
-		}
+		public void CloseWindow() => _driver.Close();
 
 		public void Dispose()
 		{
