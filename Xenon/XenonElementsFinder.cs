@@ -183,8 +183,8 @@ namespace Xenon
 		internal XenonElementsSearchResult FindElements()
 		{	
 			var criteria = _criteriaBuilder.GenerateCriteria();
-			var elements = _browser.FindElementsByXPath( criteria ).Elements;
-			return new XenonElementsSearchResult( elements, _criteriaBuilder.SearchCriteria );
+			var elements = _browser.FindElementsByXPath( criteria );
+			return new XenonElementsSearchResult( elements, _criteriaBuilder.SearchCriteria.ToArray() );
 		}
 
 		public string CriteriaDetails() => _criteriaBuilder.CriteriaDetails();

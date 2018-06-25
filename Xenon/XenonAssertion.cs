@@ -29,7 +29,7 @@ namespace Xenon
 		{
 		    var pageContains = _xenonBrowser.PageSource.Contains( content );
 		    if ( !pageContains )
-		        pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Elements.Any( e => e.Text.Contains( content ) );
+		        pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Any( e => e.Text.Contains( content ) );
 
             return Assert( pageContains, "Page does not contain: " + content );
 		}
@@ -41,7 +41,7 @@ namespace Xenon
 
 		public XenonAssertion ContainsElement( string cssSelector )
 		{
-			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Elements.Any( e => e.IsVisible ), "Page does not contain element with selector: " + cssSelector );
+			return Assert( _xenonBrowser.FindElementsByCssSelector( cssSelector ).Any( e => e.IsVisible ), "Page does not contain element with selector: " + cssSelector );
 		}
 
 		public XenonAssertion ContainsElement( Func<XenonElementsFinder, XenonElementsFinder> where )
@@ -52,7 +52,7 @@ namespace Xenon
 		public XenonAssertion DoesNotContainElement( string cssSelector )
 		{
 			var searchResult = _xenonBrowser.FindElementsByCssSelector( cssSelector );
-			return Assert( !searchResult.Elements.Any( e => e.IsVisible ), "Page contains element with selector: " + cssSelector );
+			return Assert( !searchResult.Any( e => e.IsVisible ), "Page contains element with selector: " + cssSelector );
 		}
 
 		public XenonAssertion DoesNotContainElement( Func<XenonElementsFinder, XenonElementsFinder> where )
@@ -63,7 +63,7 @@ namespace Xenon
 		private XenonAssertion BrowserContainsElement( Func<XenonElementsFinder, XenonElementsFinder> where, bool shouldContainElement )
 		{
 			var searchResult = where( new XenonElementsFinder( _xenonBrowser ) ).FindElements();
-			var elementsArePresentAndVisible = searchResult.Elements.Any( e => e.IsVisible );
+			var elementsArePresentAndVisible = searchResult.Any( e => e.IsVisible );
 			return Assert(
 				elementsArePresentAndVisible == shouldContainElement,
 				$"Page contains elements matching the following criteria: {searchResult}" );
