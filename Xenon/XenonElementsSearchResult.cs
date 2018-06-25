@@ -4,37 +4,27 @@ using System.Linq;
 
 namespace Xenon
 {
-	public class XenonElementsSearchResult
+	public class XenonElementsSearchResult : List<IXenonElement>
 	{
 		private readonly string _searchCriteria;
-		public List<IXenonElement> Elements { get; }
 
-		internal XenonElementsSearchResult( List<IXenonElement> elements, IEnumerable<string> searchCriteria )
+		internal XenonElementsSearchResult( IEnumerable<IXenonElement> elements, params string[] searchCriteria )
+			: base( elements )
 		{
-			_searchCriteria = string.Join( ", ", searchCriteria );
-			Elements = elements;
-		}
-
-		internal XenonElementsSearchResult( List<IXenonElement> elements, string searchCriteria, params string[] additionalSearchCriteria )
-		{
-			_searchCriteria = string.Join( ", ", new List<string>( additionalSearchCriteria )
-			{
-				searchCriteria
-			} );
-			Elements = elements;
+			_searchCriteria = string.Join( ", ", new List<string>( searchCriteria ) );
 		}
 
 		internal IXenonElement LocateFirstVisibleElement()
 		{
 			ValidateResults();
-			return Elements.First( x => x.IsVisible ).ScrollToElement();
+			return this.First( x => x.IsVisible ).ScrollToElement();
 		}
 
 		internal IXenonElement LocateSingleVisibleElement()
 		{
 			ValidateResults();
 
-			var foundElements = Elements
+			var foundElements = this
 				.Where( x => x.IsVisible )
 				.ToList();
 
@@ -49,7 +39,7 @@ namespace Xenon
 
 		private void ValidateResults()
 		{
-			if ( !Elements.Any() )
+			if ( !this.Any() )
 				throw new NoElementsFoundException( _searchCriteria );
 		}
 

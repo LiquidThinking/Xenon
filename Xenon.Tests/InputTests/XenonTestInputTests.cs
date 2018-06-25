@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using NUnit.Framework;
 using Xenon.Tests.Integration;
 
@@ -35,7 +31,7 @@ namespace Xenon.Tests.InputTests
 		private static XenonAssertion InputHasExpectedValue( string inputType, string expectedValue, XenonAssertion xenonAssertion )
 		{
 			return xenonAssertion.CustomAssertion( y => y.FindElementsByCssSelector( $"input[type='{inputType}']" )
-				                               .Elements.First().Text == expectedValue );
+				                               .First().Text == expectedValue );
 		}
 	}
 }

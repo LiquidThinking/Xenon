@@ -173,7 +173,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T SelectList( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).Elements.First().SelectDropdownItem( text ),
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).First().SelectDropdownItem( text ),
 				customPreWait ?? ( a => SelectListPreWait( a, cssSelector, text ) ),
 				customPostWait );
 		}
@@ -185,7 +185,7 @@ namespace Xenon
 				Click( cssSelector );
 
 				xenonAssertion.CustomAssertion(
-					browser => browser.FindElementsByCssSelector( cssSelector + " option" ).Elements.Any( x => x.Text == text ) );
+					browser => browser.FindElementsByCssSelector( cssSelector + " option" ).Any( x => x.Text == text ) );
 			}
 			return xenonAssertion;
 		}
