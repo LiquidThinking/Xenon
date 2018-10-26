@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon.Selenium</id>
-		<version>0.3.0</version>
+		<version>0.4.0</version>
 		<title>Xenon.Selenium</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -13,14 +13,14 @@
 
 			This is browser automation wrapper for Selenium.
 		</description>
-		<releaseNotes>Revert API change</releaseNotes>
+		<releaseNotes>Target Net451</releaseNotes>
 		<dependencies>
-			<dependency id="Selenium.Support" version="3.5.2" />
-			<dependency id="Selenium.WebDriver" version="3.5.2" />
-			<dependency id="Xenon" version="0.2.5" />
+			<dependency id="Selenium.Support" version="3.14.0" />
+			<dependency id="Selenium.WebDriver" version="3.14.0" />
+			<dependency id="Xenon" version="0.4.0" />
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Xenon.Selenium\bin\Release\Xenon.Selenium.dll" target="lib\net40\Xenon.Selenium.dll"/>
+		<file src="Xenon.Selenium\bin\Release\Xenon.Selenium.dll" target="lib\net451\Xenon.Selenium.dll"/>
 	</files>
 </package>
