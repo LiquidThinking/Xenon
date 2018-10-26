@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading;
+using NUnit.Framework;
 using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.SwitchToWindowTests
@@ -31,13 +32,13 @@ namespace Xenon.Tests.SwitchToWindowTests
 				CreateInstance( browser )
 					.GoToUrl( "/" )
 					.Click( where => where.TextIs( "Google" ) )
-					.SwitchToWindow( a => a.PageContains( "I'm Feeling Lucky" ) )
+					.SwitchToWindow( a => a.PageContains( "I'm Feeling Lucky" ), WaitArbitrarily )
 					.Assert( a => a.PageContains( "I'm Feeling Lucky" ) )
-					.SwitchToWindow( a => a.PageContains( "Test Page" ) )
+					.SwitchToWindow( a => a.PageContains( "Test Page" ), WaitArbitrarily )
 					.Click( where => where.TextIs( "Yahoo" ) )
-					.SwitchToWindow( a => a.PageContains( "Yahoo" ) )
+					.SwitchToWindow( a => a.PageContains( "Yahoo" ), WaitArbitrarily )
 					.Assert( a => a.PageContains( "Yahoo" ) )
-					.SwitchToWindow( a => a.PageContains( "Test Page" ) )
+					.SwitchToWindow( a => a.PageContains( "Test Page" ), WaitArbitrarily )
 					.Assert( a => a.PageContains( "Test Page" ) );
 			}
 		}
@@ -49,14 +50,21 @@ namespace Xenon.Tests.SwitchToWindowTests
 			using ( var browserTest = new BrowserTest( html ) )
 			{
 				var browser = browserTest.Start();
+
 				CreateInstance( browser )
 					.GoToUrl( "/" )
 					.Click( where => where.TextIs( "Google" ) )
-					.SwitchToWindow( a => a.PageContains( "I'm Feeling Lucky" ) )
+					.SwitchToWindow( a => a.PageContains( "I'm Feeling Lucky" ), WaitArbitrarily )
 					.Assert( a => a.PageContains( "I'm Feeling Lucky" ) )
 					.CloseCurrentAndSwitchToWindow( a => a.PageContains( "Test Page" ) )
 					.Assert( a => a.PageContains( "Test Page" ) );
 			}
+		}
+
+		private static XenonAssertion WaitArbitrarily( XenonAssertion xenonAssertion )
+		{
+			Thread.Sleep( 2000 );
+			return xenonAssertion;
 		}
 	}
 }
