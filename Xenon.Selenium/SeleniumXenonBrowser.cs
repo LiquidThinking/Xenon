@@ -67,16 +67,25 @@ namespace Xenon.Selenium
 
 		public IXenonBrowser SwitchToWindow( AssertionFunc assertion )
 		{
+			return SwitchToWindowWithRetries( assertion, 0 );
+		}
+
+		private IXenonBrowser SwitchToWindowWithRetries( AssertionFunc assertion, int attemptNumber )
+		{
+			const int maxTries = 5;
+
 			foreach ( var windowHandle in _driver.WindowHandles )
 			{
 				var switchedWindowDriver = _driver.SwitchTo().Window( windowHandle );
-				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver) switchedWindowDriver );
+				var switchedWindowXenonBrowser = new SeleniumXenonBrowser( (RemoteWebDriver)switchedWindowDriver );
 
 				if ( assertion( new XenonAssertion( switchedWindowXenonBrowser ) ).Passing )
 					return switchedWindowXenonBrowser;
 			}
 
-			return new SeleniumXenonBrowser( _driver );
+			return attemptNumber > maxTries
+				? new SeleniumXenonBrowser( _driver )
+				: SwitchToWindowWithRetries( assertion, ++attemptNumber );
 		}
 
 		public IXenonBrowser ClickDialogBox()
