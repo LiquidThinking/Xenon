@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading;
+using NUnit.Framework;
 using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.SwitchToWindowTests
@@ -49,6 +50,7 @@ namespace Xenon.Tests.SwitchToWindowTests
 			using ( var browserTest = new BrowserTest( html ) )
 			{
 				var browser = browserTest.Start();
+
 				CreateInstance( browser )
 					.GoToUrl( "/" )
 					.Click( where => where.TextIs( "Google" ) )

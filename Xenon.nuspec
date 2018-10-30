@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon</id>
-		<version>0.3.0</version>
+		<version>0.4.0</version>
 		<title>Xenon</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -14,11 +14,11 @@
 			There are the following pre-built browser automation wrappers:
 			http://www.nuget.org/packages/Xenon.Selenium/
 		</description>
-		<releaseNotes>Revert API change</releaseNotes>
+		<releaseNotes>Target Net451</releaseNotes>
 		<dependencies>
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Xenon\bin\Release\Xenon.dll" target="lib\net40\Xenon.dll"/>
+		<file src="Xenon\bin\Release\Xenon.dll" target="lib\net451\Xenon.dll"/>
 	</files>
 </package>
