@@ -9,33 +9,33 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Xenon.Selenium
 {
-    public class SeleniumXenonElement : IXenonElement
-    {
-        private readonly IWebDriver _webDriver;
-        private readonly IWebElement _webElement;
+	public class SeleniumXenonElement : IXenonElement
+	{
+		private readonly IWebDriver _webDriver;
+		private readonly IWebElement _webElement;
 
-        public SeleniumXenonElement( IWebDriver webDriver, IWebElement webElement )
-        {
-            _webDriver = webDriver;
-            _webElement = webElement;
-        }
+		public SeleniumXenonElement( IWebDriver webDriver, IWebElement webElement )
+		{
+			_webDriver = webDriver;
+			_webElement = webElement;
+		}
 
-        public IXenonElement Click()
-        {
-            try
-            {
-                _webElement.Click();
-                return this;
-            }
-            catch ( StaleElementReferenceException )
-            {
-                throw new StaleElementException();
-            }
-            catch ( WebDriverException )
-            {
-                return Click();
-            }
-        }
+		public IXenonElement Click()
+		{
+			try
+			{
+				_webElement.Click();
+				return this;
+			}
+			catch ( StaleElementReferenceException )
+			{
+				throw new StaleElementException();
+			}
+			catch ( WebDriverException )
+			{
+				return Click();
+			}
+		}
 
 		public IXenonElement SelectDropdownItem( string name )
 		{
@@ -43,30 +43,30 @@ namespace Xenon.Selenium
 			return this;
 		}
 
-	    public IXenonElement RightClick()
-	    {
-		    try
-		    {
+		public IXenonElement RightClick()
+		{
+			try
+			{
 				const string script = "var evt = document.createEvent('MouseEvents'); evt.initMouseEvent('contextmenu',true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0,null); arguments[0].dispatchEvent(evt);";
 
 				_webDriver.ExecuteJavaScript( script, _webElement );
-			    return this;
-		    }
-		    catch ( StaleElementReferenceException )
-		    {
-			    throw new StaleElementException();
-		    }
-		    catch ( WebDriverException )
-		    {
-			    return RightClick();
-		    }
-	    }
+				return this;
+			}
+			catch ( StaleElementReferenceException )
+			{
+				throw new StaleElementException();
+			}
+			catch ( WebDriverException )
+			{
+				return RightClick();
+			}
+		}
 
 		public IXenonElement EnterText( string value )
 		{
 			if ( _webElement.GetAttribute( "type" ) == "date" )
-				throw new IncorrectInputElementTypeException( $"Do not use {nameof( EnterText )} to set DatePicker values, " +
-															$"use {nameof( EnterDate )} instead" );
+				throw new IncorrectInputElementTypeException( $"Do not use {nameof(EnterText)} to set DatePicker values, " +
+															$"use {nameof(EnterDate)} instead" );
 
 			try
 			{
@@ -84,78 +84,78 @@ namespace Xenon.Selenium
 		}
 
 		public bool IsVisible
-        {
-            get
-            {
-                try
-                {
-                    return _webElement.Displayed;
-                }
-                catch ( StaleElementReferenceException )
-                {
-                    throw new StaleElementException();
-                }
-                catch ( WebDriverException )
-                {
-                    return IsVisible;
-                }
-            }
-        }
+		{
+			get
+			{
+				try
+				{
+					return _webElement.Displayed;
+				}
+				catch ( StaleElementReferenceException )
+				{
+					throw new StaleElementException();
+				}
+				catch ( WebDriverException )
+				{
+					return IsVisible;
+				}
+			}
+		}
 
-        public string Text
-        {
-            get
-            {
-                try
-                {
-                    if ( _webElement.TagName == "input" || _webElement.TagName == "textarea" )
-                        return _webElement.GetAttribute( "value" );
-                    return _webElement.Text;
-                }
-                catch ( StaleElementReferenceException )
-                {
-                    throw new StaleElementException();
-                }
-                catch ( WebDriverException )
-                {
-                    return Text;
-                }
-            }
-        }
+		public string Text
+		{
+			get
+			{
+				try
+				{
+					if ( _webElement.TagName == "input" || _webElement.TagName == "textarea" )
+						return _webElement.GetAttribute( "value" );
+					return _webElement.Text;
+				}
+				catch ( StaleElementReferenceException )
+				{
+					throw new StaleElementException();
+				}
+				catch ( WebDriverException )
+				{
+					return Text;
+				}
+			}
+		}
 
-        public IXenonElement Clear()
-        {
-            try
-            {
-                _webElement.Clear();
-                return this;
-            }
-            catch ( StaleElementReferenceException )
-            {
-                throw new StaleElementException();
-            }
-            catch ( WebDriverException )
-            {
-                return Clear();
-            }
-        }
+		public IXenonElement Clear()
+		{
+			try
+			{
+				_webElement.Clear();
+				return this;
+			}
+			catch ( StaleElementReferenceException )
+			{
+				throw new StaleElementException();
+			}
+			catch ( WebDriverException )
+			{
+				return Clear();
+			}
+		}
 
-        public IXenonElement ScrollToElement()
-        {
-            try
+		public IXenonElement ScrollToElement()
+		{
+			try
 			{
 				_webDriver.ExecuteJavaScript( "arguments[0].scrollIntoView(true);", _webElement );
-                return this;
-            }
-            catch ( StaleElementReferenceException )
-            {
-                throw new StaleElementException();
-            }
-            catch ( WebDriverException )
-            {
-                return ScrollToElement();
-            }
-        }
+				return this;
+			}
+			catch ( StaleElementReferenceException )
+			{
+				throw new StaleElementException();
+			}
+			catch ( WebDriverException )
+			{
+				return ScrollToElement();
+			}
+		}
 
 		public IXenonElement EnterDate( DateTime date )
 		{
@@ -165,9 +165,30 @@ namespace Xenon.Selenium
 			string GetDriverDateFormat()
 			{
 				var driverTypeName = _webDriver.GetType().Name;
-				return driverTypeName == nameof( FirefoxDriver )
+				return driverTypeName == nameof(FirefoxDriver)
 					? "yyyy-MM-dd"
 					: "dd/MM/yyyy";
+			}
+		}
+
+		public IXenonElement MoveToElement()
+		{
+			try
+			{
+				new Actions( _webDriver )
+					.MoveToElement( _webElement )
+					.Build()
+					.Perform();
+
+				return this;
+			}
+			catch ( StaleElementReferenceException )
+			{
+				throw new StaleElementException();
+			}
+			catch ( WebDriverException )
+			{
+				return MoveToElement();
 			}
 		}
 	}

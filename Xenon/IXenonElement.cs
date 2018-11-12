@@ -13,5 +13,6 @@ namespace Xenon
 		IXenonElement Clear();
 		IXenonElement ScrollToElement();
 		IXenonElement EnterDate( DateTime date );
+		IXenonElement MoveToElement();
 	}
 }
