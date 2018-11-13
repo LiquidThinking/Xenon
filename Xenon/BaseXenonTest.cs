@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Xenon
 {
-    public abstract class BaseXenonTest<T> where T : BaseXenonTest<T>
+	public abstract class BaseXenonTest<T> where T : BaseXenonTest<T>
 	{
 		protected readonly XenonTestOptions _xenonTestOptions;
 		protected IXenonBrowser _xenonBrowser;
@@ -25,11 +25,9 @@ namespace Xenon
 				{
 					if ( _xenonBrowser.RunAssertion( wait ).Passing )
 						break;
-
 				}
 				catch ( Exception )
-				{
-				}
+				{ }
 
 				Thread.Sleep( 10 );
 			} while ( DateTime.Now < endTime );
@@ -40,16 +38,16 @@ namespace Xenon
 			if ( preWait != null )
 				WaitUntil( preWait );
 
-		    try
-		    {
-		        task( _xenonBrowser );
-		    }
-            catch( StaleElementException )
-		    {
-		        return RunTask( task, preWait, postWait );
-		    }
+			try
+			{
+				task( _xenonBrowser );
+			}
+			catch ( StaleElementException )
+			{
+				return RunTask( task, preWait, postWait );
+			}
 
-		    if ( postWait != null )
+			if ( postWait != null )
 				WaitUntil( postWait );
 
 			return this as T;
@@ -149,6 +147,20 @@ namespace Xenon
 							}, preWait, postWait );
 		}
 
+		public T MoveToElement( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().MoveToElement(),
+				customPreWait ?? ( a => a.CustomAssertion( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
+				customPostWait );
+		}
+
+		public T MoveToElement( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
+		{
+			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().LocateSingleVisibleElement().MoveToElement(),
+				customPreWait ?? ( a => a.CustomAssertion( b => where( new XenonElementsFinder( b ) ).FindElements().LocateSingleVisibleElement().IsVisible ) ),
+				customPostWait );
+		}
+
 		/// <summary>
 		/// Clears text in element
 		/// By default waits for the element to exist before entering the text
@@ -187,6 +199,7 @@ namespace Xenon
 				xenonAssertion.CustomAssertion(
 					browser => browser.FindElementsByCssSelector( cssSelector + " option" ).Any( x => x.Text == text ) );
 			}
+
 			return xenonAssertion;
 		}
 
@@ -226,11 +239,10 @@ namespace Xenon
 		/// <returns></returns>
 		public T CloseCurrentAndSwitchToWindow( AssertionFunc switchToWindowAssertFunc, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( b =>
-			{
-				b.CloseWindow();
-				b.SwitchToWindow( switchToWindowAssertFunc );
-			}, customPreWait, customPostWait );
+			return RunTask( b => {
+								b.CloseWindow();
+								b.SwitchToWindow( switchToWindowAssertFunc );
+							}, customPreWait, customPostWait );
 		}
 
 		/// <summary>
