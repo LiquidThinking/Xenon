@@ -12,12 +12,12 @@ namespace Xenon.Tests.MoveToElementTests
 			XenonTestsResourceLookup.Folder( "MoveToElementTests" );
 		}
 
-		public void MoveToElement_WhenMovingToElement_MovesToElement( BrowserType browserType )
+		public void MoveToElement_WhenMovingToElement_MovesToElement()
 		{
 			var html = XenonTestsResourceLookup.GetContent( "MoveToElement" );
 			using ( var browserTest = new BrowserTest( html ) )
 			{
-				var browser = browserTest.Start( browserType );
+				var browser = browserTest.Start();
 
 				CreateInstance( browser )
 					.GoToUrl( "/" )
