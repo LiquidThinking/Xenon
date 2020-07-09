@@ -72,7 +72,9 @@ namespace Xenon
 		public XenonAssertion CustomAssertion( Func<IXenonBrowser, string> customFunc )
 		{
 			var errorMessage = customFunc( _xenonBrowser );
-			return Assert( !string.IsNullOrEmpty( errorMessage ), errorMessage );
+			return Assert( 
+				passing: string.IsNullOrEmpty( errorMessage ),
+				message: errorMessage );
 		}
 
 		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc, string errorMessage = null )
@@ -80,9 +82,9 @@ namespace Xenon
 			return Assert( customFunc( _xenonBrowser ), errorMessage ?? "Custom assertion failed" );
 		}
 
-		private XenonAssertion Assert( bool contains, string message )
+		private XenonAssertion Assert( bool passing, string message )
 		{
-			if ( !contains )
+			if ( !passing )
 			{
 				Passing = false;
 				_failureMessages.Add( message );

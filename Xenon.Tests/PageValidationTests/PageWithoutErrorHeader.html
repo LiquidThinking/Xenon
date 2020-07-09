@@ -4,8 +4,16 @@
 <head>
     <meta charset="utf-8"/>
     <title>200</title>
+    <script>
+        window.onload = function() {
+            document.querySelector('button').addEventListener('click', function() {
+                document.querySelector('h1').textContent = 'Error';
+            });
+        }
+    </script>
 </head>
 <body>
-    <h1>200</h1>
+<h1>200</h1>
+<button>Make Error</button>
 </body>
 </html>

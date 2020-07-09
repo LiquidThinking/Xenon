@@ -41,6 +41,32 @@ namespace Xenon.Tests.PageValidationTests
 			}
 		}
 
+
+		[Test]
+		public void Assertion_CustomValidationFails_FailsTest()
+		{
+			using ( var browserTest = new BrowserTest(
+				XenonTestsResourceLookup
+					.GetContent(
+						htmlFileName: "PageWithoutErrorHeader" ) ) )
+			{
+				var loadedPage = CreateInstance( browserTest.Start() ).GoToUrl( "/" );
+
+				var exception = Assert
+					.Throws<AssertionException>(
+						() =>
+						{
+							loadedPage
+								//trigger the bad page state
+								.Click( "button" )
+								.Assert( assertion => assertion
+									.PageContains( "Make Error" ) );
+						} );
+
+				Assert.IsTrue( exception.Message.Contains( ErrorMessage ) );
+			}
+		}
+
 		[Test]
 		public void GoToUrl_CustomValidationPasses_DoesNotFailTest()
 		{
@@ -53,6 +79,24 @@ namespace Xenon.Tests.PageValidationTests
 					.DoesNotThrow(
 						() => CreateInstance(
 							browserTest.Start() ).GoToUrl( "/" ) );
+			}
+		}
+
+		[Test]
+		public void Assertion_CustomValidationPasses_DoesNotFailTest()
+		{
+			using ( var browserTest = new BrowserTest(
+				XenonTestsResourceLookup
+					.GetContent(
+						htmlFileName: "PageWithoutErrorHeader" ) ) )
+			{
+				Assert
+					.DoesNotThrow(
+						() => CreateInstance(
+								browserTest.Start() )
+							.GoToUrl( "/" )
+							.Assert( assertion => assertion
+								.PageContains( "200" ) ) );
 			}
 		}
 	}
