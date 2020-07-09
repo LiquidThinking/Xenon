@@ -44,7 +44,12 @@ namespace Xenon
 				task( _xenonBrowser );
 
 				if ( validatePage )
-					ValidatePage();
+				{
+					var error = CheckPage( _xenonBrowser );
+					if ( !string.IsNullOrEmpty( error ) )
+						_xenonTestOptions
+							.AssertMethod( false, error );
+				}
 			}
 			catch ( StaleElementException )
 			{
@@ -57,21 +62,14 @@ namespace Xenon
 			return this as T;
 		}
 
-		private void ValidatePage()
+		private string CheckPage( IXenonBrowser browser )
 		{
-			if ( _xenonTestOptions.PageValidationFunc == null )
-				return;
-
-			var error = _xenonTestOptions
-				.PageValidationFunc
+			return _xenonTestOptions
+				.PageValidationFunc?
 				.Invoke(
 					new Page(
-						_xenonBrowser.Url,
-						_xenonBrowser.PageSource ) );
-
-			if ( !string.IsNullOrEmpty( error ) )
-				_xenonTestOptions
-					.AssertMethod( false, error );
+						browser.Url,
+						browser.PageSource ) );
 		}
 
 		/// <summary>
@@ -230,13 +228,16 @@ namespace Xenon
 		/// Asserts
 		/// </summary>
 		/// <param name="assertion">The Function with your assertions</param>
+		/// <param name="message"></param>
 		/// <returns></returns>
 		public T Assert( AssertionFunc assertion, string message = "" )
 		{
 			WaitUntil( assertion );
-			ValidatePage();
 
-			var assertionResult = assertion( new XenonAssertion( _xenonBrowser ) );
+			var assertionResult = assertion(
+				new XenonAssertion( _xenonBrowser )
+					.CustomAssertion( CheckPage ) );
+
 			if ( string.IsNullOrEmpty( message ) )
 				message = string.Join( "\r\n", assertionResult.FailureMessages );
 			_xenonTestOptions.AssertMethod( assertionResult.Passing, message );

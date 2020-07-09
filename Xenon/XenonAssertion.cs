@@ -27,11 +27,11 @@ namespace Xenon
 
 		public XenonAssertion PageContains( string content )
 		{
-		    var pageContains = _xenonBrowser.PageSource.Contains( content );
-		    if ( !pageContains )
-		        pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Any( e => e.Text.Contains( content ) );
+			var pageContains = _xenonBrowser.PageSource.Contains( content );
+			if ( !pageContains )
+				pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Any( e => e.Text.Contains( content ) );
 
-            return Assert( pageContains, "Page does not contain: " + content );
+			return Assert( pageContains, "Page does not contain: " + content );
 		}
 
 		public XenonAssertion PageDoesNotContain( string text )
@@ -69,9 +69,15 @@ namespace Xenon
 				$"Page contains elements matching the following criteria: {searchResult}" );
 		}
 
-		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc )
+		public XenonAssertion CustomAssertion( Func<IXenonBrowser, string> customFunc )
 		{
-			return Assert( customFunc( _xenonBrowser ), "Custom assertion failed" );
+			var errorMessage = customFunc( _xenonBrowser );
+			return Assert( !string.IsNullOrEmpty( errorMessage ), errorMessage );
+		}
+
+		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc, string errorMessage = null )
+		{
+			return Assert( customFunc( _xenonBrowser ), errorMessage ?? "Custom assertion failed" );
 		}
 
 		private XenonAssertion Assert( bool contains, string message )
@@ -81,6 +87,7 @@ namespace Xenon
 				Passing = false;
 				_failureMessages.Add( message );
 			}
+
 			return this;
 		}
 
