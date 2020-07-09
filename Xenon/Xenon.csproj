@@ -47,6 +47,7 @@
     <Compile Include="IncorrectInputElementTypeException.cs" />
     <Compile Include="NoElementsFoundException.cs" />
     <Compile Include="StaleElementReferenceException.cs" />
+    <Compile Include="XenonBrowserExtensions.cs" />
     <Compile Include="XenonElementsSearchResult.cs" />
     <Compile Include="XenonElementsFinder.cs" />
     <Compile Include="XenonAssertion.cs" />
