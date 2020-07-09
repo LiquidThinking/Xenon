@@ -40,5 +40,20 @@ namespace Xenon.Tests.PageValidationTests
 				Assert.IsTrue( exception.Message.Contains( ErrorMessage ) );
 			}
 		}
+
+		[Test]
+		public void GoToUrl_CustomValidationPasses_DoesNotFailTest()
+		{
+			using ( var browserTest = new BrowserTest(
+				XenonTestsResourceLookup
+					.GetContent(
+						htmlFileName: "PageWithoutErrorHeader" ) ) )
+			{
+				Assert
+					.DoesNotThrow(
+						() => CreateInstance(
+							browserTest.Start() ).GoToUrl( "/" ) );
+			}
+		}
 	}
 }
