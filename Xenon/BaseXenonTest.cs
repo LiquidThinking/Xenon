@@ -96,7 +96,7 @@ namespace Xenon
 		{
 			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
-				customPostWait );
+				customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -125,7 +125,7 @@ namespace Xenon
 		{
 			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().LocateSingleVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( b => where( new XenonElementsFinder( b ) ).FindElements().LocateSingleVisibleElement().IsVisible ) ),
-				customPostWait );
+				customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -252,7 +252,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T SwitchToWindow( AssertionFunc assertion, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( b => _xenonBrowser = b.SwitchToWindow( assertion ), customPreWait, customPostWait );
+			return RunTask( b => _xenonBrowser = b.SwitchToWindow( assertion ), customPreWait, customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -314,7 +314,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T Custom( Action<IXenonBrowser> task, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( task, customPreWait, customPostWait );
+			return RunTask( task, customPreWait, customPostWait, validatePage: true );
 		}
 	}
 }
