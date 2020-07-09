@@ -7,7 +7,7 @@ namespace Xenon.Tests
     public class XenonTestOptionsTests
     {
         [Test]
-        public void IfAssertMethodIsNotSet_WhenAccessedShouldSholdThrowException()
+        public void IfAssertMethodIsNotSet_WhenAccessedShouldShouldThrowException()
         {
             var xenonTestOptions = new XenonTestOptions();
 
