@@ -59,24 +59,19 @@ namespace Xenon
 
 		private void ValidatePage()
 		{
-			var pageAssertion = XenonTestOptions
-				.Options
-				.PageValidationFunc;
+			if ( _xenonTestOptions.PageValidationFunc == null )
+				return;
 
-			if ( pageAssertion == null ) return;
-
-			var error = pageAssertion
+			var error = _xenonTestOptions
+				.PageValidationFunc
 				.Invoke(
 					new Page(
 						_xenonBrowser.Url,
 						_xenonBrowser.PageSource ) );
 
 			if ( !string.IsNullOrEmpty( error ) )
-			{
-				XenonTestOptions
-					.Options
+				_xenonTestOptions
 					.AssertMethod( false, error );
-			}
 		}
 
 		/// <summary>
