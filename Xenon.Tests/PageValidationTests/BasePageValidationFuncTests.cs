@@ -1,20 +1,25 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.PageValidationTests
 {
 	public abstract class BasePageValidationFuncTests<T> : BaseXenonIntegrationTest where T : BaseXenonTest<T>
 	{
-		private const string ErrorMessage = "Custom Validation Failed On Navigation";
+		private const string ErrorMessage = "Custom Validation Failed";
 
 		public XenonTestOptions Options { get; }
 			= new XenonTestOptions
 			{
 				AssertMethod = Assert.IsTrue,
-				PageValidationFunc = page =>
-					page.Source.Contains( "<h1>Error</h1>" )
-						? ErrorMessage
-						: null
+				Validation = new Validation
+				{
+					NavAction = NavAction.GoToUrl | NavAction.Click,
+					Func = page =>
+						page.Source.Contains( "<h1>Error</h1>" )
+							? ErrorMessage
+							: null
+				}
 			};
 
 		protected BasePageValidationFuncTests()
@@ -97,6 +102,30 @@ namespace Xenon.Tests.PageValidationTests
 							.GoToUrl( "/" )
 							.Assert( assertion => assertion
 								.PageContains( "200" ) ) );
+			}
+		}
+
+		[Test]
+		public void CustomAction_WhenCustomActionExcludedFromValidation_DoesNotRunValidation()
+		{
+			using ( var browserTest = new BrowserTest(
+				XenonTestsResourceLookup
+					.GetContent(
+						htmlFileName: "PageWithoutErrorHeader" ) ) )
+			{
+				var loadedPage = CreateInstance( browserTest.Start() ).GoToUrl( "/" );
+
+				Assert
+					.DoesNotThrow(
+						() =>
+						{
+							loadedPage
+								//trigger the bad page state
+								.Custom( browser => browser
+									.FindElementsByCssSelector( "button" )
+									.Single()
+									.Click() );
+						} );
 			}
 		}
 	}
