@@ -157,18 +157,10 @@ namespace Xenon.Selenium
 			}
 		}
 
-		public IXenonElement EnterDate( DateTime date )
+		public IXenonElement EnterDate( string formattedDate )
 		{
-			_webElement.SendKeys( date.ToString( GetDriverDateFormat() ) );
+			_webElement.SendKeys(formattedDate);
 			return this;
-
-			string GetDriverDateFormat()
-			{
-				var driverTypeName = _webDriver.GetType().Name;
-				return driverTypeName == nameof(FirefoxDriver)
-					? "yyyy-MM-dd"
-					: "dd/MM/yyyy";
-			}
 		}
 
 		public IXenonElement MoveToElement()
