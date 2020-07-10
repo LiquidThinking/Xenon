@@ -128,5 +128,23 @@ namespace Xenon.Tests.PageValidationTests
 						} );
 			}
 		}
+
+		[Test]
+		public void ActionTriggeringModal_WhenActionExcludedFromValidation_CanHandleModal()
+		{
+			using ( var browserTest = new BrowserTest(
+				XenonTestsResourceLookup
+					.GetContent(
+						htmlFileName: "PageWithoutErrorHeader" ) ) )
+			{
+				CreateInstance( browserTest.Start() )
+					.GoToUrl( "/" )
+					.Custom( browser => browser
+						.FindElementsByCssSelector( "a" )
+						.Single()
+						.Click() )
+					.ClickDialogBox();
+			}
+		}
 	}
 }
