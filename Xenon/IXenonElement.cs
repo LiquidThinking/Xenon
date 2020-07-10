@@ -12,7 +12,7 @@ namespace Xenon
 	    string Text { get; }
 		IXenonElement Clear();
 		IXenonElement ScrollToElement();
-		IXenonElement EnterDate( DateTime date );
+		IXenonElement EnterDate( DateTime date, string format = XenonTestOptions.DefaultDateFormat );
 		IXenonElement MoveToElement();
 	}
 }

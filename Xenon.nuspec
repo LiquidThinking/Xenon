@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon</id>
-		<version>0.5.0</version>
+		<version>0.6.0</version>
 		<title>Xenon</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -14,7 +14,7 @@
 			There are the following pre-built browser automation wrappers:
 			http://www.nuget.org/packages/Xenon.Selenium/
 		</description>
-		<releaseNotes>Added MoveToElement method</releaseNotes>
+		<releaseNotes>Add PageValidationFunc and date format to options</releaseNotes>
 		<dependencies>
 		</dependencies>
 	</metadata>

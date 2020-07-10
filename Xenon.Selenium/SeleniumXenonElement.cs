@@ -65,8 +65,8 @@ namespace Xenon.Selenium
 		public IXenonElement EnterText( string value )
 		{
 			if ( _webElement.GetAttribute( "type" ) == "date" )
-				throw new IncorrectInputElementTypeException( $"Do not use {nameof(EnterText)} to set DatePicker values, " +
-															$"use {nameof(EnterDate)} instead" );
+				throw new IncorrectInputElementTypeException( $"Do not use {nameof( EnterText )} to set DatePicker values, " +
+				                                              $"use {nameof( EnterDate )} instead" );
 
 			try
 			{
@@ -157,18 +157,10 @@ namespace Xenon.Selenium
 			}
 		}
 
-		public IXenonElement EnterDate( DateTime date )
+		public IXenonElement EnterDate( DateTime date, string dateFormat = XenonTestOptions.DefaultDateFormat )
 		{
-			_webElement.SendKeys( date.ToString( GetDriverDateFormat() ) );
+			_webElement.SendKeys( date.ToString( dateFormat ) );
 			return this;
-
-			string GetDriverDateFormat()
-			{
-				var driverTypeName = _webDriver.GetType().Name;
-				return driverTypeName == nameof(FirefoxDriver)
-					? "yyyy-MM-dd"
-					: "dd/MM/yyyy";
-			}
 		}
 
 		public IXenonElement MoveToElement()

@@ -163,8 +163,14 @@ namespace Xenon
 		{
 			return RunTask( browser =>
 			{
-				var dateInputElement = browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement();
-				dateInputElement.EnterDate( date );
+				var dateInputElement = browser
+					.FindElementsByCssSelector( cssSelector )
+					.LocateFirstVisibleElement();
+
+				var dateFormat = _xenonTestOptions.DateFormat
+				                 ?? XenonTestOptions.DefaultDateFormat;
+
+				dateInputElement.EnterDate( date, dateFormat );
 			}, preWait, postWait );
 		}
 
