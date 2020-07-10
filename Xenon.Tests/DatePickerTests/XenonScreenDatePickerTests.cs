@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Xenon.Tests.DatePickerTests
 {
 	[TestFixture]
 	public class XenonScreenDatePickerTests : BaseDatePickerTests<DummyXenonScreen>
 	{
-		protected override BaseXenonTest<DummyXenonScreen> CreateInstance( IXenonBrowser browser )
+		protected override BaseXenonTest<DummyXenonScreen> CreateInstance( IXenonBrowser browser, string dateFormat = null )
 		{
-			return new DummyXenonScreen( browser );
+			return new DummyXenonScreen(
+				browser,
+				string.IsNullOrEmpty( dateFormat )
+					? XenonTestOptions.Options
+					: XenonTestOptions.Options.Clone( options => options.DateFormat = dateFormat ) );
 		}
 	}
 }

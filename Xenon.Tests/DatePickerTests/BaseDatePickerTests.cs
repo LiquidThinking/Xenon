@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using Xenon.Tests.Integration;
 
@@ -10,7 +6,8 @@ namespace Xenon.Tests.DatePickerTests
 {
 	public abstract class BaseDatePickerTests<T> : BaseXenonIntegrationTest where T : BaseXenonTest<T>
 	{
-		protected abstract BaseXenonTest<T> CreateInstance( IXenonBrowser browser );
+		protected const string ChromeDateFormat = "dd/MM/yyyy";
+		protected abstract BaseXenonTest<T> CreateInstance( IXenonBrowser browser, string dateFormat = null );
 
 		protected BaseDatePickerTests()
 		{
@@ -35,15 +32,17 @@ namespace Xenon.Tests.DatePickerTests
 			}
 		}
 
-		[TestCase( BrowserType.Chrome )]
-		[TestCase( BrowserType.Firefox )]
-		public void EnterDateIntoDatePicker_DoesSetValue( BrowserType browserType )
+		[TestCase( BrowserType.Chrome, ChromeDateFormat )]
+		[TestCase( BrowserType.Firefox, XenonTestOptions.DefaultDateFormat )]
+		public void EnterDateIntoDatePicker_DoesSetValue( BrowserType browserType, string dateFormat )
 		{
 			using ( var browserTest = new BrowserTest( GetHtml() ) )
 			{
 				var theFifthOfNovember = new DateTime( 1605, 11, 5 );
 
-				CreateInstance( browserTest.Start( browserType ) )
+				CreateInstance( 
+						browserTest.Start( browserType ), 
+						dateFormat )
 					.GoToUrl( "/" )
 					.EnterDate( "input[name=\"date\"]", theFifthOfNovember )
 					.Click( x => x.TextIs( "Submit" ) );
