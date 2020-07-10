@@ -27,13 +27,14 @@ namespace Xenon
 						break;
 				}
 				catch ( Exception )
-				{ }
+				{
+				}
 
 				Thread.Sleep( 10 );
 			} while ( DateTime.Now < endTime );
 		}
 
-		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait )
+		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait, bool validatePage = false )
 		{
 			if ( preWait != null )
 				WaitUntil( preWait );
@@ -41,6 +42,14 @@ namespace Xenon
 			try
 			{
 				task( _xenonBrowser );
+
+				if ( validatePage )
+				{
+					var error = CheckPage( _xenonBrowser );
+					if ( !string.IsNullOrEmpty( error ) )
+						_xenonTestOptions
+							.AssertMethod( false, error );
+				}
 			}
 			catch ( StaleElementException )
 			{
@@ -53,6 +62,16 @@ namespace Xenon
 			return this as T;
 		}
 
+		private string CheckPage( IXenonBrowser browser )
+		{
+			return _xenonTestOptions
+				.PageValidationFunc?
+				.Invoke(
+					new Page(
+						browser.Url,
+						browser.PageSource ) );
+		}
+
 		/// <summary>
 		/// Goes to the url specified.
 		/// </summary>
@@ -61,7 +80,7 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after going to the url</param>
 		public T GoToUrl( string url, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( w => w.GoToUrl( url ), customPreWait, customPostWait );
+			return RunTask( b => b.GoToUrl( url ), customPreWait, customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -75,7 +94,7 @@ namespace Xenon
 		{
 			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
-				customPostWait );
+				customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -104,14 +123,14 @@ namespace Xenon
 		{
 			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().LocateSingleVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( b => where( new XenonElementsFinder( b ) ).FindElements().LocateSingleVisibleElement().IsVisible ) ),
-				customPostWait );
+				customPostWait, validatePage: true );
 		}
 
 		/// <summary>
 		/// Right clicks the element specified
 		/// By default waits for the element to exist before clicking
 		/// </summary>
-		/// <param name="cssSelector">The css selector of the element</param>
+		/// <param name="where">Find the target element</param>
 		/// <param name="customPreWait">Custom action wait upon before clicking to the element</param>
 		/// <param name="customPostWait">Custom action wait upon after clicking to the element</param>
 		public T RightClick( Func<XenonElementsFinder, XenonElementsFinder> where, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
@@ -131,20 +150,22 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after entering the text in the element</param>
 		public T EnterText( string cssSelector, string text, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( browser => {
-								var textInputElement = browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement();
-								textInputElement.EnterText( text );
-							},
+			return RunTask( browser =>
+				{
+					var textInputElement = browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement();
+					textInputElement.EnterText( text );
+				},
 				customPreWait ?? ( a => a.CustomAssertion( b => b.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
 				customPostWait );
 		}
 
 		public T EnterDate( string cssSelector, DateTime date, AssertionFunc preWait = null, AssertionFunc postWait = null )
 		{
-			return RunTask( browser => {
-								var dateInputElement = browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement();
-								dateInputElement.EnterDate( date );
-							}, preWait, postWait );
+			return RunTask( browser =>
+			{
+				var dateInputElement = browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement();
+				dateInputElement.EnterDate( date );
+			}, preWait, postWait );
 		}
 
 		public T MoveToElement( string cssSelector, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
@@ -207,11 +228,16 @@ namespace Xenon
 		/// Asserts
 		/// </summary>
 		/// <param name="assertion">The Function with your assertions</param>
+		/// <param name="message"></param>
 		/// <returns></returns>
 		public T Assert( AssertionFunc assertion, string message = "" )
 		{
 			WaitUntil( assertion );
-			var assertionResult = assertion( new XenonAssertion( _xenonBrowser ) );
+
+			var assertionResult = assertion(
+				new XenonAssertion( _xenonBrowser )
+					.CustomAssertion( CheckPage ) );
+
 			if ( string.IsNullOrEmpty( message ) )
 				message = string.Join( "\r\n", assertionResult.FailureMessages );
 			_xenonTestOptions.AssertMethod( assertionResult.Passing, message );
@@ -227,7 +253,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T SwitchToWindow( AssertionFunc assertion, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( b => _xenonBrowser = b.SwitchToWindow( assertion ), customPreWait, customPostWait );
+			return RunTask( b => _xenonBrowser = b.SwitchToWindow( assertion ), customPreWait, customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -239,10 +265,11 @@ namespace Xenon
 		/// <returns></returns>
 		public T CloseCurrentAndSwitchToWindow( AssertionFunc switchToWindowAssertFunc, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( b => {
-								b.CloseWindow();
-								b.SwitchToWindow( switchToWindowAssertFunc );
-							}, customPreWait, customPostWait );
+			return RunTask( b =>
+			{
+				b.CloseWindow();
+				b.SwitchToWindow( switchToWindowAssertFunc );
+			}, customPreWait, customPostWait );
 		}
 
 		/// <summary>
@@ -288,7 +315,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T Custom( Action<IXenonBrowser> task, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( task, customPreWait, customPostWait );
+			return RunTask( task, customPreWait, customPostWait, validatePage: true );
 		}
 	}
 }

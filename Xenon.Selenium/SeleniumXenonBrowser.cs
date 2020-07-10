@@ -182,7 +182,9 @@ namespace Xenon.Selenium
 
 		public void Dispose()
 		{
-			_driver.Quit();
+			//no need to call Quit here, because all it does it calls Dispose & is not virtual
+			//https://github.com/SeleniumHQ/selenium/blob/master/dotnet/src/webdriver/Remote/RemoteWebDriver.cs#L457
+			//Moreover, calling Dispose twice in quick succession takes a long time
 			_driver.Dispose();
 		}
 	}

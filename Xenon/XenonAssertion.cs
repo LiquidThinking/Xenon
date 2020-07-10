@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Xenon
 {
@@ -27,11 +28,24 @@ namespace Xenon
 
 		public XenonAssertion PageContains( string content )
 		{
-		    var pageContains = _xenonBrowser.PageSource.Contains( content );
-		    if ( !pageContains )
-		        pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Any( e => e.Text.Contains( content ) );
+			var pageContains = _xenonBrowser.PageSource.Contains( content );
+			if ( !pageContains )
+				pageContains = _xenonBrowser.FindElementsByCssSelector( "input, textarea" ).Any( e => e.Text.Contains( content ) );
 
-            return Assert( pageContains, "Page does not contain: " + content );
+			return Assert( pageContains, "Page does not contain: " + content );
+		}
+
+		public XenonAssertion PageContainsAll( params string[] expected )
+		{
+			return expected
+				.Aggregate(
+					seed: this,
+					func: ( current, @string ) => current.PageContains( @string ) );
+		}
+
+		public XenonAssertion UrlDoesNotContain( string urlFragment )
+		{
+			return CustomAssertion( @browser => !@browser.Url.ToLower().Contains( urlFragment.ToLower() ) );
 		}
 
 		public XenonAssertion PageDoesNotContain( string text )
@@ -69,18 +83,53 @@ namespace Xenon
 				$"Page contains elements matching the following criteria: {searchResult}" );
 		}
 
-		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc )
+		/// <summary>
+		/// Strips the HTML tags out of the Page Source and asserts on the text
+		/// </summary>
+		/// <param name="expectedTextFragments"></param>
+		/// <returns></returns>
+		public XenonAssertion PageSourceContainsText( params string[] expectedTextFragments )
 		{
-			return Assert( customFunc( _xenonBrowser ), "Custom assertion failed" );
+			return expectedTextFragments
+				.Aggregate(
+					this,
+					( current, textFragment ) => current
+						.CustomAssertion( browser => Regex
+							.Replace( browser.PageSource, @"<[^>]*>", replacement: string.Empty )
+							.Contains( textFragment ) ) );
 		}
 
-		private XenonAssertion Assert( bool contains, string message )
+		public XenonAssertion MatchRegex( string pattern )
 		{
-			if ( !contains )
+			return CustomAssertion( x => new Regex( pattern ).IsMatch( x.PageSource ) );
+		}
+
+		public XenonAssertion NotMatchRegex( string pattern )
+		{
+			return CustomAssertion( x => !new Regex( pattern ).IsMatch( x.PageSource ) );
+		}
+
+		public XenonAssertion CustomAssertion( Func<IXenonBrowser, string> customFunc )
+		{
+			var errorMessage = customFunc( _xenonBrowser );
+			return Assert(
+				passing: string.IsNullOrEmpty( errorMessage ),
+				message: errorMessage );
+		}
+
+		public XenonAssertion CustomAssertion( Func<IXenonBrowser, bool> customFunc, string errorMessage = null )
+		{
+			return Assert( customFunc( _xenonBrowser ), errorMessage ?? "Custom assertion failed" );
+		}
+
+		private XenonAssertion Assert( bool passing, string message )
+		{
+			if ( !passing )
 			{
 				Passing = false;
 				_failureMessages.Add( message );
 			}
+
 			return this;
 		}
 
