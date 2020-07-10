@@ -167,11 +167,10 @@ namespace Xenon
 					.FindElementsByCssSelector( cssSelector )
 					.LocateFirstVisibleElement();
 
-				var formattedDate = date
-					.ToString( _xenonTestOptions.DateFormat
-					           ?? XenonTestOptions.DefaultDateFormat );
+				var dateFormat = _xenonTestOptions.DateFormat
+				                 ?? XenonTestOptions.DefaultDateFormat;
 
-				dateInputElement.EnterDate( formattedDate );
+				dateInputElement.EnterDate( date, dateFormat );
 			}, preWait, postWait );
 		}
 
