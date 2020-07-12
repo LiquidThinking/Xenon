@@ -34,7 +34,7 @@ namespace Xenon
 			} while ( DateTime.Now < endTime );
 		}
 
-		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait, NavAction @action = NavAction.None  )
+		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait, NavAction @action = NavAction.None )
 		{
 			if ( preWait != null )
 				WaitUntil( preWait );
@@ -44,7 +44,8 @@ namespace Xenon
 				task( _xenonBrowser );
 
 				var validationAction = _xenonTestOptions.Validation?.NavAction;
-				if ( validationAction?.HasFlag( action ) ?? false )
+				if ( @action != NavAction.None 
+				     && ( validationAction?.HasFlag( action ) ?? false ) )
 				{
 					var error = CheckPage( _xenonBrowser );
 					if ( !string.IsNullOrEmpty( error ) )
