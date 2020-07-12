@@ -62,7 +62,7 @@ namespace Xenon
 
 	public class Validation
 	{
-		public NavAction NavAction { get; set; }
+		public UiAction UiAction { get; set; }
 		public Func<Page, string> Func { get; set; }
 
 		public Validation Clone( Action<Validation> mutate )
@@ -70,7 +70,7 @@ namespace Xenon
 			var @new = new Validation
 			{
 				Func = Func,
-				NavAction = NavAction
+				UiAction = UiAction
 			};
 
 			mutate( @new );
@@ -79,12 +79,13 @@ namespace Xenon
 	}
 
 	[Flags]
-	public enum NavAction
+	public enum UiAction
 	{
 		None = 0,
 		GoToUrl = 1,
 		Click = 2,
-		Custom = 4
+		Custom = 4,
+		Assertion = 8
 	}
 
 	public class Page

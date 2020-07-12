@@ -14,7 +14,7 @@ namespace Xenon.Tests.PageValidationTests
 				AssertMethod = Assert.IsTrue,
 				Validation = new Validation
 				{
-					NavAction = NavAction.GoToUrl | NavAction.Click,
+					UiAction = UiAction.GoToUrl | UiAction.Click,
 					Func = page =>
 						page.Source.Contains( "<h1>Error</h1>" )
 							? ErrorMessage
@@ -130,7 +130,7 @@ namespace Xenon.Tests.PageValidationTests
 		}
 
 		[Test]
-		public void ActionTriggeringModal_WhenActionExcludedFromValidation_CanHandleModal()
+		public void ActionTriggeringModal_WhenActionAndAssertionExcludedFromValidation_CanHandleModal()
 		{
 			using ( var browserTest = new BrowserTest(
 				XenonTestsResourceLookup
@@ -143,7 +143,9 @@ namespace Xenon.Tests.PageValidationTests
 						.FindElementsByCssSelector( "a" )
 						.Single()
 						.Click() )
-					.ClickDialogBox();
+					.ClickDialogBox()
+					.Assert( assertion => assertion
+						.PageContains( "Error" ) );
 			}
 		}
 	}

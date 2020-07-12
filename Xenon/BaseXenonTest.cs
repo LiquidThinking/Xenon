@@ -34,7 +34,7 @@ namespace Xenon
 			} while ( DateTime.Now < endTime );
 		}
 
-		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait, NavAction @action = NavAction.None )
+		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait, UiAction @action = UiAction.None )
 		{
 			if ( preWait != null )
 				WaitUntil( preWait );
@@ -43,8 +43,8 @@ namespace Xenon
 			{
 				task( _xenonBrowser );
 
-				var validationAction = _xenonTestOptions.Validation?.NavAction;
-				if ( @action != NavAction.None 
+				var validationAction = _xenonTestOptions.Validation?.UiAction;
+				if ( @action != UiAction.None
 				     && ( validationAction?.HasFlag( action ) ?? false ) )
 				{
 					var error = CheckPage( _xenonBrowser );
@@ -83,7 +83,7 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after going to the url</param>
 		public T GoToUrl( string url, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( b => b.GoToUrl( url ), customPreWait, customPostWait, NavAction.GoToUrl );
+			return RunTask( b => b.GoToUrl( url ), customPreWait, customPostWait, UiAction.GoToUrl );
 		}
 
 		/// <summary>
@@ -97,7 +97,7 @@ namespace Xenon
 		{
 			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
-				customPostWait, NavAction.Click );
+				customPostWait, UiAction.Click );
 		}
 
 		/// <summary>
@@ -126,7 +126,7 @@ namespace Xenon
 		{
 			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().LocateSingleVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( b => where( new XenonElementsFinder( b ) ).FindElements().LocateSingleVisibleElement().IsVisible ) ),
-				customPostWait, NavAction.Click );
+				customPostWait, UiAction.Click );
 		}
 
 		/// <summary>
@@ -243,13 +243,21 @@ namespace Xenon
 		{
 			WaitUntil( assertion );
 
+			var runValidation = _xenonTestOptions
+				.Validation
+				?.UiAction
+				.HasFlag( UiAction.Assertion ) ?? false;
+
 			var assertionResult = assertion(
-				new XenonAssertion( _xenonBrowser )
-					.CustomAssertion( CheckPage ) );
+				runValidation
+					? new XenonAssertion( _xenonBrowser )
+						.CustomAssertion( CheckPage )
+					: new XenonAssertion( _xenonBrowser ) );
 
 			if ( string.IsNullOrEmpty( message ) )
 				message = string.Join( "\r\n", assertionResult.FailureMessages );
 			_xenonTestOptions.AssertMethod( assertionResult.Passing, message );
+
 			return this as T;
 		}
 
@@ -324,7 +332,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T Custom( Action<IXenonBrowser> task, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( task, customPreWait, customPostWait, NavAction.Custom );
+			return RunTask( task, customPreWait, customPostWait, UiAction.Custom );
 		}
 	}
 }
