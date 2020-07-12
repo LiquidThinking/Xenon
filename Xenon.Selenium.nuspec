@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon.Selenium</id>
-		<version>0.6.0</version>
+		<version>0.7.0</version>
 		<title>Xenon.Selenium</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -13,7 +13,7 @@
 
 			This is browser automation wrapper for Selenium.
 		</description>
-		<releaseNotes>Added implementation of MoveToElement method</releaseNotes>
+		<releaseNotes>Allow client to selectively run Validation (fixes modal error)</releaseNotes>
 		<dependencies>
 			<dependency id="Selenium.Support" version="3.141.0.0" />
 			<dependency id="Selenium.WebDriver" version="3.141.0.0" />
