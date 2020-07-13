@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon</id>
-		<version>0.8.0</version>
+		<version>0.9.0</version>
 		<title>Xenon</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -14,7 +14,7 @@
 			There are the following pre-built browser automation wrappers:
 			http://www.nuget.org/packages/Xenon.Selenium/
 		</description>
-		<releaseNotes>Don't run page validation when modal is active</releaseNotes>
+		<releaseNotes>Catch exceptions when checking pages</releaseNotes>
 		<dependencies>
 		</dependencies>
 	</metadata>
