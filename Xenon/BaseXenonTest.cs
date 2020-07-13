@@ -48,13 +48,10 @@ namespace Xenon
 			{
 				task( _xenonBrowser );
 
-				if ( validatePage && CanValidate )
-				{
-					var error = CheckPage( _xenonBrowser );
-					if ( !string.IsNullOrEmpty( error ) )
-						_xenonTestOptions
-							.AssertMethod( false, error );
-				}
+				var error = TryGetError();
+				if ( !string.IsNullOrEmpty( error ) )
+					_xenonTestOptions
+						.AssertMethod( false, error );
 			}
 			catch ( StaleElementException )
 			{
@@ -65,6 +62,21 @@ namespace Xenon
 				WaitUntil( postWait );
 
 			return this as T;
+
+			string TryGetError()
+			{
+				try
+				{
+					if ( validatePage && CanValidate )
+						return CheckPage( _xenonBrowser );
+
+					return null;
+				}
+				catch
+				{
+					return null;
+				}
+			}
 		}
 
 		private string CheckPage( IXenonBrowser browser )
