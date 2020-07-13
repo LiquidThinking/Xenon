@@ -9,6 +9,11 @@ namespace Xenon
 		protected readonly XenonTestOptions _xenonTestOptions;
 		protected IXenonBrowser _xenonBrowser;
 
+		private bool CanValidate
+			=> _xenonTestOptions
+				   .PageValidationFunc != null
+			   && !_xenonBrowser.DialogBoxIsActive();
+
 		protected BaseXenonTest( IXenonBrowser browser, XenonTestOptions options = null )
 		{
 			_xenonTestOptions = options ?? XenonTestOptions.Options ?? new XenonTestOptions();
@@ -34,7 +39,7 @@ namespace Xenon
 			} while ( DateTime.Now < endTime );
 		}
 
-		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait, UiAction @action = UiAction.None )
+		private T RunTask( Action<IXenonBrowser> task, AssertionFunc preWait, AssertionFunc postWait, bool validatePage = false )
 		{
 			if ( preWait != null )
 				WaitUntil( preWait );
@@ -43,9 +48,7 @@ namespace Xenon
 			{
 				task( _xenonBrowser );
 
-				var validationAction = _xenonTestOptions.Validation?.UiAction;
-				if ( @action != UiAction.None
-				     && ( validationAction?.HasFlag( action ) ?? false ) )
+				if ( validatePage && CanValidate )
 				{
 					var error = CheckPage( _xenonBrowser );
 					if ( !string.IsNullOrEmpty( error ) )
@@ -67,9 +70,8 @@ namespace Xenon
 		private string CheckPage( IXenonBrowser browser )
 		{
 			return _xenonTestOptions
-				.Validation
-				?.Func
-				?.Invoke(
+				.PageValidationFunc?
+				.Invoke(
 					new Page(
 						browser.Url,
 						browser.PageSource ) );
@@ -83,7 +85,7 @@ namespace Xenon
 		/// <param name="customPostWait">Custom action wait upon after going to the url</param>
 		public T GoToUrl( string url, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( b => b.GoToUrl( url ), customPreWait, customPostWait, UiAction.GoToUrl );
+			return RunTask( b => b.GoToUrl( url ), customPreWait, customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -97,7 +99,7 @@ namespace Xenon
 		{
 			return RunTask( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( browser => browser.FindElementsByCssSelector( cssSelector ).LocateFirstVisibleElement().IsVisible ) ),
-				customPostWait, UiAction.Click );
+				customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -126,7 +128,7 @@ namespace Xenon
 		{
 			return RunTask( browser => where( new XenonElementsFinder( browser ) ).FindElements().LocateSingleVisibleElement().Click(),
 				customPreWait ?? ( a => a.CustomAssertion( b => where( new XenonElementsFinder( b ) ).FindElements().LocateSingleVisibleElement().IsVisible ) ),
-				customPostWait, UiAction.Click );
+				customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -243,13 +245,8 @@ namespace Xenon
 		{
 			WaitUntil( assertion );
 
-			var runValidation = _xenonTestOptions
-				.Validation
-				?.UiAction
-				.HasFlag( UiAction.Assertion ) ?? false;
-
 			var assertionResult = assertion(
-				runValidation
+				CanValidate
 					? new XenonAssertion( _xenonBrowser )
 						.CustomAssertion( CheckPage )
 					: new XenonAssertion( _xenonBrowser ) );
@@ -257,7 +254,6 @@ namespace Xenon
 			if ( string.IsNullOrEmpty( message ) )
 				message = string.Join( "\r\n", assertionResult.FailureMessages );
 			_xenonTestOptions.AssertMethod( assertionResult.Passing, message );
-
 			return this as T;
 		}
 
@@ -270,7 +266,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T SwitchToWindow( AssertionFunc assertion, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( b => _xenonBrowser = b.SwitchToWindow( assertion ), customPreWait, customPostWait );
+			return RunTask( b => _xenonBrowser = b.SwitchToWindow( assertion ), customPreWait, customPostWait, validatePage: true );
 		}
 
 		/// <summary>
@@ -332,7 +328,7 @@ namespace Xenon
 		/// <returns></returns>
 		public T Custom( Action<IXenonBrowser> task, AssertionFunc customPreWait = null, AssertionFunc customPostWait = null )
 		{
-			return RunTask( task, customPreWait, customPostWait, UiAction.Custom );
+			return RunTask( task, customPreWait, customPostWait, validatePage: true );
 		}
 	}
 }

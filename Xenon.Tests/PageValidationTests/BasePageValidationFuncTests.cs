@@ -12,14 +12,10 @@ namespace Xenon.Tests.PageValidationTests
 			= new XenonTestOptions
 			{
 				AssertMethod = Assert.IsTrue,
-				Validation = new Validation
-				{
-					UiAction = UiAction.GoToUrl | UiAction.Click,
-					Func = page =>
-						page.Source.Contains( "<h1>Error</h1>" )
-							? ErrorMessage
-							: null
-				}
+				PageValidationFunc = page =>
+					page.Source.Contains( "<h1>Error</h1>" )
+						? ErrorMessage
+						: null
 			};
 
 		protected BasePageValidationFuncTests()
@@ -106,31 +102,7 @@ namespace Xenon.Tests.PageValidationTests
 		}
 
 		[Test]
-		public void CustomAction_WhenCustomActionExcludedFromValidation_DoesNotRunValidation()
-		{
-			using ( var browserTest = new BrowserTest(
-				XenonTestsResourceLookup
-					.GetContent(
-						htmlFileName: "PageWithoutErrorHeader" ) ) )
-			{
-				var loadedPage = CreateInstance( browserTest.Start() ).GoToUrl( "/" );
-
-				Assert
-					.DoesNotThrow(
-						() =>
-						{
-							loadedPage
-								//trigger the bad page state
-								.Custom( browser => browser
-									.FindElementsByCssSelector( "button" )
-									.Single()
-									.Click() );
-						} );
-			}
-		}
-
-		[Test]
-		public void ActionTriggeringModal_WhenActionAndAssertionExcludedFromValidation_CanHandleModal()
+		public void ActionTriggeringModal_WhileModalActive_CanHandleModal()
 		{
 			using ( var browserTest = new BrowserTest(
 				XenonTestsResourceLookup
@@ -139,13 +111,10 @@ namespace Xenon.Tests.PageValidationTests
 			{
 				CreateInstance( browserTest.Start() )
 					.GoToUrl( "/" )
-					.Custom( browser => browser
-						.FindElementsByCssSelector( "a" )
-						.Single()
-						.Click() )
-					.ClickDialogBox()
+					.Click( "a" )
 					.Assert( assertion => assertion
-						.PageContains( "Error" ) );
+						.CustomAssertion( browser => browser
+							.DialogBoxIsActive() ) );
 			}
 		}
 	}

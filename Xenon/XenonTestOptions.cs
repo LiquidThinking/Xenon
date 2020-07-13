@@ -12,7 +12,7 @@ namespace Xenon
 		/// Optional hook to validate pages _generally_ after explicit navigation & in assertions
 		/// I.e. Check for default web server error text, or a malformed Url
 		/// </summary>
-		public Validation Validation { get; set; }
+		public Func<Page, string> PageValidationFunc { get; set; }
 
 		/// <summary>
 		/// The format to use for <see cref="DateTime"/>, defaults to <see cref="DefaultDateFormat"/>
@@ -51,41 +51,13 @@ namespace Xenon
 			{
 				WaitForSeconds = WaitForSeconds,
 				AssertMethod = AssertMethod,
-				Validation = Validation,
+				PageValidationFunc = PageValidationFunc,
 				DateFormat = DateFormat
 			};
 
 			mutate( @new );
 			return @new;
 		}
-	}
-
-	public class Validation
-	{
-		public UiAction UiAction { get; set; }
-		public Func<Page, string> Func { get; set; }
-
-		public Validation Clone( Action<Validation> mutate )
-		{
-			var @new = new Validation
-			{
-				Func = Func,
-				UiAction = UiAction
-			};
-
-			mutate( @new );
-			return @new;
-		}
-	}
-
-	[Flags]
-	public enum UiAction
-	{
-		None = 0,
-		GoToUrl = 1,
-		Click = 2,
-		Custom = 4,
-		Assertion = 8
 	}
 
 	public class Page
