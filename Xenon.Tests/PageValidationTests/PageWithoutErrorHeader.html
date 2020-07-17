@@ -6,14 +6,23 @@
     <title>200</title>
     <script>
         window.onload = function() {
-            document.querySelector('button').addEventListener('click', function() {
-                document.querySelector('h1').textContent = 'Error';
-            });
+            document.querySelector('button').addEventListener('click',
+                function() {
+                    document.querySelector('h1').textContent = 'Error';
+                });
+
+            document.querySelector('a').addEventListener('click',
+                function() {
+                    if (confirm('Are you a fish?')) {
+                        document.querySelector('h1').textContent = 'Error';
+                    }
+                });
         }
     </script>
 </head>
 <body>
 <h1>200</h1>
 <button>Make Error</button>
+<a>Trigger Dialog, then Error</a>
 </body>
 </html>

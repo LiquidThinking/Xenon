@@ -9,6 +9,11 @@ namespace Xenon
 		protected readonly XenonTestOptions _xenonTestOptions;
 		protected IXenonBrowser _xenonBrowser;
 
+		private bool CanValidate
+			=> _xenonTestOptions
+				   .PageValidationFunc != null
+			   && !_xenonBrowser.DialogBoxIsActive();
+
 		protected BaseXenonTest( IXenonBrowser browser, XenonTestOptions options = null )
 		{
 			_xenonTestOptions = options ?? XenonTestOptions.Options ?? new XenonTestOptions();
@@ -43,13 +48,10 @@ namespace Xenon
 			{
 				task( _xenonBrowser );
 
-				if ( validatePage )
-				{
-					var error = CheckPage( _xenonBrowser );
-					if ( !string.IsNullOrEmpty( error ) )
-						_xenonTestOptions
-							.AssertMethod( false, error );
-				}
+				var error = TryGetError();
+				if ( !string.IsNullOrEmpty( error ) )
+					_xenonTestOptions
+						.AssertMethod( false, error );
 			}
 			catch ( StaleElementException )
 			{
@@ -60,6 +62,21 @@ namespace Xenon
 				WaitUntil( postWait );
 
 			return this as T;
+
+			string TryGetError()
+			{
+				try
+				{
+					if ( validatePage && CanValidate )
+						return CheckPage( _xenonBrowser );
+
+					return null;
+				}
+				catch
+				{
+					return null;
+				}
+			}
 		}
 
 		private string CheckPage( IXenonBrowser browser )
@@ -241,8 +258,10 @@ namespace Xenon
 			WaitUntil( assertion );
 
 			var assertionResult = assertion(
-				new XenonAssertion( _xenonBrowser )
-					.CustomAssertion( CheckPage ) );
+				CanValidate
+					? new XenonAssertion( _xenonBrowser )
+						.CustomAssertion( CheckPage )
+					: new XenonAssertion( _xenonBrowser ) );
 
 			if ( string.IsNullOrEmpty( message ) )
 				message = string.Join( "\r\n", assertionResult.FailureMessages );
