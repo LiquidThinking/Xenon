@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon</id>
-		<version>0.6.0</version>
+		<version>4.1.0</version>
 		<title>Xenon</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -19,6 +19,6 @@
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Xenon\bin\Release\Xenon.dll" target="lib\net451\Xenon.dll"/>
+		<file src="Xenon\bin\Release\Xenon.dll" target="lib\net472\Xenon.dll"/>
 	</files>
 </package>

@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd" >
 	<metadata>
 		<id>Xenon.Selenium</id>
-		<version>0.6.0</version>
+		<version>4.1.0</version>
 		<title>Xenon.Selenium</title>
 		<authors>Liquid Thinking</authors>
 		<projectUrl>https://github.com/LiquidThinking/Xenon</projectUrl>
@@ -15,12 +15,12 @@
 		</description>
 		<releaseNotes>Added implementation of MoveToElement method</releaseNotes>
 		<dependencies>
-			<dependency id="Selenium.Support" version="3.141.0.0" />
-			<dependency id="Selenium.WebDriver" version="3.141.0.0" />
-			<dependency id="Xenon" version="0.6.0" />
+			<dependency id="Selenium.Support" version="4.1.0" />
+			<dependency id="Selenium.WebDriver" version="4.1.0" />
+			<dependency id="Xenon" version="4.1.0" />
 		</dependencies>
 	</metadata>
 	<files>
-		<file src="Xenon.Selenium\bin\Release\Xenon.Selenium.dll" target="lib\net451\Xenon.Selenium.dll"/>
+		<file src="Xenon.Selenium\bin\Release\Xenon.Selenium.dll" target="lib\net472\Xenon.Selenium.dll"/>
 	</files>
 </package>

@@ -9,9 +9,9 @@ namespace Xenon.Selenium
 {
 	public class SeleniumXenonBrowser : IXenonBrowser
 	{
-		private readonly RemoteWebDriver _driver;
+		private readonly WebDriver _driver;
 
-		public SeleniumXenonBrowser( RemoteWebDriver driver )
+		public SeleniumXenonBrowser( WebDriver driver )
 		{
 			_driver = driver;
 		}
@@ -27,7 +27,7 @@ namespace Xenon.Selenium
 
 		public XenonElementsSearchResult FindElementsByCssSelector( string cssSelector )
 		{
-			var elements = _driver.FindElementsByCssSelector( cssSelector )
+			var elements = _driver.FindElements( By.CssSelector( cssSelector ) )
 				.Select( ConvertToXenonElement ).ToList();
 
 			return new XenonElementsSearchResult(
@@ -37,7 +37,7 @@ namespace Xenon.Selenium
 
 		public XenonElementsSearchResult FindElementsByXPath( string xpath )
 		{
-			var elements = _driver.FindElementsByXPath( xpath )
+			var elements = _driver.FindElements( By.XPath( xpath ) )
 				.Select( ConvertToXenonElement )
 				.ToList();
 

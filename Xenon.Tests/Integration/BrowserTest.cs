@@ -41,7 +41,7 @@ namespace Xenon.Tests.Integration
 
 			return _xenonBrowser = new SeleniumXenonBrowserWrapper( CreateDriver(), port );
 
-			RemoteWebDriver CreateDriver()
+			WebDriver CreateDriver()
 			{
 				switch ( browserType )
 				{
@@ -68,7 +68,7 @@ namespace Xenon.Tests.Integration
 		{
 			private readonly int _port;
 
-			public SeleniumXenonBrowserWrapper(RemoteWebDriver driver, int port)
+			public SeleniumXenonBrowserWrapper(WebDriver driver, int port)
 				: base(driver)
 			{
 				_port = port;
