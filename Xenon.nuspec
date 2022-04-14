@@ -14,7 +14,7 @@
 			There are the following pre-built browser automation wrappers:
 			http://www.nuget.org/packages/Xenon.Selenium/
 		</description>
-		<releaseNotes>Add PageValidationFunc and date format to options</releaseNotes>
+		<releaseNotes>Catch exceptions when checking pages</releaseNotes>
 		<dependencies>
 		</dependencies>
 	</metadata>

@@ -1,11 +1,12 @@
-﻿using NUnit.Framework;
+﻿using System.Linq;
+using NUnit.Framework;
 using Xenon.Tests.Integration;
 
 namespace Xenon.Tests.PageValidationTests
 {
 	public abstract class BasePageValidationFuncTests<T> : BaseXenonIntegrationTest where T : BaseXenonTest<T>
 	{
-		private const string ErrorMessage = "Custom Validation Failed On Navigation";
+		private const string ErrorMessage = "Custom Validation Failed";
 
 		public XenonTestOptions Options { get; }
 			= new XenonTestOptions
@@ -97,6 +98,23 @@ namespace Xenon.Tests.PageValidationTests
 							.GoToUrl( "/" )
 							.Assert( assertion => assertion
 								.PageContains( "200" ) ) );
+			}
+		}
+
+		[Test]
+		public void ActionTriggeringModal_WhileModalActive_CanHandleModal()
+		{
+			using ( var browserTest = new BrowserTest(
+				XenonTestsResourceLookup
+					.GetContent(
+						htmlFileName: "PageWithoutErrorHeader" ) ) )
+			{
+				CreateInstance( browserTest.Start() )
+					.GoToUrl( "/" )
+					.Click( "a" )
+					.Assert( assertion => assertion
+						.CustomAssertion( browser => browser
+							.DialogBoxIsActive() ) );
 			}
 		}
 	}
